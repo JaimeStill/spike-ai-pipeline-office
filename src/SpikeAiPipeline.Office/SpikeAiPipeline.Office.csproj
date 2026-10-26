@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The CLI publishes as one NativeAOT binary per runtime identifier, with no .NET runtime
+       needed on the host. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <Version>0.0.0</Version>
+  </PropertyGroup>
+
+</Project>

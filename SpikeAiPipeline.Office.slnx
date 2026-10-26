@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SpikeAiPipeline.Office/SpikeAiPipeline.Office.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/SpikeAiPipeline.Office.Tests/SpikeAiPipeline.Office.Tests.csproj" />
+  </Folder>
+</Solution>
