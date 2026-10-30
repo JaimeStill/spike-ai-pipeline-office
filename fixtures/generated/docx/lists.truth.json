@@ -1,0 +1,142 @@
+{
+  "fixture": "lists",
+  "format": "docx",
+  "elements": [
+    {
+      "kind": "paragraph",
+      "text": "Bulleted, nested three deep:"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": false,
+      "text": "Fruit"
+    },
+    {
+      "kind": "listItem",
+      "level": 1,
+      "ordered": false,
+      "text": "Apples"
+    },
+    {
+      "kind": "listItem",
+      "level": 2,
+      "ordered": false,
+      "text": "Granny Smith"
+    },
+    {
+      "kind": "listItem",
+      "level": 1,
+      "ordered": false,
+      "text": "Pears"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": false,
+      "text": "Vegetables"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Ordered, with a nested bullet list:"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Prepare the site"
+    },
+    {
+      "kind": "listItem",
+      "level": 1,
+      "ordered": false,
+      "text": "Clear debris"
+    },
+    {
+      "kind": "listItem",
+      "level": 1,
+      "ordered": false,
+      "text": "Mark boundaries"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Pour the foundation"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Cure for seven days"
+    },
+    {
+      "kind": "paragraph",
+      "text": "A second ordered list restarts its numbering:"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Restart one"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Restart two"
+    },
+    {
+      "kind": "listItem",
+      "level": 1,
+      "ordered": false,
+      "text": "Bullet under restart"
+    },
+    {
+      "kind": "listItem",
+      "level": 2,
+      "ordered": true,
+      "text": "Lettered detail"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Two ordered lists back to back, the second restarting, then a bullet list:"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Back one"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Back two"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Again one"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": true,
+      "text": "Again two"
+    },
+    {
+      "kind": "listItem",
+      "level": 0,
+      "ordered": false,
+      "text": "Bullet right after"
+    },
+    {
+      "kind": "paragraph",
+      "text": "End of lists."
+    }
+  ],
+  "absent": [],
+  "once": []
+}

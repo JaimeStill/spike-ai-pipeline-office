@@ -1,0 +1,145 @@
+using System.IO.Compression;
+using System.Xml;
+using System.Xml.Linq;
+using DocumentFormat.OpenXml.Packaging;
+using SpikeAiPipeline.Office.Model;
+
+namespace SpikeAiPipeline.Office.Reading;
+
+/// <summary>A document office won't convert, and why. It is raised before any output is
+/// written.</summary>
+public sealed class RefusalException(string message) : Exception(message);
+
+/// <summary>Office's converter: a document in, the model out.</summary>
+public static class OfficeReader
+{
+    private static readonly byte[] CompoundFileSignature = [0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1];
+    private static readonly byte[] ZipSignature = [0x50, 0x4B, 0x03, 0x04];
+
+    /// <summary>Converts the document at path into the model.</summary>
+    /// <exception cref="RefusalException">The file is missing or unreadable, isn't a docx, xlsx,
+    /// or pptx package, is encrypted or a legacy binary format, or is malformed.</exception>
+    public static Document Read(string path)
+    {
+        if (!File.Exists(path))
+        {
+            throw new RefusalException($"{path}: no such file");
+        }
+        try
+        {
+            return Convert(path, Sniff(path));
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            // A ZIP or XML failure inside the package is malformed; this is the file itself.
+            throw new RefusalException($"{path}: cannot be read: {e.Message}");
+        }
+    }
+
+    private static Document Convert(string path, SourceFormat format)
+    {
+        if (format != SourceFormat.Docx)
+        {
+            throw new RefusalException($"{path}: {format.ToString().ToLowerInvariant()} is not yet supported");
+        }
+        try
+        {
+            using var package = WordprocessingDocument.Open(path, false);
+            return DocxReader.Read(package);
+        }
+        catch (Exception e) when (IsMalformed(e))
+        {
+            throw Malformed(path, e);
+        }
+    }
+
+    // The format, from the content: an OOXML package is a ZIP whose officeDocument relationship
+    // names the main part, and that part's content type names the format. An encrypted OOXML
+    // package is an OLE compound file holding the encrypted ZIP, as are doc, xls, and ppt.
+    private static SourceFormat Sniff(string path)
+    {
+        var head = new byte[CompoundFileSignature.Length];
+        int read;
+        using (var stream = File.OpenRead(path))
+        {
+            read = stream.ReadAtLeast(head, head.Length, throwOnEndOfStream: false);
+        }
+        if (head.AsSpan(0, read).SequenceEqual(CompoundFileSignature))
+        {
+            throw new RefusalException(
+                $"{path}: an OLE compound file, which is an encrypted package or a legacy binary format (doc, xls, ppt); " +
+                "decrypt it or convert it to docx, xlsx, or pptx first");
+        }
+        if (!head.AsSpan(0, read).StartsWith(ZipSignature))
+        {
+            throw Unsupported(path);
+        }
+        try
+        {
+            using var zip = ZipFile.OpenRead(path);
+            return FormatOf(zip) ?? throw Unsupported(path);
+        }
+        catch (Exception e) when (IsMalformed(e))
+        {
+            throw Malformed(path, e);
+        }
+    }
+
+    private const string RelationshipsNamespace = "http://schemas.openxmlformats.org/package/2006/relationships";
+    private const string ContentTypesNamespace = "http://schemas.openxmlformats.org/package/2006/content-types";
+
+    private static SourceFormat? FormatOf(ZipArchive zip)
+    {
+        var relationships = Load(zip, "_rels/.rels");
+        var contentTypes = Load(zip, "[Content_Types].xml");
+        if (relationships is null || contentTypes is null)
+        {
+            return null;
+        }
+        // Transitional and Strict name the relationship in different namespaces, both ending so.
+        var target = relationships.Root?.Elements(XName.Get("Relationship", RelationshipsNamespace))
+            .FirstOrDefault(r => ((string?)r.Attribute("Type"))?.EndsWith("/officeDocument", StringComparison.Ordinal) == true)
+            ?.Attribute("Target")?.Value;
+        if (target is null)
+        {
+            return null;
+        }
+        var part = "/" + target.TrimStart('/');
+        var types = contentTypes.Root;
+        var contentType =
+            types?.Elements(XName.Get("Override", ContentTypesNamespace))
+                .FirstOrDefault(o => string.Equals((string?)o.Attribute("PartName"), part, StringComparison.OrdinalIgnoreCase))
+                ?.Attribute("ContentType")?.Value
+            ?? types?.Elements(XName.Get("Default", ContentTypesNamespace))
+                .FirstOrDefault(d => string.Equals((string?)d.Attribute("Extension"), Path.GetExtension(part).TrimStart('.'), StringComparison.OrdinalIgnoreCase))
+                ?.Attribute("ContentType")?.Value;
+        return contentType switch
+        {
+            null => null,
+            _ when contentType.Contains("wordprocessingml", StringComparison.Ordinal) || contentType.Contains("ms-word", StringComparison.Ordinal) => SourceFormat.Docx,
+            _ when contentType.Contains("spreadsheetml", StringComparison.Ordinal) || contentType.Contains("ms-excel", StringComparison.Ordinal) => SourceFormat.Xlsx,
+            _ when contentType.Contains("presentationml", StringComparison.Ordinal) || contentType.Contains("ms-powerpoint", StringComparison.Ordinal) => SourceFormat.Pptx,
+            _ => null,
+        };
+    }
+
+    private static XDocument? Load(ZipArchive zip, string name)
+    {
+        var entry = zip.GetEntry(name);
+        if (entry is null)
+        {
+            return null;
+        }
+        using var stream = entry.Open();
+        return XDocument.Load(stream);
+    }
+
+    private static bool IsMalformed(Exception e) =>
+        e is InvalidDataException or XmlException or OpenXmlPackageException or FileFormatException;
+
+    private static RefusalException Malformed(string path, Exception e) =>
+        new($"{path}: a malformed package: {e.Message}");
+
+    private static RefusalException Unsupported(string path) =>
+        new($"{path}: not a docx, xlsx, or pptx package");
+}

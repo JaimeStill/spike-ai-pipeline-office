@@ -1,0 +1,80 @@
+{
+  "fixture": "tables",
+  "format": "docx",
+  "elements": [
+    {
+      "kind": "heading",
+      "level": 1,
+      "text": "Tables"
+    },
+    {
+      "kind": "table",
+      "rows": [
+        [
+          {
+            "text": "Region",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Q3",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Q4",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "North\n(provisional)",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Pending audit",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "West",
+            "colSpan": 1,
+            "rowSpan": 2
+          },
+          {
+            "text": "12",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "14",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "9",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "11 | revised",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ]
+      ]
+    },
+    {
+      "kind": "paragraph",
+      "text": "Text after the table."
+    }
+  ],
+  "absent": [],
+  "once": []
+}
