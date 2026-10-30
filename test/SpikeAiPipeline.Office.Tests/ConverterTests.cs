@@ -11,17 +11,17 @@ namespace SpikeAiPipeline.Office.Tests;
 // ground truth, then the JSON and the Markdown exactly.
 public sealed class ConverterTests
 {
-    public static TheoryData<string, string> Cases => Fixtures.DocxVariants;
+    public static TheoryData<string, string> Cases => Fixtures.Variants;
 
     [Theory]
     [MemberData(nameof(Cases))]
     public void ModelMatchesTheGroundTruth(string name, string variant)
     {
-        var document = OfficeReader.Read(Fixtures.DocxPath(name, variant));
+        var document = OfficeReader.Read(Fixtures.DocumentPath(name, variant));
         var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name, variant)))!;
 
-        Assert.Equal(SourceFormat.Docx, document.Format);
-        Assert.Equal("docx", (string?)truth["format"]);
+        Assert.Equal(Fixtures.Format(name), document.Format.ToString().ToLowerInvariant());
+        Assert.Equal(Fixtures.Format(name), (string?)truth["format"]);
         var expected = truth["elements"]!.AsArray();
         var actual = GroundTruth.Elements(document);
         for (var i = 0; i < Math.Min(expected.Count, actual.Count); i++)
@@ -39,7 +39,7 @@ public sealed class ConverterTests
     [MemberData(nameof(Cases))]
     public void OtherPartsMatchTheGroundTruth(string name, string variant)
     {
-        var document = OfficeReader.Read(Fixtures.DocxPath(name, variant));
+        var document = OfficeReader.Read(Fixtures.DocumentPath(name, variant));
         var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name, variant)))!;
 
         foreach (var part in GroundTruth.Parts)
@@ -58,7 +58,7 @@ public sealed class ConverterTests
     [MemberData(nameof(Cases))]
     public void MediaFilesAreNamedByTheirContent(string name, string variant)
     {
-        var conversion = OfficeReader.Convert(Fixtures.DocxPath(name, variant));
+        var conversion = OfficeReader.Convert(Fixtures.DocumentPath(name, variant));
         var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name, variant)))!;
 
         foreach (var (file, bytes) in conversion.Media)
@@ -104,7 +104,7 @@ public sealed class ConverterTests
     [MemberData(nameof(Cases))]
     public void DeletedTextIsGoneAndMovedTextAppearsOnce(string name, string variant)
     {
-        var document = OfficeReader.Read(Fixtures.DocxPath(name, variant));
+        var document = OfficeReader.Read(Fixtures.DocumentPath(name, variant));
         var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name, variant)))!;
         string[] outputs = [DocumentJson.Serialize(document), MarkdownRenderer.Render(document)];
 
@@ -124,10 +124,10 @@ public sealed class ConverterTests
     [Theory]
     [MemberData(nameof(Cases))]
     public void JsonIsExact(string name, string variant) =>
-        Assert.Equal(Fixtures.Expected(name, variant, "json"), DocumentJson.Serialize(OfficeReader.Read(Fixtures.DocxPath(name, variant))));
+        Assert.Equal(Fixtures.Expected(name, variant, "json"), DocumentJson.Serialize(OfficeReader.Read(Fixtures.DocumentPath(name, variant))));
 
     [Theory]
     [MemberData(nameof(Cases))]
     public void MarkdownIsExact(string name, string variant) =>
-        Assert.Equal(Fixtures.Expected(name, variant, "md"), MarkdownRenderer.Render(OfficeReader.Read(Fixtures.DocxPath(name, variant))));
+        Assert.Equal(Fixtures.Expected(name, variant, "md"), MarkdownRenderer.Render(OfficeReader.Read(Fixtures.DocumentPath(name, variant))));
 }

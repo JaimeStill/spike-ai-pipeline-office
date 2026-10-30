@@ -47,12 +47,17 @@ public static class OfficeReader
 
     private static Conversion ConvertPackage(string path, SourceFormat format)
     {
-        if (format != SourceFormat.Docx)
+        if (format == SourceFormat.Pptx)
         {
-            throw new RefusalException($"{path}: {format.ToString().ToLowerInvariant()} is not yet supported");
+            throw new RefusalException($"{path}: pptx is not yet supported");
         }
         try
         {
+            if (format == SourceFormat.Xlsx)
+            {
+                using var workbook = SpreadsheetDocument.Open(path, false);
+                return XlsxReader.Read(workbook);
+            }
             using var package = WordprocessingDocument.Open(path, false);
             return DocxReader.Read(package);
         }

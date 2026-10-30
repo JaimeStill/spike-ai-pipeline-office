@@ -223,6 +223,127 @@ public sealed class MarkdownRendererTests
             markdown);
     }
 
+    [Fact]
+    public void ASheetIsItsNameAsAHeadingThenItsBlocksAndAHiddenSheetIsMarked()
+    {
+        var markdown = Render(
+            new Sheet("Q1 | *draft*", false, [new Media { Name = "abc.png", Alt = "Logo", Sheet = 0 }]),
+            new Sheet("Archive", true, []),
+            new Sheet("", false, [new Chart("bar", "Totals", [])]));
+
+        Assert.Equal(
+            """
+            # Q1 \| \*draft\*
+
+            ![Logo](abc.png)
+
+            # Archive (hidden)
+
+            # Sheet
+
+            Totals
+
+            """,
+            markdown);
+    }
+
+    // The header row is the column letters the cells use, in the sheet's order (Z before AA), the
+    // first column each row's number; columns and rows with no cells are left out.
+    [Fact]
+    public void ASheetTableIsItsUsedColumnsAndRowsByLetterAndNumber()
+    {
+        var markdown = Render(new Sheet("S", false,
+        [
+            new Table(
+            [
+                new TableRow([Cell("AA2", CellValue.OfText("wide")), Cell("B2", CellValue.OfNumber(1))]) { Row = 2 },
+                new TableRow([Cell("Z7", CellValue.OfText("a | b")), Cell("B7", CellValue.OfText("# x\nnext"))]) { Row = 7 },
+            ]),
+        ]));
+
+        Assert.Equal(
+            """
+            # S
+
+            |  | B | Z | AA |
+            | --- | --- | --- | --- |
+            | 2 | 1 |  | wide |
+            | 7 | \# x<br>next | a \| b |  |
+
+            """,
+            markdown);
+    }
+
+    // Numbers in their shortest round-trip form, booleans as TRUE and FALSE, errors and dates as
+    // they are; a formula shows its cached value, or with none its text as code, and a shared
+    // formula's cell with none names its anchor.
+    [Fact]
+    public void ASheetCellShowsItsValueOrElseItsFormula()
+    {
+        var markdown = Render(new Sheet("S", false,
+        [
+            new Table(
+            [
+                new TableRow(
+                [
+                    Cell("A1", CellValue.OfNumber(0.1 + 0.2)),
+                    Cell("B1", CellValue.OfNumber(1e21)),
+                    Cell("C1", CellValue.OfBoolean(true)),
+                    Cell("D1", CellValue.OfBoolean(false)),
+                    Cell("E1", CellValue.OfError("#DIV/0!")),
+                    Cell("F1", CellValue.OfDate("2026-01-15T10:30:00")),
+                ]) { Row = 1 },
+                new TableRow(
+                [
+                    Cell("A2", CellValue.OfNumber(6)) with { Formula = "SUM(A1:A3)" },
+                    Cell("B2", null) with { Formula = "SUM(A1:A3)" },
+                    Cell("C2", null) with { Formula = "IF(A1>0,\"a|b\",`x`)" },
+                    Cell("D2", null) with { SharedFrom = "B2" },
+                ]) { Row = 2 },
+            ]),
+        ]));
+
+        Assert.Equal(
+            """
+            # S
+
+            |  | A | B | C | D | E | F |
+            | --- | --- | --- | --- | --- | --- | --- |
+            | 1 | 0.30000000000000004 | 1E+21 | TRUE | FALSE | \#DIV/0! | 2026-01-15T10:30:00 |
+            | 2 | 6 | `=SUM(A1:A3)` | ``=IF(A1>0,"a\|b",`x`)`` | (formula shared from B2) |  |  |
+
+            """,
+            markdown);
+    }
+
+    // A merged cell's value is in its anchor's position; the positions it covers are empty.
+    [Fact]
+    public void AMergedSheetCellIsInItsAnchorsPosition()
+    {
+        var markdown = Render(new Sheet("S", false,
+        [
+            new Table(
+            [
+                new TableRow([Cell("A1", CellValue.OfText("Title")) with { ColSpan = 2, RowSpan = 2 }, Cell("C1", CellValue.OfNumber(3))]) { Row = 1 },
+                new TableRow([Cell("C2", CellValue.OfNumber(4))]) { Row = 2 },
+            ]),
+        ]));
+
+        Assert.Equal(
+            """
+            # S
+
+            |  | A | C |
+            | --- | --- | --- |
+            | 1 | Title | 3 |
+            | 2 |  | 4 |
+
+            """,
+            markdown);
+    }
+
+    private static TableCell Cell(string reference, CellValue? value) => new(null) { Ref = reference, Value = value };
+
     private static Paragraph Para(string text) => new([new TextRun(text)]);
 
     private static ListBlock List(bool ordered, string text) => new(ordered, [new ListItem([Para(text)])]);

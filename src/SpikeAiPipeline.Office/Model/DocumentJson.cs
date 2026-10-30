@@ -30,3 +30,27 @@ public static class DocumentJson
     NewLine = "\n")]
 [JsonSerializable(typeof(Document))]
 internal sealed partial class DocumentJsonContext : JsonSerializerContext;
+
+/// <summary>A cell value as its JSON primitive. Office only writes the model, so reading is not
+/// supported.</summary>
+internal sealed class CellValueJsonConverter : JsonConverter<CellValue>
+{
+    public override CellValue Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
+        throw new NotSupportedException("office writes the model and never reads it");
+
+    public override void Write(Utf8JsonWriter writer, CellValue value, JsonSerializerOptions options)
+    {
+        switch (value.Type)
+        {
+            case CellValueType.Number:
+                writer.WriteNumberValue(value.Number);
+                break;
+            case CellValueType.Boolean:
+                writer.WriteBooleanValue(value.Boolean);
+                break;
+            default:
+                writer.WriteStringValue(value.Text);
+                break;
+        }
+    }
+}

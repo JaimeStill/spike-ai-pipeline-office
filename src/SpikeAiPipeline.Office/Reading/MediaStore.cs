@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using DocumentFormat.OpenXml.Packaging;
+using SpikeAiPipeline.Office.Model;
 
 namespace SpikeAiPipeline.Office.Reading;
 
@@ -31,5 +32,29 @@ internal sealed class MediaStore
         var name = Convert.ToHexStringLower(SHA256.HashData(bytes)) + Path.GetExtension(part.Uri.OriginalString);
         files.TryAdd(name, bytes);
         return parts[part.Uri] = (name, part.ContentType);
+    }
+
+    /// <summary>The media block of a picture the given part relates to by id, its bytes added,
+    /// with no location, which the caller gives: an embedded picture's file, or a linked
+    /// picture's target, never fetched; null when the relationship is neither.</summary>
+    public Media? Picture(OpenXmlPart part, string relationshipId, string? alt, string? title)
+    {
+        if (part.TryGetPartById(relationshipId, out var target))
+        {
+            var (name, contentType) = Add(target);
+            return new Media
+            {
+                Name = name,
+                ContentType = contentType,
+                Alt = alt,
+                Title = title,
+                Source = target.Uri.OriginalString,
+            };
+        }
+        if (part.ExternalRelationships.FirstOrDefault(r => r.Id == relationshipId) is { } link)
+        {
+            return new Media { Target = link.Uri.OriginalString, Alt = alt, Title = title };
+        }
+        return null;
     }
 }

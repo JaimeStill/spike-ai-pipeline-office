@@ -13,35 +13,49 @@ internal static class Fixtures
         "sections", "headers-even-off", "notes", "comments", "comments-plain", "media", "charts",
     ];
 
-    /// <summary>The writers of each generated fixture: python-docx, and LibreOffice's re-save.</summary>
-    public static readonly string[] Variants = ["python-docx", "libreoffice"];
+    /// <summary>The generated xlsx fixtures, by name; no name is a docx fixture's too.</summary>
+    public static readonly string[] Xlsx = ["cells", "formulas", "sheets", "drawings", "dates-1904"];
 
-    /// <summary>Every generated docx fixture in each of its variants.</summary>
-    public static TheoryData<string, string> DocxVariants
+    /// <summary>The writers of each generated docx fixture: python-docx, and LibreOffice's re-save.</summary>
+    public static readonly string[] DocxWriters = ["python-docx", "libreoffice"];
+
+    /// <summary>The writers of each generated xlsx fixture: openpyxl, and LibreOffice's re-save.</summary>
+    public static readonly string[] XlsxWriters = ["openpyxl", "libreoffice"];
+
+    /// <summary>Every generated fixture, docx then xlsx, in each of its variants.</summary>
+    public static TheoryData<string, string> Variants
     {
         get
         {
             var data = new TheoryData<string, string>();
-            foreach (var name in Docx)
+            foreach (var (names, writers) in new[] { (Docx, DocxWriters), (Xlsx, XlsxWriters) })
             {
-                foreach (var variant in Variants)
+                foreach (var name in names)
                 {
-                    data.Add(name, variant);
+                    foreach (var variant in writers)
+                    {
+                        data.Add(name, variant);
+                    }
                 }
             }
             return data;
         }
     }
 
-    public static string DocxPath(string name, string variant) =>
-        Path.Combine(Root, "fixtures", "generated", "docx", $"{name}.{variant}.docx");
+    /// <summary>A generated fixture's format, its file extension.</summary>
+    public static string Format(string name) => Xlsx.Contains(name) ? "xlsx" : "docx";
+
+    /// <summary>A generated fixture variant's file.</summary>
+    public static string DocumentPath(string name, string variant) =>
+        Path.Combine(Root, "fixtures", "generated", Format(name), $"{name}.{variant}.{Format(name)}");
 
     /// <summary>A fixture variant's ground truth: the variant's own where the generator wrote one,
     /// because LibreOffice's re-save changed what the document holds, or else the fixture's.</summary>
     public static string TruthPath(string name, string variant)
     {
-        var own = Path.Combine(Root, "fixtures", "generated", "docx", $"{name}.{variant}.truth.json");
-        return File.Exists(own) ? own : Path.Combine(Root, "fixtures", "generated", "docx", $"{name}.truth.json");
+        var directory = Path.Combine(Root, "fixtures", "generated", Format(name));
+        var own = Path.Combine(directory, $"{name}.{variant}.truth.json");
+        return File.Exists(own) ? own : Path.Combine(directory, $"{name}.truth.json");
     }
 
     /// <summary>Office's exact output for a fixture variant: the variant's own file where the

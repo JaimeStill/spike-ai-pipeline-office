@@ -30,7 +30,7 @@ public sealed class CliTests : IDisposable
     [InlineData(null)]
     public void JsonIsTheDefaultAndGoesToStdoutAlone(string? format)
     {
-        var path = Fixtures.DocxPath("tracked-changes", "libreoffice");
+        var path = Fixtures.DocumentPath("tracked-changes", "libreoffice");
         var result = format is null ? Run(path) : Run(path, "--format", format);
 
         Assert.Equal(Cli.Converted, result.ExitCode);
@@ -41,7 +41,7 @@ public sealed class CliTests : IDisposable
     [Fact]
     public void MarkdownGoesToStdoutAlone()
     {
-        var result = Run(Fixtures.DocxPath("tables", "libreoffice"), "--format", "markdown");
+        var result = Run(Fixtures.DocumentPath("tables", "libreoffice"), "--format", "markdown");
 
         Assert.Equal(Cli.Converted, result.ExitCode);
         Assert.Equal(Fixtures.Expected("tables", "libreoffice", "md"), result.Stdout);
@@ -58,7 +58,7 @@ public sealed class CliTests : IDisposable
     public void MediaAreWrittenOnceEachNamedByTheirContent(string format)
     {
         var media = Path.Combine(scratch.FullName, "out", "media");
-        var path = Fixtures.DocxPath("media", "python-docx");
+        var path = Fixtures.DocumentPath("media", "python-docx");
 
         var result = Run(path, "--format", format, "--media", media);
 
@@ -86,17 +86,61 @@ public sealed class CliTests : IDisposable
         }
     }
 
+    [Theory]
+    [InlineData("json")]
+    [InlineData("markdown")]
+    public void AnXlsxConvertsToStdoutAlone(string format)
+    {
+        var result = Run(Fixtures.DocumentPath("formulas", "libreoffice"), "--format", format);
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Equal(Fixtures.Expected("formulas", "libreoffice", format == "json" ? "json" : "md"), result.Stdout);
+        Assert.Empty(result.Stderr);
+    }
+
+    // The drawings fixture's openpyxl variant stores the red square twice, as two parts of one
+    // sheet's drawing, and the blue square on a second sheet: two files.
+    [Fact]
+    public void SheetPicturesAreWrittenOnceEachNamedByTheirContent()
+    {
+        var media = Path.Combine(scratch.FullName, "media");
+        var path = Fixtures.DocumentPath("drawings", "openpyxl");
+
+        var result = Run(path, "--format", "markdown", "--media", media);
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Equal(Fixtures.Expected("drawings", "openpyxl", "md"), result.Stdout);
+        var files = Directory.GetFiles(media).Select(Path.GetFileName).Order(StringComparer.Ordinal).ToList();
+        Assert.Equal(
+            [
+                "0fcca33bb0baf1a0669bd2fcdcaeb34e33d27196f7ffb5294b27aea8a9e46446.png",
+                "10a86bd779a80e60e5d3314ec1edeab643cb454a4c7dfee671132090878d7aea.png",
+            ],
+            files);
+        using var package = ZipFile.OpenRead(path);
+        var stored = package.Entries.Where(e => e.FullName.StartsWith("xl/media/", StringComparison.Ordinal)).ToList();
+        Assert.Equal(3, stored.Count);
+        foreach (var entry in stored)
+        {
+            using var stream = entry.Open();
+            using var bytes = new MemoryStream();
+            stream.CopyTo(bytes);
+            var name = Convert.ToHexStringLower(SHA256.HashData(bytes.ToArray())) + Path.GetExtension(entry.Name);
+            Assert.Equal(bytes.ToArray(), File.ReadAllBytes(Path.Combine(media, name)));
+        }
+    }
+
     [Fact]
     public void NothingIsWrittenWithoutTheMediaOption()
     {
-        var before = Directory.GetFileSystemEntries(Path.GetDirectoryName(Fixtures.DocxPath("media", "python-docx"))!);
+        var before = Directory.GetFileSystemEntries(Path.GetDirectoryName(Fixtures.DocumentPath("media", "python-docx"))!);
 
-        var result = RunIn(scratch.FullName, Fixtures.DocxPath("media", "python-docx"));
+        var result = RunIn(scratch.FullName, Fixtures.DocumentPath("media", "python-docx"));
 
         Assert.Equal(Cli.Converted, result.ExitCode);
         Assert.Equal(Fixtures.Expected("media", "python-docx", "json"), result.Stdout);
         Assert.Empty(Directory.GetFileSystemEntries(scratch.FullName));
-        Assert.Equal(before, Directory.GetFileSystemEntries(Path.GetDirectoryName(Fixtures.DocxPath("media", "python-docx"))!));
+        Assert.Equal(before, Directory.GetFileSystemEntries(Path.GetDirectoryName(Fixtures.DocumentPath("media", "python-docx"))!));
     }
 
     // The media directory is created on every conversion it is given for, so it existing says the
@@ -106,7 +150,7 @@ public sealed class CliTests : IDisposable
     {
         var media = Path.Combine(scratch.FullName, "media");
 
-        var result = Run(Fixtures.DocxPath("headings", "python-docx"), "--media", media);
+        var result = Run(Fixtures.DocumentPath("headings", "python-docx"), "--media", media);
 
         Assert.Equal(Cli.Converted, result.ExitCode);
         Assert.Equal(Fixtures.Expected("headings", "python-docx", "json"), result.Stdout);
@@ -118,7 +162,7 @@ public sealed class CliTests : IDisposable
     {
         var media = Write("media", [1, 2, 3]); // A file where the directory would be.
 
-        var result = Run(Fixtures.DocxPath("media", "python-docx"), "--media", media);
+        var result = Run(Fixtures.DocumentPath("media", "python-docx"), "--media", media);
 
         Assert.Equal(Cli.MediaNotWritten, result.ExitCode);
         Assert.Empty(result.Stdout);
@@ -163,7 +207,7 @@ public sealed class CliTests : IDisposable
     [Fact]
     public void ATruncatedPackageIsRefusedAsMalformed()
     {
-        var bytes = File.ReadAllBytes(Fixtures.DocxPath("headings", "python-docx"));
+        var bytes = File.ReadAllBytes(Fixtures.DocumentPath("headings", "python-docx"));
         AssertRefused(Write("truncated.docx", bytes[..(bytes.Length / 2)]), "a malformed package");
     }
 
@@ -180,7 +224,7 @@ public sealed class CliTests : IDisposable
     public void APackageMalformedAfterItsMediaIsRefusedAndWritesNoMedia()
     {
         var path = Path.Combine(scratch.FullName, "late.docx");
-        File.Copy(Fixtures.DocxPath("sections", "python-docx"), path);
+        File.Copy(Fixtures.DocumentPath("sections", "python-docx"), path);
         using (var zip = ZipFile.Open(path, ZipArchiveMode.Update))
         {
             zip.GetEntry("word/header5.xml")!.Delete();
@@ -191,11 +235,34 @@ public sealed class CliTests : IDisposable
         AssertRefused(path, "a malformed package");
     }
 
-    [Theory]
-    [InlineData("xlsx", "xl/workbook.xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml")]
-    [InlineData("pptx", "ppt/presentation.xml", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml")]
-    public void XlsxAndPptxAreRefusedAsNotYetSupported(string format, string part, string contentType) =>
-        AssertRefused(Package($"book.{format}", part, contentType, "<root/>"), $"{format} is not yet supported");
+    [Fact]
+    public void AnXlsxWithBrokenXmlIsRefusedAsMalformed() =>
+        AssertRefused(
+            Package("broken.xlsx", "xl/workbook.xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml", "<workbook"),
+            "a malformed package");
+
+    // The drawings fixture's first sheet holds both red squares; its second sheet's part, read
+    // after them, is broken here, and still no media are written.
+    [Fact]
+    public void AnXlsxMalformedAfterItsMediaIsRefusedAndWritesNoMedia()
+    {
+        var path = Path.Combine(scratch.FullName, "late.xlsx");
+        File.Copy(Fixtures.DocumentPath("drawings", "openpyxl"), path);
+        using (var zip = ZipFile.Open(path, ZipArchiveMode.Update))
+        {
+            zip.GetEntry("xl/worksheets/sheet2.xml")!.Delete();
+            using var writer = new StreamWriter(zip.CreateEntry("xl/worksheets/sheet2.xml").Open());
+            writer.Write("<worksheet");
+        }
+
+        AssertRefused(path, "a malformed package");
+    }
+
+    [Fact]
+    public void PptxIsRefusedAsNotYetSupported() =>
+        AssertRefused(
+            Package("deck.pptx", "ppt/presentation.xml", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml", "<root/>"),
+            "pptx is not yet supported");
 
     private void AssertRefused(string path, string reason)
     {

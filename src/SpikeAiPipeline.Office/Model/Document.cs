@@ -6,12 +6,13 @@ namespace SpikeAiPipeline.Office.Model;
 // A document is an ordered list of blocks; a block's "type" names its kind in the JSON. Every
 // block but a media block is the document's text, complete without inference.
 //
-// The kinds this schema version holds are heading, paragraph, list, table, chart, and media; a
-// docx document also holds its sections' headers and footers, its footnotes and endnotes, and
-// its comments, referred to from the text by the footnote, endnote, and comment inlines. The
-// model grows by adding kinds and optional properties, never by reshaping these: sheet and slide
-// are Block kinds to come, holding their own blocks (a slide's notes beside them), and a media
-// block's sheet or slide joins its section.
+// The kinds this schema version holds are heading, paragraph, list, table, chart, media, and
+// sheet; a docx document also holds its sections' headers and footers, its footnotes and
+// endnotes, and its comments, referred to from the text by the footnote, endnote, and comment
+// inlines. An xlsx document's blocks are its sheets, each holding a table of its cells, whose
+// values are typed, then its charts and pictures. The model grows by adding kinds and optional
+// properties, never by reshaping these: slide is a Block kind to come, holding its own blocks
+// (its notes beside them), and a media block's slide joins its section and sheet.
 
 /// <summary>The formats office reads; the JSON names them by their file extension.</summary>
 [JsonConverter(typeof(JsonStringEnumConverter<SourceFormat>))]
@@ -99,6 +100,7 @@ public sealed record CommentReply(int Id, string? Author, IReadOnlyList<Block> B
 [JsonDerivedType(typeof(Table), "table")]
 [JsonDerivedType(typeof(Chart), "chart")]
 [JsonDerivedType(typeof(Media), "media")]
+[JsonDerivedType(typeof(Sheet), "sheet")]
 public abstract record Block;
 
 /// <summary>A heading, level 1 the outermost.</summary>
@@ -118,12 +120,44 @@ public sealed record Table(IReadOnlyList<TableRow> Rows) : Block;
 
 /// <summary>A table row. A grid position covered by a merged cell from the left or above has
 /// no cell of its own, so a row can hold fewer cells than the table has columns.</summary>
-public sealed record TableRow(IReadOnlyList<TableCell> Cells);
-
-/// <summary>A table cell and the blocks it holds. A merged cell spans more than one column or
-/// row; a span of one is left out of the JSON.</summary>
-public sealed record TableCell(IReadOnlyList<Block> Blocks)
+public sealed record TableRow(IReadOnlyList<TableCell> Cells)
 {
+    /// <summary>A sheet row's number, from 1; null in a docx table. A sheet's table holds only
+    /// the rows that have cells, so its rows are numbered.</summary>
+    [JsonPropertyOrder(-1)]
+    public int? Row { get; init; }
+}
+
+/// <summary>A table cell and the blocks it holds, or a sheet's cell and its value. A merged cell
+/// spans more than one column or row; a span of one is left out of the JSON.</summary>
+/// <remarks>A sheet's table holds only the cells that have a value or a formula, each with its
+/// reference, so it is as sparse as the sheet and keeps every position; a sheet cell has no
+/// blocks.</remarks>
+public sealed record TableCell(IReadOnlyList<Block>? Blocks)
+{
+    /// <summary>A sheet cell's reference, such as B2; null in a docx table.</summary>
+    [JsonPropertyOrder(-1)]
+    public string? Ref { get; init; }
+
+    /// <summary>The type of a sheet cell's value, or null when it has none.</summary>
+    [JsonPropertyOrder(-1)]
+    public CellValueType? ValueType => Value?.Type;
+
+    /// <summary>A sheet cell's value: a constant's, or a formula's cached result; null for a
+    /// formula the file caches no result for. Nothing is ever evaluated.</summary>
+    [JsonPropertyOrder(-1)]
+    public CellValue? Value { get; init; }
+
+    /// <summary>A sheet cell's formula as stored, without the leading <c>=</c>: its own, or as
+    /// the anchor of a shared or array formula.</summary>
+    [JsonPropertyOrder(-1)]
+    public string? Formula { get; init; }
+
+    /// <summary>For a cell of a shared formula other than its anchor, the anchor's reference,
+    /// which holds the formula's text; the cell's own text is never derived from it.</summary>
+    [JsonPropertyOrder(-1)]
+    public string? SharedFrom { get; init; }
+
     /// <summary>The columns the cell spans, or null for one.</summary>
     public int? ColSpan { get; init; }
 
@@ -168,6 +202,75 @@ public sealed record Media : Block
     /// header, or footer holds it, or for a note the section of its first reference; null in a
     /// comment.</summary>
     public int? Section { get; init; }
+
+    /// <summary>The index of the xlsx sheet the picture is on, in the document's blocks.</summary>
+    public int? Sheet { get; init; }
+}
+
+/// <summary>An xlsx sheet, in workbook order: its name, whether it is hidden (hidden or very
+/// hidden, both read the same), and its blocks: a table of its cells when it has any, then its
+/// charts and pictures in the order its drawing anchors them.</summary>
+public sealed record Sheet(string Name, bool Hidden, IReadOnlyList<Block> Blocks) : Block;
+
+/// <summary>The type of a sheet cell's value.</summary>
+[JsonConverter(typeof(JsonStringEnumConverter<CellValueType>))]
+public enum CellValueType
+{
+    /// <summary>A number, as stored, in no number format.</summary>
+    [JsonStringEnumMemberName("number")]
+    Number,
+
+    /// <summary>Text: a shared or inline string, rich text flattened, or a formula's string.</summary>
+    [JsonStringEnumMemberName("text")]
+    Text,
+
+    /// <summary>TRUE or FALSE.</summary>
+    [JsonStringEnumMemberName("boolean")]
+    Boolean,
+
+    /// <summary>An error, by its code, such as #DIV/0!.</summary>
+    [JsonStringEnumMemberName("error")]
+    Error,
+
+    /// <summary>A number in a date or time format, or a cell stored as a date, in ISO 8601.</summary>
+    [JsonStringEnumMemberName("date")]
+    Date,
+}
+
+/// <summary>A sheet cell's value. The JSON writes a number as a JSON number, a boolean as true or
+/// false, and the rest as strings, the cell's value type telling them apart.</summary>
+[JsonConverter(typeof(CellValueJsonConverter))]
+public sealed record CellValue
+{
+    private CellValue(CellValueType type, double number, bool boolean, string? text)
+    {
+        Type = type;
+        Number = number;
+        Boolean = boolean;
+        Text = text;
+    }
+
+    /// <summary>The value's type.</summary>
+    public CellValueType Type { get; }
+
+    /// <summary>A number's value.</summary>
+    public double Number { get; }
+
+    /// <summary>A boolean's value.</summary>
+    public bool Boolean { get; }
+
+    /// <summary>The text of text, an error's code, or a date's ISO 8601 form.</summary>
+    public string? Text { get; }
+
+    public static CellValue OfNumber(double number) => new(CellValueType.Number, number, false, null);
+
+    public static CellValue OfText(string text) => new(CellValueType.Text, 0, false, text);
+
+    public static CellValue OfBoolean(bool boolean) => new(CellValueType.Boolean, 0, boolean, null);
+
+    public static CellValue OfError(string code) => new(CellValueType.Error, 0, false, code);
+
+    public static CellValue OfDate(string iso) => new(CellValueType.Date, 0, false, iso);
 }
 
 /// <summary>A piece of a block's text: text, or a reference to a note or comment at its position

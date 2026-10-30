@@ -182,6 +182,7 @@ public sealed class MarkdownRenderer
                 Table table => RenderTable(table),
                 Chart chart => RenderChart(chart),
                 Media media => RenderMedia(media),
+                Sheet sheet => RenderSheet(sheet),
                 _ => "",
             };
             if (text.Length > 0)
@@ -245,13 +246,27 @@ public sealed class MarkdownRenderer
         return string.Join("\n", lines);
     }
 
+    // A sheet under a heading of its name, marked when it is hidden, then its blocks: its table,
+    // charts, and pictures.
+    private string RenderSheet(Sheet sheet)
+    {
+        var name = string.Join(" ", Lines(sheet.Name));
+        var heading = "# " + (name.Length > 0 ? name : "Sheet") + (sheet.Hidden ? " (hidden)" : "");
+        return string.Join("\n\n", [heading, .. RenderBlocks(sheet.Blocks).Select(c => c.Text)]);
+    }
+
     // A GFM table, its first row the header. GFM has no merged cells, so a merged cell's text sits
-    // in its top-left grid position and the positions it covers are empty.
+    // in its top-left grid position and the positions it covers are empty. A sheet's table has a
+    // grid of its own.
     private string RenderTable(Table table)
     {
         if (table.Rows.Count == 0)
         {
             return "";
+        }
+        if (table.Rows.Any(row => row.Row is not null))
+        {
+            return RenderSheetTable(table);
         }
         var grid = new List<string?[]>();
         for (var r = 0; r < table.Rows.Count; r++)
@@ -269,7 +284,7 @@ public sealed class MarkdownRenderer
                 {
                     for (var dc = 0; dc < colSpan; dc++)
                     {
-                        Set(grid, r + dr, column + dc, dr == 0 && dc == 0 ? CellText(cell.Blocks) : "");
+                        Set(grid, r + dr, column + dc, dr == 0 && dc == 0 ? CellText(cell.Blocks ?? []) : "");
                     }
                 }
                 column += colSpan;
@@ -280,6 +295,75 @@ public sealed class MarkdownRenderer
             grid.Add([]);
         }
         return GridTable(grid);
+    }
+
+    // A sheet's table as the sheet shows it: a header row of the column letters the cells use, in
+    // order, and each row that has cells under its number, the columns and rows between left
+    // out, so the grid stays as small as the sheet's used cells. A merged cell's value sits in its
+    // anchor's position. A cell shows its value, or else its formula, or for a shared formula's
+    // cell its anchor.
+    private static string RenderSheetTable(Table table)
+    {
+        var columns = table.Rows.SelectMany(row => row.Cells).Select(cell => cell.Ref).OfType<string>()
+            .Select(ColumnOf).Distinct().OrderBy(c => c.Length).ThenBy(c => c, StringComparer.Ordinal).ToList();
+        if (columns.Count == 0)
+        {
+            return "";
+        }
+        List<string?[]> grid = [["", .. columns]];
+        foreach (var row in table.Rows)
+        {
+            var line = new string?[columns.Count + 1];
+            line[0] = row.Row?.ToString(CultureInfo.InvariantCulture) ?? "";
+            foreach (var cell in row.Cells)
+            {
+                if (cell.Ref is { } reference)
+                {
+                    line[columns.IndexOf(ColumnOf(reference)) + 1] = SheetCellText(cell);
+                }
+            }
+            grid.Add(line);
+        }
+        return GridTable(grid);
+    }
+
+    private static string ColumnOf(string reference) => new([.. reference.TakeWhile(char.IsAsciiLetter)]);
+
+    // A value plainly: a number in its shortest round-trip form, a boolean as TRUE or FALSE, the
+    // rest as their text. A formula with no cached value is shown as a code span, = and its text.
+    private static string SheetCellText(TableCell cell)
+    {
+        if (cell.Value is { } value)
+        {
+            return value.Type switch
+            {
+                CellValueType.Number => value.Number.ToString("R", CultureInfo.InvariantCulture),
+                CellValueType.Boolean => value.Boolean ? "TRUE" : "FALSE",
+                _ => Cell(value.Text),
+            };
+        }
+        if (cell.Formula is { } formula)
+        {
+            return Code("=" + formula);
+        }
+        return cell.SharedFrom is { } anchor ? $"(formula shared from {anchor})" : "";
+    }
+
+    // A code span on one line, its fence longer than any run of backticks inside, and its pipes
+    // escaped, as a GFM table cell requires even in code.
+    private static string Code(string text)
+    {
+        text = text.Replace('\n', ' ').Replace('\r', ' ').Replace("|", "\\|", StringComparison.Ordinal);
+        var longest = 0;
+        var run = 0;
+        foreach (var c in text)
+        {
+            run = c == '`' ? run + 1 : 0;
+            longest = Math.Max(longest, run);
+        }
+        var fence = new string('`', longest + 1);
+        var pad = text.StartsWith('`') || text.EndsWith('`') ? " " : "";
+        return fence + pad + text + pad + fence;
     }
 
     private static string GridTable(List<string?[]> grid)
@@ -390,7 +474,7 @@ public sealed class MarkdownRenderer
                 case Table table:
                     foreach (var cell in table.Rows.SelectMany(row => row.Cells))
                     {
-                        CollectLines(cell.Blocks, lines);
+                        CollectLines(cell.Blocks ?? [], lines);
                     }
                     break;
                 default:

@@ -10,7 +10,10 @@ namespace SpikeAiPipeline.Office.Tests;
 /// its media), pictures, and charts. A paragraph's or list item's references are its marks: each
 /// one's offset in the text, its kind, and its note's or comment's place, from 1, in the
 /// document's list of them, so ids, which writers renumber, never enter the comparison. The
-/// document's sections, notes, and comments are compared in the same shape.</summary>
+/// document's sections, notes, and comments are compared in the same shape. A sheet is its name,
+/// whether it is hidden, and its elements, its table's rows each its number and its cells, each
+/// cell its reference, its value's type and value, its formula or shared formula's anchor, and
+/// its spans when merged.</summary>
 internal static class GroundTruth
 {
     /// <summary>The ground truth's parts beside the body's elements.</summary>
@@ -104,8 +107,20 @@ internal static class GroundTruth
                         AddBlocks(document, rest, elements, listLevel + 1);
                     }
                     break;
+                case Table table when table.Rows.Any(row => row.Row is not null):
+                    elements.Add(new JsonObject { ["kind"] = "table", ["rows"] = SheetRows(table) });
+                    break;
                 case Table table:
                     elements.Add(new JsonObject { ["kind"] = "table", ["rows"] = Rows(document, table) });
+                    break;
+                case Sheet sheet:
+                    elements.Add(new JsonObject
+                    {
+                        ["kind"] = "sheet",
+                        ["name"] = sheet.Name,
+                        ["hidden"] = sheet.Hidden,
+                        ["elements"] = Array(document, sheet.Blocks),
+                    });
                     break;
                 case Media media:
                     elements.Add(Picture(media));
@@ -130,12 +145,12 @@ internal static class GroundTruth
             {
                 var json = new JsonObject
                 {
-                    ["text"] = string.Join("\n", cell.Blocks.OfType<Paragraph>().Select(p => InlineText.Of(p.Inlines))),
+                    ["text"] = string.Join("\n", (cell.Blocks ?? []).OfType<Paragraph>().Select(p => InlineText.Of(p.Inlines))),
                     ["colSpan"] = cell.ColSpan ?? 1,
                     ["rowSpan"] = cell.RowSpan ?? 1,
                 };
                 var media = new List<JsonObject>();
-                AddBlocks(document, [.. cell.Blocks.Where(b => b is Media or Chart)], media);
+                AddBlocks(document, [.. (cell.Blocks ?? []).Where(b => b is Media or Chart)], media);
                 if (media.Count > 0)
                 {
                     json["media"] = new JsonArray([.. media]);
@@ -145,6 +160,43 @@ internal static class GroundTruth
             rows.Add(cells);
         }
         return rows;
+    }
+
+    private static JsonArray SheetRows(Table table) =>
+        new([.. table.Rows.Select(row => new JsonObject
+        {
+            ["row"] = row.Row,
+            ["cells"] = new JsonArray([.. row.Cells.Select(SheetCell)]),
+        })]);
+
+    private static JsonObject SheetCell(TableCell cell)
+    {
+        var json = new JsonObject { ["ref"] = cell.Ref };
+        if (cell.Value is { } value)
+        {
+            json["type"] = value.Type.ToString().ToLowerInvariant();
+            json["value"] = value.Type switch
+            {
+                // Parsed from their shortest text, as the truth's numbers are, so 14 and 14.0 compare equal.
+                CellValueType.Number => JsonNode.Parse(value.Number.ToString("R", CultureInfo.InvariantCulture)),
+                CellValueType.Boolean => value.Boolean,
+                _ => value.Text,
+            };
+        }
+        if (cell.Formula is not null)
+        {
+            json["formula"] = cell.Formula;
+        }
+        if (cell.SharedFrom is not null)
+        {
+            json["sharedFrom"] = cell.SharedFrom;
+        }
+        if (cell.ColSpan is not null || cell.RowSpan is not null)
+        {
+            json["colSpan"] = cell.ColSpan ?? 1;
+            json["rowSpan"] = cell.RowSpan ?? 1;
+        }
+        return json;
     }
 
     private static JsonObject Picture(Media media)
@@ -170,6 +222,10 @@ internal static class GroundTruth
         if (media.Section is not null)
         {
             picture["section"] = media.Section;
+        }
+        if (media.Sheet is not null)
+        {
+            picture["sheet"] = media.Sheet;
         }
         return picture;
     }

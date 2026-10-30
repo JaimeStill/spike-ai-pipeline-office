@@ -5,7 +5,7 @@ The documents office's tests read, committed and never generated in the check.
 ## Generated set
 
 `generate.py` writes each fixture of `generated/` from the definitions in the script itself, then
-re-saves it through LibreOffice headless:
+re-saves it through LibreOffice headless. The docx fixtures are in `generated/docx/`:
 
 - `<name>.python-docx.docx`: written by python-docx, with what python-docx can't write added as
   raw XML or raw package parts: the tracked changes (`w:ins`, `w:del`, `w:moveFrom`, `w:moveTo`,
@@ -36,6 +36,20 @@ re-saves it through LibreOffice headless:
   the document holds; the script writes it from the same definitions, with the change it knows
   LibreOffice makes.
 
+The xlsx fixtures are in `generated/xlsx/`, the same three or four files each:
+
+- `<name>.openpyxl.xlsx`: written by openpyxl, with what openpyxl can't write patched in as raw
+  XML: the shared formula, the cell stored as an ISO date (`t="d"`), and the pictures'
+  alternative text.
+- `<name>.libreoffice.xlsx`: that file re-saved by LibreOffice.
+- `<name>.truth.json` and `<name>.libreoffice.truth.json`: each sheet in workbook order, its name,
+  whether it is hidden, and its elements: `table` with the rows that have cells, each its `row`
+  number and its `cells`, each cell its `ref`, its value's `type` and `value` (a date as ISO
+  8601, from the date the script gave openpyxl), its `formula` or its shared formula's anchor
+  (`sharedFrom`), and its `colSpan` and `rowSpan` when merged; then its charts and pictures, a
+  picture with its `sheet`. The re-save has its own truth wherever its cells differ, which is in
+  every fixture with a formula, a boolean, or an error.
+
 | Fixture | Covers |
 | --- | --- |
 | `headings` | heading levels 1 to 4 from heading styles, a level-2 heading from a paragraph's outline level alone, paragraphs, a line break, and text Markdown would misread |
@@ -49,6 +63,11 @@ re-saves it through LibreOffice headless:
 | `comments-plain` | a comment python-docx writes, with no commentsExtended part: no replies, unresolved |
 | `media` | a picture on its own line, one between text, the first picture's bytes again through the same part and through a part of its own, an EMF, a linked picture, a deleted picture, one in a table cell, one in a second section |
 | `charts` | a clustered bar chart of two series with a missing value, an untitled pie chart, a line chart |
+| `cells` (xlsx) | text, rich text, numbers, booleans, errors; dates, datetimes, and times in default, built-in (14, 22, 20), and custom formats, among them quoted text and AM/PM; numbers in formats that aren't dates (`0.00%`, `#,##0`, and letters quoted, bracketed, and escaped); dates either side of the 1900 system's 29 February; a cell stored as an ISO date; a styled cell with no value; a sparse far corner |
+| `formulas` (xlsx) | formulas whose results are a number, text, an error, a boolean, and a date by its format; a shared formula over three cells; an array formula over three |
+| `sheets` (xlsx) | five sheets in an order that isn't their names': a hidden, an empty, and a very hidden one; merged cells across columns, rows, and both |
+| `drawings` (xlsx) | a bar chart over the sheet's cells; the same picture twice on one sheet; a second sheet's picture |
+| `dates-1904` (xlsx) | dates and a datetime on the 1904 date system's first day (serial 0.5), and a plain number |
 
 What LibreOffice's re-save changes, checked by unzipping it:
 
@@ -68,6 +87,28 @@ What LibreOffice's re-save changes, checked by unzipping it:
 - It keeps the charts' cached data, the notes (renumbering them, the separators too), the
   comments' replies and resolved state (in its own commentsExtended), and the linked picture.
 
+And in an xlsx file, where openpyxl's file and LibreOffice's differ:
+
+- openpyxl writes every string inline (`t="inlineStr"`), rich text as inline runs; LibreOffice
+  writes them all as shared strings, rich text as shared runs. So each variant covers one kind.
+- openpyxl writes a formula with an empty cached value (`<v></v>`); LibreOffice computes and
+  caches every formula's value, the array formula's other cells' too, which openpyxl leaves out.
+- LibreOffice writes a constant boolean as the formula `TRUE()` or `FALSE()` and a constant error
+  as a formula of itself (`#N/A`), each with its cached value.
+- LibreOffice expands the shared formula into each cell's own formula: only openpyxl's file has
+  a shared formula, and LibreOffice writes none of its own.
+- LibreOffice writes the ISO-date cell as its serial number in the General format, a number.
+- LibreOffice writes the built-in date formats as custom codes (`m/d/yyyy` for 14), so only
+  openpyxl's file has built-in date ids; it escapes literal characters (`yyyy\-mm\-dd`) and
+  rounds numbers to 15 significant digits, which the times survive to the millisecond.
+- openpyxl writes the chart's references with no cached data, so its chart has a title and one
+  series with no name, categories, or values; LibreOffice caches them.
+- openpyxl stores the twice-shown picture in two parts; LibreOffice keeps one. Either way it is
+  one file.
+- LibreOffice writes a very hidden sheet as hidden; both are `hidden`. It keeps the merges
+  (writing the covered cells as empty styled cells), the 1904 date system, the sheet order, and
+  the pictures' alternative text.
+
 ## Regenerating
 
 From the repository root, with LibreOffice's `soffice` on the path and no LibreOffice window open
@@ -78,10 +119,10 @@ mise run fixtures
 ```
 
 That runs `uv run --script fixtures/generate.py`; the script's inline metadata pins python-docx
-and `generate.py.lock` pins the rest. It rewrites every file of `generated/`, or with fixture
+and openpyxl, and `generate.py.lock` pins the rest. It rewrites every file of `generated/`, or with fixture
 names as arguments (`uv run --script fixtures/generate.py notes media`) only those fixtures'
 files, and the section below, which lists every fixture's files as they are on disk. Both
-writers stamp the time into the package, so a rerun changes a `.docx` file's bytes and checksum
+writers stamp the time into the package, so a rerun changes a package's bytes and checksum
 even when nothing else changed; regenerate only the fixtures a change needs.
 
 <!-- generated: begin -->
@@ -125,4 +166,22 @@ LibreOffice: `LibreOffice 26.8.1.1 680(Build:1)`
 | `generated/docx/charts.python-docx.docx` | `adda58a2b466af5c31018928b3e89517575244296f16df9b201d91b549312118` |
 | `generated/docx/charts.libreoffice.docx` | `c49582d00fc63052e4c2a0bb04a64d8fd45933c39539a82434f9bbc7e24c0f0d` |
 | `generated/docx/charts.truth.json` | `8c3df2d8aa2f02bfde11bdbbbf82a9642662d025119aaf40a45f282048af3ca1` |
+| `generated/xlsx/cells.openpyxl.xlsx` | `09a8905b112b0ddec364654a37db011a91c2aeb01eb91dc69ff1af926b55b767` |
+| `generated/xlsx/cells.libreoffice.xlsx` | `86f57558bc76ae5e344560c1db633bdc408782f5f241b5570a14a93429658f54` |
+| `generated/xlsx/cells.truth.json` | `e640ad62b70fd036e556f32c565fd32d642aa634983faf79318f7a2a751f78aa` |
+| `generated/xlsx/cells.libreoffice.truth.json` | `6ea8932d290b9b1035bce35a929dbd216ef2d7b63f9d3816961ae480c6183a0f` |
+| `generated/xlsx/formulas.openpyxl.xlsx` | `808318c4cbc8e0fdf2c451c665707dd502ba768ff637d638009ce8882cb9a9d9` |
+| `generated/xlsx/formulas.libreoffice.xlsx` | `00e94e40ef94156339a9d2cdbbf271bb2cd48069c93e534baa6e8aa3402dfd28` |
+| `generated/xlsx/formulas.truth.json` | `85ab3414d53cc0614e46d8cd1ac47a9d86acdd7c058a313af90135c51b79a03d` |
+| `generated/xlsx/formulas.libreoffice.truth.json` | `d0527e11129e873dc71a4e0de4262a7586862facc65300ec83ef82df67ae1714` |
+| `generated/xlsx/sheets.openpyxl.xlsx` | `4f9ff886b58cb379dce3ae2543ca0ea22db3138a02ba40a4c53ccc8570c02844` |
+| `generated/xlsx/sheets.libreoffice.xlsx` | `76aaac745885c3f8273d7b7a42667095138bb0177539473938cd098f42f49338` |
+| `generated/xlsx/sheets.truth.json` | `8d16ccc52fcfb17001ce016205d76358f9fe6d28e17dadbc7382d35599b1d7c3` |
+| `generated/xlsx/drawings.openpyxl.xlsx` | `cc1d815da48fe887b677eceba421c63b31d6911b9b50f87e526e3f4ef7045100` |
+| `generated/xlsx/drawings.libreoffice.xlsx` | `9c48b55053519fecff0d4fe116a0c5da62f92fb5760bf5b0ac642229a4d4e923` |
+| `generated/xlsx/drawings.truth.json` | `15d4349cd6df7254bb6fcc8c393661f510ff0dccd337ea70870b809b10ede855` |
+| `generated/xlsx/drawings.libreoffice.truth.json` | `9d9142de5ae4415c4a7c017df1461fcedd3f23d32d4b6e39a041ee9a2bed21ae` |
+| `generated/xlsx/dates-1904.openpyxl.xlsx` | `1b35da15738c50395bc484dffc0450381121b1204671adaaf8a23c3364e89df2` |
+| `generated/xlsx/dates-1904.libreoffice.xlsx` | `2d7e9b1992ee47476404f0c5d279bcde64013579e31dad9812b5d22f2fdd6a99` |
+| `generated/xlsx/dates-1904.truth.json` | `482d62d7d9fd3c8bf92d81e6d29ca3aab2912338f3d51d0fb7e653dff3e81fd9` |
 <!-- generated: end -->

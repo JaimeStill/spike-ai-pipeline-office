@@ -429,27 +429,8 @@ internal static partial class DocxReader
             }
         }
 
-        private Media? ReadPicture(string relationshipId, string? alt, string? title)
-        {
-            if (part.TryGetPartById(relationshipId, out var target))
-            {
-                var (name, contentType) = context.Media.Add(target);
-                return new Media
-                {
-                    Name = name,
-                    ContentType = contentType,
-                    Alt = alt,
-                    Title = title,
-                    Source = target.Uri.OriginalString,
-                    Section = context.Section,
-                };
-            }
-            if (part.ExternalRelationships.FirstOrDefault(r => r.Id == relationshipId) is { } link)
-            {
-                return new Media { Target = link.Uri.OriginalString, Alt = alt, Title = title, Section = context.Section };
-            }
-            return null;
-        }
+        private Media? ReadPicture(string relationshipId, string? alt, string? title) =>
+            context.Media.Picture(part, relationshipId, alt, title) is { } media ? media with { Section = context.Section } : null;
     }
 
     // The paragraphs and tables of a container in document order, through the content controls

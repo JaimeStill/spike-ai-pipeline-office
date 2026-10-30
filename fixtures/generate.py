@@ -1,24 +1,29 @@
 # /// script
 # requires-python = ">=3.12"
-# dependencies = ["python-docx==1.2.0"]
+# dependencies = ["openpyxl==3.1.5", "python-docx==1.2.0"]
 # ///
 """Generate the office fixtures and their ground truth.
 
-Each fixture is written twice: by python-docx from the definitions below
-(<name>.python-docx.docx), and that file re-saved by LibreOffice headless
-(<name>.libreoffice.docx), so the corpus carries a real application's XML as
-well as a library's. Both files of a fixture share one ground truth,
-<name>.truth.json, which this script writes from the same definitions. The
-ground truth is the document's text in its accepted state, element by element,
-in a shape of its own, so it never depends on the office model it checks.
+Each fixture is written twice: by a library from the definitions below
+(<name>.python-docx.docx, or <name>.openpyxl.xlsx), and that file re-saved by
+LibreOffice headless (<name>.libreoffice.docx or .xlsx), so the corpus carries
+a real application's XML as well as a library's. Both files of a fixture share
+one ground truth, <name>.truth.json, which this script writes from the same
+definitions, unless LibreOffice changes what the document holds, when the
+re-save has its own, <name>.libreoffice.truth.json. The ground truth is the
+document's text in its accepted state, element by element, in a shape of its
+own, so it never depends on the office model it checks.
 
 python-docx writes no tracked changes, so the w:ins, w:del, w:moveFrom, and
-w:moveTo elements and the deleted paragraph marks are written as raw XML.
+w:moveTo elements and the deleted paragraph marks are written as raw XML;
+openpyxl writes no shared formulas, no ISO-date cells, and no pictures'
+alternative text, so those are patched in as raw XML too.
 
 Run it through `mise run fixtures`; the check never runs it. It rewrites the
 generated set and the checksum section of fixtures/README.md.
 """
 
+import datetime
 import hashlib
 import io
 import json
@@ -28,12 +33,21 @@ import struct
 import subprocess
 import sys
 import tempfile
+import zipfile
 import zlib
 from contextlib import contextmanager
 from dataclasses import dataclass
 from xml.sax.saxutils import escape
 
 import docx
+import openpyxl
+from openpyxl.cell.rich_text import CellRichText, TextBlock
+from openpyxl.cell.text import InlineFont
+from openpyxl.chart import BarChart, Reference
+from openpyxl.drawing.image import Image
+from openpyxl.utils.cell import coordinate_to_tuple
+from openpyxl.utils.datetime import CALENDAR_MAC_1904
+from openpyxl.worksheet.formula import ArrayFormula
 from docx.enum.section import WD_SECTION
 from docx.opc.constants import CONTENT_TYPE as CT
 from docx.opc.constants import RELATIONSHIP_TYPE as RT
@@ -45,7 +59,7 @@ from docx.parts.image import ImagePart
 from docx.shared import Inches
 
 ROOT = pathlib.Path(__file__).resolve().parent
-OUT = ROOT / "generated" / "docx"
+GENERATED = ROOT / "generated"
 README = ROOT / "README.md"
 AUTHOR = "Fixture Author"
 DATE = "2026-01-15T10:00:00Z"
@@ -59,6 +73,8 @@ EMU = 457200  # A drawing's side, half an inch.
 
 class Fixture:
     """A python-docx document and its ground truth, built side by side."""
+
+    writer, extension, filter = "python-docx", "docx", "docx:MS Word 2007 XML"
 
     def __init__(self, name: str):
         self.name = name
@@ -514,11 +530,20 @@ class Fixture:
         part = Part(PackURI("/word/commentsExtended.xml"), CT_COMMENTS_EXTENDED, xml.encode(), self.doc.part.package)
         self.doc.part.relate_to(part, RT_COMMENTS_EXTENDED)
 
-    def finish(self) -> None:
-        """Writes the parts the definitions add: notes and comments."""
+    def save(self, path: pathlib.Path) -> None:
+        """Writes the parts the definitions add, notes and comments, then the document."""
         self._notes_part("footnote")
         self._notes_part("endnote")
         self._comments_parts()
+        self.doc.save(path)
+
+    def libreoffice_truth(self) -> dict | None:
+        """The re-save's own ground truth, or None when it shares the fixture's."""
+        if self.libreoffice is None:
+            return None
+        adjusted = json.loads(json.dumps(self.truth()))
+        self.libreoffice(adjusted)
+        return adjusted
 
     def truth(self) -> dict:
         truth = {
@@ -1047,13 +1072,361 @@ def charts() -> Fixture:
 FIXTURES = [headings, lists, tables, tracked_changes, sections, headers_even_off, notes, comments, comments_plain, media, charts]
 
 
+# xlsx: workbooks written by openpyxl and re-saved by LibreOffice.
+
+CT_PNG = "image/png"
+
+
+class RawImage(Image):
+    """A picture openpyxl stores as given. Its own Image reads the picture through Pillow, which
+    this script has no need of."""
+
+    def __init__(self, data: bytes):
+        self.ref = data
+        self.width = self.height = 48
+        self.format = "png"
+
+    def _data(self) -> bytes:
+        return self.ref
+
+
+VARIANTS = ("openpyxl", "libreoffice")
+
+
+class Workbook:
+    """An openpyxl workbook and its ground truth, built side by side. A cell's truth is kept per
+    writer, as each leaves it: LibreOffice computes the formulas openpyxl leaves uncached, writes
+    constant booleans and errors as formulas, and expands shared formulas into their cells'
+    own."""
+
+    writer, extension, filter = "openpyxl", "xlsx", "xlsx:Calc MS Excel 2007 XML"
+
+    def __init__(self, name: str, date1904: bool = False):
+        self.name = name
+        self.book = openpyxl.Workbook()
+        self.book.remove(self.book.active)
+        if date1904:
+            self.book.epoch = CALENDAR_MAC_1904
+        self.sheets: list[Sheet] = []
+        # Raw XML for what openpyxl can't write: (part, the XML openpyxl writes, the XML instead).
+        self.patches: list[tuple[str, str, str]] = []
+
+    def sheet(self, title: str, state: str = "visible") -> "Sheet":
+        ws = self.book.create_sheet(title)
+        ws.sheet_state = state
+        sheet = Sheet(self, ws, len(self.sheets))
+        self.sheets.append(sheet)
+        return sheet
+
+    def save(self, path: pathlib.Path) -> None:
+        # openpyxl numbers a drawing part for each sheet that has charts or pictures, in sheet
+        # order, and in each names its charts and then its pictures by their count from 1.
+        drawing = 0
+        for sheet in self.sheets:
+            if not sheet.charts and not sheet.pictures:
+                continue
+            drawing += 1
+            for i, (_, alt) in enumerate(sheet.pictures, len(sheet.charts) + 1):
+                self.patches.append(
+                    (f"xl/drawings/drawing{drawing}.xml", f'name="Image {i}" descr="Picture"', f'name="Image {i}" descr="{escape(alt)}"')
+                )
+        self.book.save(path)
+        with zipfile.ZipFile(path) as source:
+            entries = [(info, source.read(info.filename)) for info in source.infolist()]
+        with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as target:
+            for info, data in entries:
+                for part, old, new in self.patches:
+                    if part == info.filename:
+                        text = data.decode()
+                        if text.count(old) != 1:
+                            raise RuntimeError(f"{self.name}: {part} holds {old!r} {text.count(old)} times, not once")
+                        data = text.replace(old, new).encode()
+                target.writestr(info, data)
+
+    def _truth(self, variant: str) -> dict:
+        return {
+            "fixture": self.name,
+            "format": "xlsx",
+            "elements": [sheet.truth(variant) for sheet in self.sheets],
+            "absent": [],
+            "once": [],
+        }
+
+    def truth(self) -> dict:
+        return self._truth("openpyxl")
+
+    def libreoffice_truth(self) -> dict | None:
+        adjusted = self._truth("libreoffice")
+        return None if adjusted == self.truth() else adjusted
+
+
+class Sheet:
+    """A worksheet and its truth: its cells by reference, each writer's truth of each (None where
+    the writer leaves the cell out), then its charts and its pictures."""
+
+    def __init__(self, book: Workbook, ws, index: int):
+        self.book = book
+        self.ws = ws
+        self.index = index
+        self.cells: dict[str, dict[str, dict | None]] = {}
+        self.charts: list[dict[str, dict]] = []
+        self.pictures: list[tuple[dict, str]] = []
+
+    @property
+    def part(self) -> str:
+        return f"xl/worksheets/sheet{self.index + 1}.xml"
+
+    def _cell(self, ref: str, openpyxl_truth: dict | None, libreoffice_truth: dict | None) -> None:
+        self.cells[ref] = {"openpyxl": openpyxl_truth, "libreoffice": libreoffice_truth}
+
+    def value(self, ref: str, value, kind: str, expected=None, number_format: str | None = None, libreoffice: dict | None = None):
+        """A constant cell: its value, its truth's type and value (the value itself unless
+        expected says otherwise), and the properties LibreOffice's re-save adds to its truth."""
+        self.ws[ref] = value
+        if number_format is not None:
+            self.ws[ref].number_format = number_format
+        truth = {"ref": ref, "type": kind, "value": value if expected is None else expected}
+        self._cell(ref, truth, {**truth, **(libreoffice or {})})
+
+    def styled(self, ref: str, number_format: str) -> None:
+        """A cell with a style and no value, which both writers keep and the truth leaves out."""
+        self.ws[ref].number_format = number_format
+
+    def formula(self, ref: str, text: str, kind: str, cached, number_format: str | None = None) -> None:
+        """A formula: openpyxl writes it with an empty cached value, LibreOffice with the value it
+        computes (kind and cached)."""
+        self.ws[ref] = "=" + text
+        if number_format is not None:
+            self.ws[ref].number_format = number_format
+        self._cell(ref, {"ref": ref, "formula": text}, {"ref": ref, "type": kind, "value": cached, "formula": text})
+
+    def shared_formula(self, cells: list[tuple[str, str, str, object]], index: int = 0) -> None:
+        """A shared formula over cells of (reference, the cell's own formula, the type and value
+        LibreOffice computes), the first the anchor holding the text. openpyxl writes each
+        cell's own formula, patched here into the shared one; LibreOffice writes them back as
+        their own formulas."""
+        anchor = cells[0][0]
+        span = f"{anchor}:{cells[-1][0]}"
+        for n, (ref, text, kind, cached) in enumerate(cells):
+            self.ws[ref] = "=" + text
+            shared = f'<f t="shared" ref="{span}" si="{index}">{escape(text)}</f>' if n == 0 else f'<f t="shared" si="{index}"/>'
+            self.book.patches.append((self.part, f'<c r="{ref}"><f>{escape(text)}</f><v></v></c>', f'<c r="{ref}">{shared}<v></v></c>'))
+            own = {"ref": ref, "formula": text} if n == 0 else {"ref": ref, "sharedFrom": anchor}
+            self._cell(ref, own, {"ref": ref, "type": kind, "value": cached, "formula": text})
+
+    def array_formula(self, span: str, text: str, cached: list[tuple[str, str, object]]) -> None:
+        """An array formula over span, its text on the anchor: openpyxl writes the anchor alone,
+        LibreOffice each cell's computed (reference, type, value), the anchor's with the text."""
+        anchor = span.split(":")[0]
+        self.ws[anchor] = ArrayFormula(span, "=" + text)
+        for n, (ref, kind, value) in enumerate(cached):
+            computed = {"ref": ref, "type": kind, "value": value}
+            if n == 0:
+                self._cell(ref, {"ref": ref, "formula": text}, {**computed, "formula": text})
+            else:
+                self._cell(ref, None, computed)
+
+    def raw(self, ref: str, xml: str, truth: dict, libreoffice: dict) -> None:
+        """A cell openpyxl can't write, patched in as raw XML over a placeholder string."""
+        self.ws[ref] = f"placeholder {ref}"
+        self.book.patches.append((self.part, f'<c r="{ref}" t="inlineStr"><is><t>placeholder {ref}</t></is></c>', xml))
+        self._cell(ref, {"ref": ref, **truth}, {"ref": ref, **libreoffice})
+
+    def merge(self, span: str, value, kind: str) -> None:
+        """Merged cells, the value in the anchor; both writers keep the merge."""
+        self.ws.merge_cells(span)
+        first, last = (coordinate_to_tuple(c) for c in span.split(":"))
+        anchor = span.split(":")[0]
+        self.ws[anchor] = value
+        truth = {"ref": anchor, "type": kind, "value": value, "colSpan": last[1] - first[1] + 1, "rowSpan": last[0] - first[0] + 1}
+        self._cell(anchor, truth, dict(truth))
+
+    def bar_chart(self, anchor: str, title: str, categories: str, values: str, series: tuple[str, list[str], list[float]]) -> None:
+        """A bar chart of one series from the sheet's cells: categories and values are ranges of
+        one column, values with its name's cell first. openpyxl writes the references with no
+        cached data, so its chart has no series name, categories, or values; LibreOffice caches
+        them (series)."""
+        chart = BarChart()
+        chart.title = title
+        chart.add_data(Reference(self.ws, range_string=f"'{self.ws.title}'!{values}"), titles_from_data=True)
+        chart.set_categories(Reference(self.ws, range_string=f"'{self.ws.title}'!{categories}"))
+        self.ws.add_chart(chart, anchor)
+        name, cats, vals = series
+        base = {"kind": "chart", "chartType": "bar", "title": title}
+        self.charts.append(
+            {
+                "openpyxl": {**base, "series": [{"name": None, "categories": [], "values": []}]},
+                "libreoffice": {**base, "series": [{"name": name, "categories": cats, "values": vals}]},
+            }
+        )
+
+    def picture(self, anchor: str, data: bytes, alt: str) -> None:
+        """A PNG picture, each its own part in openpyxl's file; LibreOffice keeps one part for
+        the same bytes. Its alternative text is patched in over openpyxl's "Picture"."""
+        image = RawImage(data)
+        image.anchor = anchor
+        self.ws.add_image(image)
+        truth = {
+            "kind": "media",
+            "name": hashlib.sha256(data).hexdigest() + ".png",
+            "contentType": CT_PNG,
+            "alt": alt,
+            "sheet": self.index,
+        }
+        self.pictures.append((truth, alt))
+
+    def truth(self, variant: str) -> dict:
+        def position(ref: str) -> tuple[int, int]:
+            return coordinate_to_tuple(ref)
+
+        rows: dict[int, list[dict]] = {}
+        for ref in sorted(self.cells, key=position):
+            cell = self.cells[ref][variant]
+            if cell is not None:
+                rows.setdefault(position(ref)[0], []).append(cell)
+        elements = []
+        if rows:
+            elements.append({"kind": "table", "rows": [{"row": r, "cells": cells} for r, cells in rows.items()]})
+        elements += [chart[variant] for chart in self.charts]
+        elements += [picture for picture, _ in self.pictures]
+        return {
+            "kind": "sheet",
+            "name": self.ws.title,
+            "hidden": self.ws.sheet_state != "visible",
+            "elements": elements,
+        }
+
+
+def cells() -> Workbook:
+    """Constants of each type, through each writer's strings (openpyxl writes them inline,
+    LibreOffice shared), rich text, date, datetime, and time numbers by built-in and custom
+    formats, numbers in formats that only look like dates, ISO dates stored as such, a styled
+    cell with no value, and a sparse corner."""
+    f = Workbook("cells")
+    s = f.sheet("Cells")
+    labels = [
+        "Text", "Rich text", "Numbers", "Booleans", "Errors", "Percent", "Thousands", "Date", "Datetime",
+        "Time", "Built-in date", "Built-in datetime", "Built-in time", "Custom date", "Custom time",
+        "Quoted letters", "Bracketed letters", "Escaped letters", "Early dates", "ISO date",
+    ]
+    for row, label in enumerate(labels, 1):
+        s.value(f"A{row}", label, "text")
+    s.value("B1", "plain text", "text")
+    s.value("B2", CellRichText(["plain ", TextBlock(InlineFont(b=True), "bold")]), "text", expected="plain bold")
+    s.value("B3", 12.5, "number")
+    s.value("C3", -3, "number")
+    s.value("D3", 1234.5678, "number")
+    s.value("B4", True, "boolean", libreoffice={"formula": "TRUE()"})
+    s.value("C4", False, "boolean", libreoffice={"formula": "FALSE()"})
+    s.value("B5", "#N/A", "error", libreoffice={"formula": "#N/A"})
+    s.value("C5", "#DIV/0!", "error", libreoffice={"formula": "#DIV/0!"})
+    s.value("B6", 0.125, "number", number_format="0.00%")
+    s.value("B7", 1234567, "number", number_format="#,##0")
+    s.value("B8", datetime.date(2026, 1, 15), "date", expected="2026-01-15")
+    s.value("B9", datetime.datetime(2026, 1, 15, 10, 30), "date", expected="2026-01-15T10:30:00")
+    s.value("B10", datetime.time(14, 15, 30), "date", expected="14:15:30")
+    s.value("B11", datetime.date(2025, 12, 31), "date", expected="2025-12-31", number_format="mm-dd-yy")
+    s.value("B12", datetime.datetime(2025, 6, 1, 8, 5), "date", expected="2025-06-01T08:05:00", number_format="m/d/yy h:mm")
+    s.value("B13", datetime.time(9, 45), "date", expected="09:45:00", number_format="h:mm")
+    s.value("B14", datetime.date(2026, 3, 1), "date", expected="2026-03-01", number_format='dddd", "mmmm d", "yyyy')
+    s.value("B15", datetime.time(18, 0), "date", expected="18:00:00", number_format="h:mm AM/PM")
+    s.value("B16", 42, "number", number_format='0 "days"')
+    s.value("B17", 7, "number", number_format="[Red]0;[Blue]-0")
+    s.value("B18", 5, "number", number_format="0\\h")
+    # Either side of the 1900 system's phantom 29 February.
+    s.value("B19", datetime.date(1900, 2, 28), "date", expected="1900-02-28")
+    s.value("C19", datetime.date(1900, 3, 1), "date", expected="1900-03-01")
+    s.raw(
+        "B20",
+        '<c r="B20" t="d"><v>2026-01-15T10:30:00</v></c>',
+        {"type": "date", "value": "2026-01-15T10:30:00"},
+        # LibreOffice stores it as the serial number, in the General format.
+        {"type": "number", "value": 46037.4375},
+    )
+    s.styled("C22", "0.00")
+    s.value("E23", "far corner", "text")
+    return f
+
+
+def formulas() -> Workbook:
+    """Formulas of each result type, uncached in openpyxl's file and cached in LibreOffice's, a
+    shared formula (raw XML; LibreOffice expands it), an array formula, and a formula whose
+    value is a date by its format."""
+    f = Workbook("formulas")
+    s = f.sheet("Formulas")
+    for row in (1, 2, 3):
+        s.value(f"A{row}", row, "number")
+        s.value(f"B{row}", row * 10, "number")
+    s.shared_formula([(f"C{r}", f"A{r}*B{r}", "number", r * r * 10) for r in (1, 2, 3)])
+    s.array_formula("D1:D3", "A1:A3*2", [("D1", "number", 2), ("D2", "number", 4), ("D3", "number", 6)])
+    s.formula("A5", "SUM(A1:A3)", "number", 6)
+    s.formula("A6", 'A1&" unit"', "text", "1 unit")
+    s.formula("A7", "A1/0", "error", "#DIV/0!")
+    s.formula("A8", "A1>B1", "boolean", False)
+    s.formula("A9", "DATE(2026,1,15)", "date", "2026-01-15", number_format="yyyy-mm-dd")
+    return f
+
+
+def sheets() -> Workbook:
+    """Sheets in an order that isn't their names', hidden and very hidden ones, an empty one,
+    and merged cells across columns, rows, and both."""
+    f = Workbook("sheets")
+    f.sheet("Zeta").value("A1", "the first sheet", "text")
+    f.sheet("Hidden", "hidden").value("A1", "a hidden sheet", "text")
+    merged = f.sheet("Alpha")
+    merged.merge("A1:C1", "Title", "text")
+    merged.merge("A2:A3", "Rows", "text")
+    merged.value("B2", 1, "number")
+    merged.value("B3", 2, "number")
+    merged.value("C2", "beside", "text")
+    merged.merge("B5:C6", "Block", "text")
+    f.sheet("Empty")
+    f.sheet("Very hidden", "veryHidden").value("A1", "a very hidden sheet", "text")
+    return f
+
+
+def drawings() -> Workbook:
+    """A sheet's chart and pictures: a bar chart over the sheet's cells, the same picture twice
+    (two parts in openpyxl's file, one file either way), and another sheet's picture."""
+    f = Workbook("drawings")
+    red, blue = png((220, 40, 40)), png((40, 60, 200))
+    s = f.sheet("Sales")
+    s.value("A1", "Quarter", "text")
+    s.value("B1", "Revenue", "text")
+    for row, (quarter, revenue) in enumerate([("Q1", 12.5), ("Q2", 14), ("Q3", 15.25)], 2):
+        s.value(f"A{row}", quarter, "text")
+        s.value(f"B{row}", revenue, "number")
+    s.bar_chart("D2", "Revenue by quarter", "A2:A4", "B1:B4", ("Revenue", ["Q1", "Q2", "Q3"], [12.5, 14, 15.25]))
+    s.picture("D18", red, "A red square")
+    s.picture("H18", red, "The red square again")
+    other = f.sheet("Other")
+    other.value("A1", "A picture follows.", "text")
+    other.picture("B2", blue, "A blue square")
+    return f
+
+
+def dates_1904() -> Workbook:
+    """Dates in the 1904 date system, whose serial 0 is 1 January 1904."""
+    f = Workbook("dates-1904", date1904=True)
+    s = f.sheet("Dates")
+    s.value("A1", datetime.date(2026, 1, 15), "date", expected="2026-01-15")
+    s.value("A2", datetime.datetime(1904, 1, 1, 12, 0), "date", expected="1904-01-01T12:00:00")
+    s.value("A3", datetime.date(1904, 1, 2), "date", expected="1904-01-02")
+    s.value("A4", 1.5, "number")
+    return f
+
+
+XLSX_FIXTURES = [cells, formulas, sheets, drawings, dates_1904]
+
+
 def soffice_version() -> str:
     out = subprocess.run(["soffice", "--version"], check=True, capture_output=True, text=True)
     return out.stdout.strip()
 
 
-def resave(source: pathlib.Path, target: pathlib.Path) -> None:
-    """Re-save source as target through LibreOffice headless, in a throwaway profile."""
+def resave(source: pathlib.Path, target: pathlib.Path, filter: str) -> None:
+    """Re-save source as target through LibreOffice headless, in a throwaway profile, with the
+    export filter given."""
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = pathlib.Path(tmp)
         subprocess.run(
@@ -1062,7 +1435,7 @@ def resave(source: pathlib.Path, target: pathlib.Path) -> None:
                 f"-env:UserInstallation={(tmpdir / 'profile').as_uri()}",
                 "--headless",
                 "--convert-to",
-                "docx:MS Word 2007 XML",
+                filter,
                 "--outdir",
                 str(tmpdir / "out"),
                 str(source),
@@ -1091,34 +1464,40 @@ def main(names: list[str]) -> int:
     if shutil.which("soffice") is None:
         print("generate: soffice (LibreOffice) is not on PATH", file=sys.stderr)
         return 1
-    builds = {build().name: build for build in FIXTURES}
+    # Each fixture is built once here to learn its name and its writer.
+    builds, kinds = {}, {}
+    for build in FIXTURES + XLSX_FIXTURES:
+        fixture = build()
+        builds[fixture.name] = build
+        kinds[fixture.name] = (fixture.writer, fixture.extension)
     unknown = [name for name in names if name not in builds]
     if unknown:
         print(f"generate: no such fixture: {', '.join(unknown)}; the fixtures are {', '.join(builds)}", file=sys.stderr)
         return 1
-    OUT.mkdir(parents=True, exist_ok=True)
     written = []
     for name in names or builds:
         fixture = builds[name]()
-        original = OUT / f"{fixture.name}.python-docx.docx"
-        resaved = OUT / f"{fixture.name}.libreoffice.docx"
-        truth = OUT / f"{fixture.name}.truth.json"
-        fixture.finish()
-        fixture.doc.save(original)
-        resave(original, resaved)
+        out = GENERATED / fixture.extension
+        out.mkdir(parents=True, exist_ok=True)
+        original = out / f"{fixture.name}.{fixture.writer}.{fixture.extension}"
+        resaved = out / f"{fixture.name}.libreoffice.{fixture.extension}"
+        truth = out / f"{fixture.name}.truth.json"
+        fixture.save(original)
+        resave(original, resaved, fixture.filter)
         truth.write_text(json.dumps(fixture.truth(), indent=2, ensure_ascii=False) + "\n")
         written += [original, resaved, truth]
-        variant = OUT / f"{fixture.name}.libreoffice.truth.json"
-        if fixture.libreoffice is None:
+        variant = out / f"{fixture.name}.libreoffice.truth.json"
+        adjusted = fixture.libreoffice_truth()
+        if adjusted is None:
             variant.unlink(missing_ok=True)
         else:
-            adjusted = json.loads(json.dumps(fixture.truth()))
-            fixture.libreoffice(adjusted)
             variant.write_text(json.dumps(adjusted, indent=2, ensure_ascii=False) + "\n")
             written.append(variant)
     # The checksums cover every fixture's files, regenerated now or not.
-    suffixes = ("python-docx.docx", "libreoffice.docx", "truth.json", "libreoffice.truth.json")
-    files = [OUT / f"{name}.{suffix}" for name in builds for suffix in suffixes]
+    files = []
+    for name, (writer, extension) in kinds.items():
+        suffixes = (f"{writer}.{extension}", f"libreoffice.{extension}", "truth.json", "libreoffice.truth.json")
+        files += [GENERATED / extension / f"{name}.{suffix}" for suffix in suffixes]
     update_readme(soffice_version(), [path for path in files if path.exists()])
     for path in written:
         print(f"{sha256(path)}  {path.relative_to(ROOT)}")
