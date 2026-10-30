@@ -14,11 +14,12 @@ re-saves it through LibreOffice headless:
   write, the second what an editor makes of it, and office must read both the same way.
 - `<name>.truth.json`: the ground truth both files share, written by the script from the same
   definitions: the accepted-state text of each element in document order (`heading` with its
-  level, `paragraph`, `listItem` with its nesting level and whether its level is ordered, and
-  `table` with each cell's text, its paragraphs joined by a newline, and its spans, covered cells
-  left out), the strings that must appear nowhere in office's output (`absent`: deleted text),
-  and the strings that must appear exactly once (`once`: moved text). Its shape is its own, not
-  office's model, so the tests compare the model against it element by element.
+  level, `paragraph`, `listItem` with its nesting level, whether its level is ordered, and
+  whether it starts a list rather than continuing the one before it, and `table` with each
+  cell's text, its paragraphs joined by a newline, and its spans, covered cells left out), the
+  strings that must appear nowhere in office's output (`absent`: deleted text), and the strings
+  that must appear exactly once (`once`: moved text). Its shape is its own, not office's model,
+  so the tests compare the model against it element by element.
 
 | Fixture | Covers |
 | --- | --- |
@@ -52,11 +53,11 @@ LibreOffice: `LibreOffice 26.8.1.1 680(Build:1)`
 | `generated/docx/headings.truth.json` | `41b138b81b26fda92e03039891c3c0cde4d6b7119ecd27055e7782c4ff312050` |
 | `generated/docx/lists.python-docx.docx` | `5d61af165027d3cad297a0dbaf2cc8b51ec2274aee648dd2398d2fdc9367e99b` |
 | `generated/docx/lists.libreoffice.docx` | `261277388b4c59a885f5060a9db58ba96c3c128ea528a6a26dd0747870725ad6` |
-| `generated/docx/lists.truth.json` | `66a6549c86146701080291b1b6f432d6c64bdad6b8f5e4310f72868478076296` |
+| `generated/docx/lists.truth.json` | `9906d980e45f375953b730d772a325d3e3ec0b3ac7e2643915c6d795f19ead4c` |
 | `generated/docx/tables.python-docx.docx` | `4bcc3b658b559c2d5c58a8a518ad5d6578056412218569b000f26aec9e5860b1` |
 | `generated/docx/tables.libreoffice.docx` | `01116cf56ffbb4ad1f360272e2fabd8cd6e60d25e8081202f4b2d0aad91b7d2c` |
 | `generated/docx/tables.truth.json` | `81d60edfcb56b9764ce093db5bce5ff148c61374e9b4cd674e33ae0d104feac6` |
 | `generated/docx/tracked-changes.python-docx.docx` | `f87eee0aaf4aaa7b94c1d5f83fe6700de32a85f288cc787303f3f7499f258351` |
 | `generated/docx/tracked-changes.libreoffice.docx` | `03118b6a831ce7a83b802e9e3998b9c93a7e8e0c66a74b79c805bc1264497b18` |
-| `generated/docx/tracked-changes.truth.json` | `7c1cbe37799099dee73ea0555328fd7df249e63d1c62a1570214559f9e75b41f` |
+| `generated/docx/tracked-changes.truth.json` | `65998c12c054712c7de181ebda34d1ee6efbdb44d6931e64474af9331070bf4a` |
 <!-- generated: end -->

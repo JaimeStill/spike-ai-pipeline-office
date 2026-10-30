@@ -4,8 +4,8 @@ using SpikeAiPipeline.Office.Model;
 namespace SpikeAiPipeline.Office.Tests;
 
 /// <summary>A model in the ground truth's shape, element by element, so the two compare
-/// directly: headings, paragraphs, list items with their nesting level, and tables with each
-/// cell's paragraphs joined by a newline.</summary>
+/// directly: headings, paragraphs, list items with their nesting level and whether each starts its
+/// list, and tables with each cell's paragraphs joined by a newline.</summary>
 internal static class GroundTruth
 {
     public static List<JsonObject> Elements(Document document)
@@ -28,8 +28,9 @@ internal static class GroundTruth
                     elements.Add(new JsonObject { ["kind"] = "paragraph", ["text"] = InlineText.Of(paragraph.Inlines) });
                     break;
                 case ListBlock list:
-                    foreach (var item in list.Items)
+                    for (var i = 0; i < list.Items.Count; i++)
                     {
+                        var item = list.Items[i];
                         var rest = item.Blocks;
                         if (item.Blocks is [Paragraph first, ..])
                         {
@@ -38,6 +39,7 @@ internal static class GroundTruth
                                 ["kind"] = "listItem",
                                 ["level"] = listLevel,
                                 ["ordered"] = list.Ordered,
+                                ["start"] = i == 0,
                                 ["text"] = InlineText.Of(first.Inlines),
                             });
                             rest = [.. item.Blocks.Skip(1)];

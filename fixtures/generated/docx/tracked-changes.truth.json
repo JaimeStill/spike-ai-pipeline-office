@@ -35,12 +35,14 @@
       "kind": "listItem",
       "level": 0,
       "ordered": false,
+      "start": true,
       "text": "Kept item"
     },
     {
       "kind": "listItem",
       "level": 0,
       "ordered": false,
+      "start": false,
       "text": "Inserted item"
     },
     {

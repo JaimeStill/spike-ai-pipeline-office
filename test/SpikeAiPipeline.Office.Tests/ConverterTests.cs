@@ -8,7 +8,7 @@ namespace SpikeAiPipeline.Office.Tests;
 // The converter's seam, a document in and the model out, and the Markdown renderer over the
 // model, against the generated fixtures: the model element by element against the generator's
 // ground truth, then the JSON and the Markdown exactly.
-public class ConverterTests
+public sealed class ConverterTests
 {
     public static TheoryData<string, string> Cases => Fixtures.DocxVariants;
 

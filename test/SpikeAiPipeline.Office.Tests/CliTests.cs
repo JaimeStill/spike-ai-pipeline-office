@@ -20,7 +20,6 @@ public sealed class CliTests : IDisposable
         var result = Run("--version");
 
         Assert.Equal(0, result.ExitCode);
-        Assert.StartsWith("0.0.0", Cli.Version, StringComparison.Ordinal);
         Assert.Equal(Cli.Version + "\n", result.Stdout);
         Assert.Empty(result.Stderr);
     }

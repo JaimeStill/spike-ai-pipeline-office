@@ -127,10 +127,20 @@ class Fixture:
         num_pr.get_or_add_ilvl().val = level
         num_pr.get_or_add_numId().val = num_id
 
-    def item(self, text: str, num_id: int, level: int, ordered: bool) -> None:
+    def _list_item(self, text: str, level: int, ordered: bool, new_list: bool) -> None:
+        """The ground truth of a list item. It starts a list when it follows anything but a
+        list item, when it is deeper than the item before it, or when the definition says it
+        starts a new list at its level (new_list)."""
+        previous = self.elements[-1] if self.elements else None
+        start = new_list or previous is None or previous["kind"] != "listItem" or previous["level"] < level
+        self.elements.append(
+            {"kind": "listItem", "level": level, "ordered": ordered, "start": start, "text": text}
+        )
+
+    def item(self, text: str, num_id: int, level: int, ordered: bool, new_list: bool = False) -> None:
         p = self.doc.add_paragraph(text, style="List Paragraph")
         self._number(p, num_id, level)
-        self.elements.append({"kind": "listItem", "level": level, "ordered": ordered, "text": text})
+        self._list_item(text, level, ordered, new_list)
 
     # Tables. Each cell is (text, colSpan, rowSpan); None marks a covered grid position.
 
@@ -218,9 +228,7 @@ class Fixture:
     def tracked_item(self, segments, num_id: int, level: int, ordered: bool) -> None:
         p = self._tracked_paragraph(segments, style="List Paragraph")
         self._number(p, num_id, level)
-        self.elements.append(
-            {"kind": "listItem", "level": level, "ordered": ordered, "text": self.accepted(segments)}
-        )
+        self._list_item(self.accepted(segments), level, ordered, False)
 
     def tracked_table(self, cells: list[list[tuple[str, str]]]) -> None:
         table = self.doc.add_table(rows=1, cols=len(cells))
@@ -281,9 +289,9 @@ def lists() -> Fixture:
     f.paragraph("Two ordered lists back to back, the second restarting, then a bullet list:")
     f.item("Back one", 13, 0, True)
     f.item("Back two", 13, 0, True)
-    f.item("Again one", 14, 0, True)
+    f.item("Again one", 14, 0, True, new_list=True)
     f.item("Again two", 14, 0, True)
-    f.item("Bullet right after", 10, 0, False)
+    f.item("Bullet right after", 10, 0, False, new_list=True)
     f.paragraph("End of lists.")
     return f
 
