@@ -14,6 +14,10 @@ public sealed class MarkdownRenderer
     private readonly Dictionary<(bool Endnote, int Id), int> notes = [];
     private readonly Dictionary<int, int> comments = [];
 
+    // How many levels a heading is rendered below its own: one inside a slide, whose own heading
+    // is the outermost.
+    private int headingShift;
+
     private MarkdownRenderer()
     {
     }
@@ -183,6 +187,7 @@ public sealed class MarkdownRenderer
                 Chart chart => RenderChart(chart),
                 Media media => RenderMedia(media),
                 Sheet sheet => RenderSheet(sheet),
+                Slide slide => RenderSlide(slide),
                 _ => "",
             };
             if (text.Length > 0)
@@ -196,7 +201,7 @@ public sealed class MarkdownRenderer
     private string RenderHeading(Heading heading)
     {
         var text = string.Join(" ", Lines(heading.Inlines));
-        return text.Length == 0 ? "" : new string('#', Math.Clamp(heading.Level, 1, 6)) + " " + text;
+        return text.Length == 0 ? "" : new string('#', Math.Clamp(heading.Level + headingShift, 1, 6)) + " " + text;
     }
 
     // A line break inside a paragraph is a hard break: a backslash at the end of the line.
@@ -253,6 +258,23 @@ public sealed class MarkdownRenderer
         var name = string.Join(" ", Lines(sheet.Name));
         var heading = "# " + (name.Length > 0 ? name : "Sheet") + (sheet.Hidden ? " (hidden)" : "");
         return string.Join("\n\n", [heading, .. RenderBlocks(sheet.Blocks).Select(c => c.Text)]);
+    }
+
+    // A slide under a heading of its number, marked when it is hidden, then its blocks, its
+    // title's heading a level below the slide's, and then its notes after a bold "Notes" label,
+    // which no slide text can make, as text's asterisks are escaped.
+    private string RenderSlide(Slide slide)
+    {
+        var heading = "# Slide " + slide.Number.ToString(CultureInfo.InvariantCulture) + (slide.Hidden ? " (hidden)" : "");
+        headingShift++;
+        List<string> chunks = [heading, .. RenderBlocks(slide.Blocks).Select(c => c.Text)];
+        if (slide.Notes is { } notes && RenderBlocks(notes) is { Count: > 0 } notesChunks)
+        {
+            chunks.Add("**Notes**");
+            chunks.AddRange(notesChunks.Select(c => c.Text));
+        }
+        headingShift--;
+        return string.Join("\n\n", chunks);
     }
 
     // A GFM table, its first row the header. GFM has no merged cells, so a merged cell's text sits

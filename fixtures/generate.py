@@ -1,12 +1,13 @@
 # /// script
 # requires-python = ">=3.12"
-# dependencies = ["openpyxl==3.1.5", "python-docx==1.2.0"]
+# dependencies = ["openpyxl==3.1.5", "python-docx==1.2.0", "python-pptx==1.0.2"]
 # ///
 """Generate the office fixtures and their ground truth.
 
 Each fixture is written twice: by a library from the definitions below
-(<name>.python-docx.docx, or <name>.openpyxl.xlsx), and that file re-saved by
-LibreOffice headless (<name>.libreoffice.docx or .xlsx), so the corpus carries
+(<name>.python-docx.docx, <name>.openpyxl.xlsx, or <name>.python-pptx.pptx), and
+that file re-saved by LibreOffice headless (<name>.libreoffice.docx, .xlsx, or
+.pptx), so the corpus carries
 a real application's XML as well as a library's. Both files of a fixture share
 one ground truth, <name>.truth.json, which this script writes from the same
 definitions, unless LibreOffice changes what the document holds, when the
@@ -17,7 +18,9 @@ own, so it never depends on the office model it checks.
 python-docx writes no tracked changes, so the w:ins, w:del, w:moveFrom, and
 w:moveTo elements and the deleted paragraph marks are written as raw XML;
 openpyxl writes no shared formulas, no ISO-date cells, and no pictures'
-alternative text, so those are patched in as raw XML too.
+alternative text, so those are patched in as raw XML too; python-pptx has no API
+for hidden slides, slide order, a paragraph's own bullet, or pictures'
+alternative text, so those are set on its XML.
 
 Run it through `mise run fixtures`; the check never runs it. It rewrites the
 generated set and the checksum section of fixtures/README.md.
@@ -41,6 +44,7 @@ from xml.sax.saxutils import escape
 
 import docx
 import openpyxl
+import pptx
 from openpyxl.cell.rich_text import CellRichText, TextBlock
 from openpyxl.cell.text import InlineFont
 from openpyxl.chart import BarChart, Reference
@@ -57,6 +61,8 @@ from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 from docx.parts.image import ImagePart
 from docx.shared import Inches
+from pptx.chart.data import CategoryChartData
+from pptx.enum.chart import XL_CHART_TYPE
 
 ROOT = pathlib.Path(__file__).resolve().parent
 GENERATED = ROOT / "generated"
@@ -1419,6 +1425,370 @@ def dates_1904() -> Workbook:
 XLSX_FIXTURES = [cells, formulas, sheets, drawings, dates_1904]
 
 
+# pptx: presentations written by python-pptx and re-saved by LibreOffice.
+
+TITLE_SLIDE, TITLE_AND_CONTENT, TITLE_ONLY, BLANK = 0, 1, 5, 6
+A = nsdecls("a")
+# The prompt texts of python-pptx's default layouts and master, which no slide holds, and the
+# slide-number field LibreOffice writes in each notes page's slide-number placeholder.
+ABSENT_ON_SLIDES = ["Click to edit Master title style", "Click to edit Master text styles", "Click to edit Master subtitle style", "<number>"]
+
+
+def bullet_xml(kind: str) -> str:
+    """A paragraph's own bullet: "number" an arabic auto-number, "char" a character bullet,
+    "none" no bullet; "inherit" writes none, so the placeholder's layout or master decides."""
+    return {
+        "number": f'<a:buFont {A} typeface="+mj-lt"/><a:buAutoNum {A} type="arabicPeriod"/>',
+        "char": f'<a:buFont {A} typeface="Arial"/><a:buChar {A} char="•"/>',
+        "none": f"<a:buNone {A}/>",
+        "inherit": "",
+    }[kind]
+
+
+def list_truth(items: list[tuple[str, int, str]], listed) -> list[dict]:
+    """The truth of a text body's paragraphs of (text, level, bullet kind): a paragraph whose
+    bullet (its own, or inherited where listed says it is listed) is none is a paragraph; the
+    others are list items, nested by level, a new list starting where the one before is of the
+    other kind at the same level or a paragraph came between. Levels never skip, so an item's
+    nesting is its level."""
+    elements, open_lists = [], []  # open_lists: each open level's ordered flag
+    for text, level, kind in items:
+        ordered = {"number": True, "char": False, "none": None, "inherit": listed(level)}[kind]
+        if ordered is None:
+            open_lists = []
+            elements.append({"kind": "paragraph", "text": text})
+            continue
+        del open_lists[level + 1 :]
+        start = len(open_lists) <= level or open_lists[level] != ordered
+        open_lists[level:] = [ordered]
+        elements.append({"kind": "listItem", "level": level, "ordered": ordered, "start": start, "text": text})
+    return elements
+
+
+def master_bullets(level: int) -> bool | None:
+    """The default master's body style: a character bullet at every level, so unordered."""
+    return False
+
+
+def layout_none(level: int) -> bool | None:
+    """A layout placeholder whose list style turns bullets off (the title slide's subtitle)."""
+    return None
+
+
+class Deck:
+    """A python-pptx presentation and its ground truth, built side by side."""
+
+    writer, extension, filter = "python-pptx", "pptx", "pptx:Impress MS PowerPoint 2007 XML"
+
+    def __init__(self, name: str):
+        self.name = name
+        self.prs = pptx.Presentation()
+        self.slides: list["DeckSlide"] = []
+        self.order: list[int] | None = None
+        self.absent: list[str] = list(ABSENT_ON_SLIDES)
+        self.once: list[str] = []
+        # How the LibreOffice re-save's ground truth differs, when it does.
+        self.libreoffice = None
+
+    def slide(self, layout: int, hidden: bool = False) -> "DeckSlide":
+        s = DeckSlide(self, self.prs.slides.add_slide(self.prs.slide_layouts[layout]), hidden)
+        if hidden:
+            s.slide._element.set("show", "0")
+        self.slides.append(s)
+        return s
+
+    def reorder(self, order: list[int]) -> None:
+        """Presents the slides in the given order of their creation, so the slide parts' names
+        (slide1.xml, ...) aren't the presentation's order."""
+        ids = self.prs.slides._sldIdLst
+        entries = list(ids)
+        for entry in entries:
+            ids.remove(entry)
+        for i in order:
+            ids.append(entries[i])
+        self.order = order
+
+    def save(self, path: pathlib.Path) -> None:
+        self.prs.save(path)
+
+    def presented(self) -> list["DeckSlide"]:
+        return [self.slides[i] for i in self.order] if self.order is not None else self.slides
+
+    def truth(self) -> dict:
+        return {
+            "fixture": self.name,
+            "format": "pptx",
+            "elements": [s.truth(n) for n, s in enumerate(self.presented())],
+            "absent": self.absent,
+            "once": self.once,
+        }
+
+    def libreoffice_truth(self) -> dict | None:
+        if self.libreoffice is None:
+            return None
+        adjusted = json.loads(json.dumps(self.truth()))
+        self.libreoffice(adjusted)
+        return adjusted
+
+
+class DeckSlide:
+    """A slide and its truth: its elements in shape-tree order, and its notes."""
+
+    def __init__(self, deck: Deck, slide, hidden: bool):
+        self.deck = deck
+        self.slide = slide
+        self.hidden = hidden
+        self.elements: list = []  # truth, or a callable of the slide's index for media
+        self.notes: list[dict] = []
+
+    def title(self, text: str) -> None:
+        self.slide.shapes.title.text = text
+        self.elements.append({"kind": "heading", "level": 1, "text": text})
+
+    def placeholder_text(self, idx: int, items: list[tuple[str, int, str]], listed) -> None:
+        """The placeholder idx's paragraphs of (text, level, bullet kind)."""
+        self._fill(self.slide.placeholders[idx].text_frame, items)
+        self.elements += list_truth(items, listed)
+
+    def textbox(self, items: list[tuple[str, int, str]], top: int = 0, shapes=None) -> None:
+        """A text box, which no placeholder styles: its paragraphs are bulleted only by their own
+        bullets."""
+        box = (shapes if shapes is not None else self.slide.shapes).add_textbox(Inches(1), Inches(1) + top, Inches(4), Inches(1))
+        self._fill(box.text_frame, items)
+        self.elements += list_truth(items, lambda level: None)
+
+    def group(self, build) -> None:
+        """A group shape whose shapes build adds through the group's shape collection."""
+        group = self.slide.shapes.add_group_shape()
+        build(group.shapes)
+
+    def notes_text(self, paragraphs: list[str]) -> None:
+        frame = self.slide.notes_slide.notes_text_frame
+        frame.text = paragraphs[0]
+        for text in paragraphs[1:]:
+            frame.add_paragraph().text = text
+        self.notes = [{"kind": "paragraph", "text": p} for p in paragraphs]
+
+    def table(self, rows: list[list[str | None]], merges: list[tuple[int, int, int, int]]) -> None:
+        """A table of cells' text (None for a cell a merge covers, a newline between a cell's
+        paragraphs) and merges of (row, column, rows, columns), python-pptx writing gridSpan and
+        rowSpan on the origin and hMerge and vMerge on the cells it covers."""
+        shape = self.slide.shapes.add_table(len(rows), len(rows[0]), Inches(1), Inches(2), Inches(6), Inches(2))
+        table = shape.table
+        for r, row in enumerate(rows):
+            for c, text in enumerate(row):
+                if text is not None:
+                    frame = table.cell(r, c).text_frame
+                    first, *rest = text.split("\n")
+                    frame.text = first
+                    for line in rest:
+                        frame.add_paragraph().text = line
+        spans = {}
+        for r, c, height, width in merges:
+            table.cell(r, c).merge(table.cell(r + height - 1, c + width - 1))
+            spans[(r, c)] = (height, width)
+        self.elements.append(
+            {
+                "kind": "table",
+                "rows": [
+                    [
+                        {"text": text, "colSpan": spans.get((r, c), (1, 1))[1], "rowSpan": spans.get((r, c), (1, 1))[0]}
+                        for c, text in enumerate(row)
+                        if text is not None
+                    ]
+                    for r, row in enumerate(rows)
+                ],
+            }
+        )
+
+    def chart(self, title: str | None, categories: list[str], series: list[tuple[str, list[float | None]]]) -> None:
+        """A clustered column chart, python-pptx writing its embedded workbook and its caches."""
+        data = CategoryChartData()
+        data.categories = categories
+        for name, values in series:
+            data.add_series(name, values)
+        chart = self.slide.shapes.add_chart(XL_CHART_TYPE.COLUMN_CLUSTERED, Inches(1), Inches(2), Inches(6), Inches(4), data).chart
+        chart.has_title = title is not None
+        if title is not None:
+            chart.chart_title.text_frame.text = title
+        element = {"kind": "chart", "chartType": "bar"}
+        if title is not None:
+            element["title"] = title
+        element["series"] = [{"name": n, "categories": categories, "values": v} for n, v in series]
+        self.elements.append(element)
+
+    def picture(self, data: bytes, descr: str, title: str = "", shapes=None) -> None:
+        """A PNG picture; python-pptx keeps one part for the same bytes, however often shown."""
+        pic = (shapes if shapes is not None else self.slide.shapes).add_picture(io.BytesIO(data), Inches(1), Inches(4), Inches(1), Inches(1))
+        properties = pic._element.nvPicPr.cNvPr
+        properties.set("descr", descr)
+        if title:
+            properties.set("title", title)
+
+        def truth(index: int) -> dict:
+            element = {"kind": "media", "name": hashlib.sha256(data).hexdigest() + ".png", "contentType": CT_PNG, "alt": descr}
+            if title:
+                element["title"] = title
+            element["slide"] = index
+            return element
+
+        self.elements.append(truth)
+
+    @staticmethod
+    def _fill(frame, items: list[tuple[str, int, str]]) -> None:
+        for n, (text, level, kind) in enumerate(items):
+            p = frame.paragraphs[0] if n == 0 else frame.add_paragraph()
+            p.text = text
+            p.level = level
+            if kind != "inherit":
+                p_pr = p._p.get_or_add_pPr()
+                if kind == "none":
+                    p_pr.set("marL", "0")
+                    p_pr.set("indent", "0")
+                for element in parse_xml(f"<a:x {A}>{bullet_xml(kind)}</a:x>"):
+                    p_pr.append(element)
+
+    def truth(self, index: int) -> dict:
+        element = {
+            "kind": "slide",
+            "number": index + 1,
+            "hidden": self.hidden,
+            "elements": [e(index) if callable(e) else e for e in self.elements],
+        }
+        if self.notes:
+            element["notes"] = self.notes
+        return element
+
+
+def libreoffice_no_picture_title(truth: dict) -> None:
+    """LibreOffice keeps a slide picture's description and drops its title."""
+
+    def walk(node) -> None:
+        if isinstance(node, dict):
+            if node.get("kind") == "media":
+                node.pop("title", None)
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for value in node:
+                walk(value)
+
+    walk(truth)
+
+
+def slides() -> Deck:
+    """Slides presented in an order that isn't their parts', a hidden one, notes on some, a title
+    slide's subtitle (its layout turns the master's bullets off), a text box, and a content
+    placeholder left empty, whose layout prompt must not appear."""
+    f = Deck("slides")
+    welcome = f.slide(TITLE_SLIDE)
+    welcome.title("Quarterly Review")
+    welcome.placeholder_text(1, [("Operations, third quarter", 0, "inherit"), ("Prepared for the board", 0, "inherit")], layout_none)
+    welcome.notes_text(["Welcome everyone.", "Introduce the agenda."])
+    agenda = f.slide(TITLE_AND_CONTENT)
+    agenda.title("Agenda")
+    agenda.placeholder_text(1, [("Results", 0, "inherit"), ("Outlook", 0, "inherit")], master_bullets)
+    internal = f.slide(TITLE_AND_CONTENT, hidden=True)
+    internal.title("Internal figures")
+    internal.placeholder_text(1, [("Not for the board", 0, "inherit")], master_bullets)
+    internal.notes_text(["Skip this slide when presenting."])
+    empty = f.slide(TITLE_AND_CONTENT)
+    empty.title("Questions")  # Its content placeholder is left empty.
+    closing = f.slide(TITLE_ONLY)
+    closing.title("Thank you")
+    closing.textbox([("Contact the operations team.", 0, "inherit")])
+    closing.notes_text(["Close on time."])
+    # Created welcome, agenda, internal, empty, closing; presented welcome, internal, agenda, closing, empty.
+    f.reorder([0, 2, 1, 4, 3])
+    return f
+
+
+def bullets() -> Deck:
+    """Bullets: a content placeholder's master bullets nested three levels and back, a paragraph
+    whose own bullet is none between lists, a numbered list (its own auto-numbers) with a bullet
+    nested in it, a bullet list straight after it at the same level, and a text box's own
+    bullets and numbers beside its plain paragraphs and an empty one."""
+    f = Deck("bullets")
+    s = f.slide(TITLE_AND_CONTENT)
+    s.title("Plan")
+    s.placeholder_text(
+        1,
+        [
+            ("Hire", 0, "inherit"),
+            ("Engineers", 1, "inherit"),
+            ("Backend", 2, "inherit"),
+            ("Designers", 1, "inherit"),
+            ("Train", 0, "inherit"),
+            ("A plain paragraph between the lists.", 0, "none"),
+            ("First step", 0, "number"),
+            ("Second step", 0, "number"),
+            ("A detail of the second step", 1, "inherit"),
+            ("Third step", 0, "number"),
+            ("A bullet after the numbers", 0, "inherit"),
+        ],
+        master_bullets,
+    )
+    boxes = f.slide(BLANK)
+    boxes.textbox([("A text box's plain paragraph.", 0, "inherit"), ("Its own bullet", 0, "char"), ("Nested under it", 1, "char"), ("Its own number", 0, "number")])
+    # An empty paragraph is spacing, not text: it is written and leaves no element.
+    box = boxes.slide.shapes[-1].text_frame
+    box.add_paragraph().text = ""
+    box.add_paragraph().text = "After the empty paragraph."
+    boxes.elements.append({"kind": "paragraph", "text": "After the empty paragraph."})
+    return f
+
+
+def groups() -> Deck:
+    """Group shapes read in shape-tree order whatever their position: a text box, a group of a
+    text box, a nested group's text box and picture, and a text box placed above them all but
+    last in the tree."""
+    f = Deck("groups")
+    s = f.slide(BLANK)
+    s.textbox([("Before the group.", 0, "inherit")], top=Inches(1))
+
+    def outer(shapes):
+        s.textbox([("In the group.", 0, "inherit")], top=Inches(2), shapes=shapes)
+        inner = shapes.add_group_shape()
+        s.textbox([("In the nested group.", 0, "inherit")], top=Inches(3), shapes=inner.shapes)
+        s.picture(png((40, 160, 60)), "A green square in the nested group", shapes=inner.shapes)
+
+    s.group(outer)
+    s.textbox([("After the group, placed at the top.", 0, "inherit")], top=-Inches(1))
+    return f
+
+
+def slide_objects() -> Deck:
+    """A table with merged cells across columns and rows, a cell of two paragraphs, and a pipe;
+    a titled clustered column chart of two series with a missing value; the same picture on two
+    slides (one file) beside another, with titles and alternative text; notes beside a chart."""
+    f = Deck("slide-objects")
+    red, blue = png((220, 40, 40)), png((40, 60, 200))
+    t = f.slide(TITLE_ONLY)
+    t.title("Figures")
+    t.table(
+        [
+            ["Region", "Sales", None],
+            ["North", "Q1\nfirst quarter", "12 | 5"],
+            [None, "Q2", "14"],
+        ],
+        [(0, 1, 1, 2), (1, 0, 2, 1)],
+    )
+    c = f.slide(TITLE_ONLY)
+    c.title("Sales")
+    c.chart("Sales by quarter", ["Q1", "Q2", "Q3"], [("North", [12.5, 14, 15.25]), ("South", [9, None, 11])])
+    c.notes_text(["The South's second quarter is missing."])
+    p = f.slide(BLANK)
+    p.picture(red, "A red square", "Red")
+    p.picture(blue, "A blue square")
+    again = f.slide(BLANK)
+    again.picture(red, "The red square again")
+    f.libreoffice = libreoffice_no_picture_title
+    return f
+
+
+PPTX_FIXTURES = [slides, bullets, groups, slide_objects]
+
+
 def soffice_version() -> str:
     out = subprocess.run(["soffice", "--version"], check=True, capture_output=True, text=True)
     return out.stdout.strip()
@@ -1466,7 +1836,7 @@ def main(names: list[str]) -> int:
         return 1
     # Each fixture is built once here to learn its name and its writer.
     builds, kinds = {}, {}
-    for build in FIXTURES + XLSX_FIXTURES:
+    for build in FIXTURES + XLSX_FIXTURES + PPTX_FIXTURES:
         fixture = build()
         builds[fixture.name] = build
         kinds[fixture.name] = (fixture.writer, fixture.extension)

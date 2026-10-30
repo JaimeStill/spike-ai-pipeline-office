@@ -13,7 +13,8 @@ namespace SpikeAiPipeline.Office.Tests;
 /// document's sections, notes, and comments are compared in the same shape. A sheet is its name,
 /// whether it is hidden, and its elements, its table's rows each its number and its cells, each
 /// cell its reference, its value's type and value, its formula or shared formula's anchor, and
-/// its spans when merged.</summary>
+/// its spans when merged. A slide is its number, whether it is hidden, its elements, and its
+/// notes' elements when it has notes.</summary>
 internal static class GroundTruth
 {
     /// <summary>The ground truth's parts beside the body's elements.</summary>
@@ -122,6 +123,20 @@ internal static class GroundTruth
                         ["elements"] = Array(document, sheet.Blocks),
                     });
                     break;
+                case Slide slide:
+                    var element = new JsonObject
+                    {
+                        ["kind"] = "slide",
+                        ["number"] = slide.Number,
+                        ["hidden"] = slide.Hidden,
+                        ["elements"] = Array(document, slide.Blocks),
+                    };
+                    if (slide.Notes is { } notes)
+                    {
+                        element["notes"] = Array(document, notes);
+                    }
+                    elements.Add(element);
+                    break;
                 case Media media:
                     elements.Add(Picture(media));
                     break;
@@ -226,6 +241,10 @@ internal static class GroundTruth
         if (media.Sheet is not null)
         {
             picture["sheet"] = media.Sheet;
+        }
+        if (media.Slide is not null)
+        {
+            picture["slide"] = media.Slide;
         }
         return picture;
     }

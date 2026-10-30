@@ -87,15 +87,9 @@ internal static class XlsxReader
         {
             return null;
         }
-        // A range is kept as its corners, never cell by cell, as one can cover the whole sheet.
-        var merges = new List<Merge>();
-        foreach (var merge in worksheet!.GetFirstChild<S.MergeCells>()?.Elements<S.MergeCell>() ?? [])
-        {
-            if (merge.Reference?.Value is { } range && Range(range) is { } corners)
-            {
-                merges.Add(corners);
-            }
-        }
+        var merges = new MergeIndex(worksheet!.GetFirstChild<S.MergeCells>()?.Elements<S.MergeCell>()
+            .Select(merge => merge.Reference?.Value is { } range ? Range(range) : null)
+            .OfType<Merge>() ?? []);
         var sharedAnchors = SharedFormulaAnchors(sheetData);
 
         var rows = new List<TableRow>();
@@ -114,7 +108,7 @@ internal static class XlsxReader
                     ? Position(reference) ?? throw new InvalidDataException($"a cell's reference {reference} is not a cell reference")
                     : (rowNumber, column + 1);
                 column = cellColumn;
-                var anchored = merges.FirstOrDefault(m => m.Contains(cellRow, cellColumn));
+                var anchored = merges.Find(cellRow, cellColumn);
                 if (anchored is not null && (anchored.Top != cellRow || anchored.Left != cellColumn))
                 {
                     continue;
@@ -320,8 +314,74 @@ internal static class XlsxReader
         public int Rows => Bottom - Top + 1;
 
         public int Columns => Right - Left + 1;
+    }
 
-        public bool Contains(int row, int column) => row >= Top && row <= Bottom && column >= Left && column <= Right;
+    // A sheet's merged ranges, looked up by cell. A range is kept as its corners, never cell by
+    // cell, as one can cover the whole sheet. The lookup sweeps down the rows: the ranges that
+    // cover the row asked for are kept by their left column, so a cell's range is found by a
+    // binary search; asking for a row above the last starts the sweep again. Excel refuses a
+    // file whose ranges overlap, so a cell is in one range at most; in a file whose ranges do
+    // overlap, a cell is looked for only in the covering range that starts nearest its left.
+    private sealed class MergeIndex
+    {
+        private readonly Merge[] byTop;
+        private readonly List<Merge> covering = [];
+        private int next;
+        private int row;
+
+        public MergeIndex(IEnumerable<Merge> merges)
+        {
+            // OrderBy is stable, so ranges starting on one row keep the file's order.
+            byTop = [.. merges.OrderBy(m => m.Top)];
+        }
+
+        public Merge? Find(int cellRow, int cellColumn)
+        {
+            if (byTop.Length == 0)
+            {
+                return null;
+            }
+            if (cellRow != row)
+            {
+                Sweep(cellRow);
+            }
+            // The last covering range whose left column is at or before the cell's.
+            int low = 0, high = covering.Count - 1, found = -1;
+            while (low <= high)
+            {
+                var middle = low + ((high - low) / 2);
+                if (covering[middle].Left <= cellColumn)
+                {
+                    found = middle;
+                    low = middle + 1;
+                }
+                else
+                {
+                    high = middle - 1;
+                }
+            }
+            return found >= 0 && covering[found].Right >= cellColumn ? covering[found] : null;
+        }
+
+        private void Sweep(int cellRow)
+        {
+            if (cellRow < row)
+            {
+                covering.Clear();
+                next = 0;
+            }
+            row = cellRow;
+            covering.RemoveAll(m => m.Bottom < cellRow);
+            for (; next < byTop.Length && byTop[next].Top <= cellRow; next++)
+            {
+                var merge = byTop[next];
+                if (merge.Bottom >= cellRow)
+                {
+                    var at = covering.FindLastIndex(m => m.Left <= merge.Left) + 1;
+                    covering.Insert(at, merge);
+                }
+            }
+        }
     }
 
     private static string Reference(int row, int column)

@@ -24,7 +24,7 @@ refused: missing or unreadable, not a docx, xlsx, or pptx package, encrypted or 
 format, or malformed, and 1 when the media could not be written. A refusal happens before any
 output is written, with its reason on stderr, and media are written only once the whole
 conversion has succeeded, before stdout. The JSON carries a `schema`
-version, the output contract's. pptx is refused as not yet supported.
+version, the output contract's.
 
 An xlsx document's blocks are its sheets in workbook order, hidden ones included and marked
 `hidden`. A sheet holds a table of the cells that have a value or a formula, each row with its
@@ -41,6 +41,24 @@ and the cells it covers are left out. In Markdown each sheet is a heading of its
 `(hidden)` after a hidden one's, and its table a GFM table whose header row is the column letters
 its cells use and whose first column is the row numbers; a cell shows its value, or with none its
 formula as code (`` `=SUM(A1:A3)` ``), or a shared formula's anchor.
+
+A pptx document's blocks are its slides in presentation order (the presentation's slide list,
+not the parts' names), hidden ones included and marked `hidden`, each with its `number` from 1,
+its blocks, and its `notes`. A slide's shapes are read in its shape tree's order, back to front,
+never re-sorted by position, and a group's shapes in place: a title placeholder's text is a
+level-1 heading, its paragraphs its lines; any other shape's paragraphs are paragraphs, or list
+items where they have a bullet, nested by their level, a character or picture bullet unordered
+and an auto-number ordered. A paragraph's bullet is its own, or else the first its level's
+properties give in the shape's list style, then for a placeholder its layout placeholder's (by
+index, or else type), that one's master placeholder's, and the master's title, body, or other
+text style, or for any other shape the master's other text style, and last the presentation's
+default text style. A table keeps its merges as spans, the cells they cover left out; a chart is
+its cached data; a picture is a media block with its `slide`, the slide's index in the
+document's blocks. An empty paragraph or placeholder is left out, and a layout's prompt text
+never appears. A slide's notes are its notes page's body placeholder's text, never its slide
+image or slide number. In Markdown each slide is a heading, `# Slide 3`, with `(hidden)` after a
+hidden one's, its title a level-2 heading below it, then its content, then its notes after a
+bold `**Notes**` label.
 
 It is released by tag, `vX.Y.Z`, with a CHANGELOG. The spike's question, evidence, and answer are
 in the root repository's README.

@@ -130,6 +130,54 @@ public sealed class CliTests : IDisposable
         }
     }
 
+    // The slides fixture's python-pptx variant presents its slides in an order that isn't their
+    // parts', with a hidden slide and notes.
+    [Theory]
+    [InlineData("json")]
+    [InlineData("markdown")]
+    public void APptxConvertsToStdoutAlone(string format)
+    {
+        var result = Run(Fixtures.DocumentPath("slides", "python-pptx"), "--format", format);
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Equal(Fixtures.Expected("slides", "python-pptx", format == "json" ? "json" : "md"), result.Stdout);
+        Assert.Empty(result.Stderr);
+    }
+
+    // The slide-objects fixture shows the red square on two slides, one part, and the blue
+    // square on one: two files, each the bytes of its part.
+    [Theory]
+    [InlineData("json")]
+    [InlineData("markdown")]
+    public void SlidePicturesAreWrittenOnceEachNamedByTheirContent(string format)
+    {
+        var media = Path.Combine(scratch.FullName, "media");
+        var path = Fixtures.DocumentPath("slide-objects", "python-pptx");
+
+        var result = Run(path, "--format", format, "--media", media);
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Equal(Fixtures.Expected("slide-objects", "python-pptx", format == "json" ? "json" : "md"), result.Stdout);
+        var files = Directory.GetFiles(media).Select(Path.GetFileName).Order(StringComparer.Ordinal).ToList();
+        Assert.Equal(
+            [
+                "0fcca33bb0baf1a0669bd2fcdcaeb34e33d27196f7ffb5294b27aea8a9e46446.png",
+                "10a86bd779a80e60e5d3314ec1edeab643cb454a4c7dfee671132090878d7aea.png",
+            ],
+            files);
+        using var package = ZipFile.OpenRead(path);
+        var stored = package.Entries.Where(e => e.FullName.StartsWith("ppt/media/", StringComparison.Ordinal)).ToList();
+        Assert.Equal(2, stored.Count);
+        foreach (var entry in stored)
+        {
+            using var stream = entry.Open();
+            using var bytes = new MemoryStream();
+            stream.CopyTo(bytes);
+            var name = Convert.ToHexStringLower(SHA256.HashData(bytes.ToArray())) + Path.GetExtension(entry.Name);
+            Assert.Equal(bytes.ToArray(), File.ReadAllBytes(Path.Combine(media, name)));
+        }
+    }
+
     [Fact]
     public void NothingIsWrittenWithoutTheMediaOption()
     {
@@ -259,10 +307,10 @@ public sealed class CliTests : IDisposable
     }
 
     [Fact]
-    public void PptxIsRefusedAsNotYetSupported() =>
+    public void APptxWithBrokenXmlIsRefusedAsMalformed() =>
         AssertRefused(
-            Package("deck.pptx", "ppt/presentation.xml", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml", "<root/>"),
-            "pptx is not yet supported");
+            Package("broken.pptx", "ppt/presentation.xml", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml", "<p:presentation"),
+            "a malformed package");
 
     private void AssertRefused(string path, string reason)
     {

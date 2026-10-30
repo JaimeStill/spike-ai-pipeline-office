@@ -342,6 +342,68 @@ public sealed class MarkdownRendererTests
             markdown);
     }
 
+    // Each slide under a heading of its number, a hidden one marked; its title a level below,
+    // then its content, then its notes after a bold label, which a slide's own text can't make.
+    [Fact]
+    public void ASlideIsItsNumberAsAHeadingThenItsContentThenItsNotes()
+    {
+        var markdown = Render(
+            new Slide(1, false, [new Heading(1, [new TextRun("Plan")]), List(false, "Hire")])
+            {
+                Notes = [Para("Speak slowly."), List(true, "Then the plan")],
+            },
+            new Slide(2, true, [Para("**Notes**")]),
+            new Slide(3, false, [new Media { Name = "abc.png", Alt = "Logo", Slide = 2 }]) { Notes = [] });
+
+        Assert.Equal(
+            """
+            # Slide 1
+
+            ## Plan
+
+            - Hire
+
+            **Notes**
+
+            Speak slowly.
+
+            1. Then the plan
+
+            # Slide 2 (hidden)
+
+            \*\*Notes\*\*
+
+            # Slide 3
+
+            ![Logo](abc.png)
+
+            """,
+            markdown);
+    }
+
+    // A slide's heading is the outermost, so the slide's own headings sit below it, to the
+    // deepest Markdown has; a heading outside a slide keeps its level.
+    [Fact]
+    public void ASlidesHeadingsSitALevelBelowItsOwn()
+    {
+        var markdown = Render(
+            new Slide(1, false, [new Heading(1, [new TextRun("One")]), new Heading(6, [new TextRun("Six")])]),
+            new Heading(1, [new TextRun("After")]));
+
+        Assert.Equal(
+            """
+            # Slide 1
+
+            ## One
+
+            ###### Six
+
+            # After
+
+            """,
+            markdown);
+    }
+
     private static TableCell Cell(string reference, CellValue? value) => new(null) { Ref = reference, Value = value };
 
     private static Paragraph Para(string text) => new([new TextRun(text)]);

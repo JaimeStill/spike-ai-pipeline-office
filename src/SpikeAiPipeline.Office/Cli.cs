@@ -19,8 +19,8 @@ public static class Cli
     /// <summary>The arguments were wrong; usage went to stderr.</summary>
     public const int UsageError = 2;
 
-    /// <summary>The document was refused (missing, unreadable, not docx, xlsx, or pptx, not yet
-    /// supported, encrypted or legacy, or malformed); the reason went to stderr and nothing to
+    /// <summary>The document was refused (missing, unreadable, not docx, xlsx, or pptx,
+    /// encrypted or legacy, or malformed); the reason went to stderr and nothing to
     /// stdout.</summary>
     public const int Refused = 3;
 

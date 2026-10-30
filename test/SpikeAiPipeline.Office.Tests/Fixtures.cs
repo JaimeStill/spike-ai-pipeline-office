@@ -16,19 +16,25 @@ internal static class Fixtures
     /// <summary>The generated xlsx fixtures, by name; no name is a docx fixture's too.</summary>
     public static readonly string[] Xlsx = ["cells", "formulas", "sheets", "drawings", "dates-1904"];
 
+    /// <summary>The generated pptx fixtures, by name; no name is a docx or xlsx fixture's too.</summary>
+    public static readonly string[] Pptx = ["slides", "bullets", "groups", "slide-objects"];
+
     /// <summary>The writers of each generated docx fixture: python-docx, and LibreOffice's re-save.</summary>
     public static readonly string[] DocxWriters = ["python-docx", "libreoffice"];
 
     /// <summary>The writers of each generated xlsx fixture: openpyxl, and LibreOffice's re-save.</summary>
     public static readonly string[] XlsxWriters = ["openpyxl", "libreoffice"];
 
-    /// <summary>Every generated fixture, docx then xlsx, in each of its variants.</summary>
+    /// <summary>The writers of each generated pptx fixture: python-pptx, and LibreOffice's re-save.</summary>
+    public static readonly string[] PptxWriters = ["python-pptx", "libreoffice"];
+
+    /// <summary>Every generated fixture, docx, xlsx, then pptx, in each of its variants.</summary>
     public static TheoryData<string, string> Variants
     {
         get
         {
             var data = new TheoryData<string, string>();
-            foreach (var (names, writers) in new[] { (Docx, DocxWriters), (Xlsx, XlsxWriters) })
+            foreach (var (names, writers) in new[] { (Docx, DocxWriters), (Xlsx, XlsxWriters), (Pptx, PptxWriters) })
             {
                 foreach (var name in names)
                 {
@@ -43,7 +49,7 @@ internal static class Fixtures
     }
 
     /// <summary>A generated fixture's format, its file extension.</summary>
-    public static string Format(string name) => Xlsx.Contains(name) ? "xlsx" : "docx";
+    public static string Format(string name) => Xlsx.Contains(name) ? "xlsx" : Pptx.Contains(name) ? "pptx" : "docx";
 
     /// <summary>A generated fixture variant's file.</summary>
     public static string DocumentPath(string name, string variant) =>

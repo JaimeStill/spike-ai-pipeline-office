@@ -50,6 +50,19 @@ The xlsx fixtures are in `generated/xlsx/`, the same three or four files each:
   picture with its `sheet`. The re-save has its own truth wherever its cells differ, which is in
   every fixture with a formula, a boolean, or an error.
 
+The pptx fixtures are in `generated/pptx/`:
+
+- `<name>.python-pptx.pptx`: written by python-pptx on its default template, with what it has no
+  API for set on its XML: a hidden slide's `show="0"`, the presentation's slide order, each
+  paragraph's own bullet (`buNone`, `buChar`, `buAutoNum`), and the pictures' alternative text
+  and title. Its charts are its own, with an embedded workbook and cached series.
+- `<name>.libreoffice.pptx`: that file re-saved by LibreOffice.
+- `<name>.truth.json` and `<name>.libreoffice.truth.json`: each slide in presentation order, its
+  `number`, whether it is `hidden`, its elements in the docx truth's shape (a title is a level-1
+  `heading`; a picture's `media` has its `slide`, the slide's index), and its `notes`' elements
+  when it has notes. `absent` holds the layouts' and master's prompt texts and LibreOffice's
+  notes-page slide-number field, which must appear nowhere.
+
 | Fixture | Covers |
 | --- | --- |
 | `headings` | heading levels 1 to 4 from heading styles, a level-2 heading from a paragraph's outline level alone, paragraphs, a line break, and text Markdown would misread |
@@ -68,6 +81,10 @@ The xlsx fixtures are in `generated/xlsx/`, the same three or four files each:
 | `sheets` (xlsx) | five sheets in an order that isn't their names': a hidden, an empty, and a very hidden one; merged cells across columns, rows, and both |
 | `drawings` (xlsx) | a bar chart over the sheet's cells; the same picture twice on one sheet; a second sheet's picture |
 | `dates-1904` (xlsx) | dates and a datetime on the 1904 date system's first day (serial 0.5), and a plain number |
+| `slides` (pptx) | five slides presented in an order that isn't their parts' (welcome, hidden, agenda, closing, questions), a hidden slide, notes of one and two paragraphs on three slides, a title slide's subtitle whose layout turns the master's bullets off, a text box, and a content placeholder left empty |
+| `bullets` (pptx) | a content placeholder's master bullets nested three levels and back, a paragraph whose own bullet is none between lists, a numbered list with a bullet nested in it, a bullet list right after it at the same level; a text box's plain paragraph, its own bullets nested, its own number, an empty paragraph |
+| `groups` (pptx) | a text box, a group of a text box and a nested group (a text box and a picture), and a text box placed above them all but last in the shape tree |
+| `slide-objects` (pptx) | a table with a cell merged across columns and one across rows, a cell of two paragraphs, a pipe; a titled clustered column chart of two series with a missing value, with notes; the same picture on two slides beside another, with alternative text and a title |
 
 What LibreOffice's re-save changes, checked by unzipping it:
 
@@ -109,6 +126,20 @@ And in an xlsx file, where openpyxl's file and LibreOffice's differ:
   (writing the covered cells as empty styled cells), the 1904 date system, the sheet order, and
   the pictures' alternative text.
 
+And in a pptx file, where python-pptx's file and LibreOffice's differ:
+
+- python-pptx leaves bullets to inheritance: a content placeholder's paragraphs take the
+  master's body style's bullets, a subtitle its layout's `buNone`. LibreOffice writes every
+  placeholder paragraph's bullet, or `buNone`, on the paragraph itself, so only python-pptx's
+  file has inherited bullets; both read the same.
+- LibreOffice renames the slide parts in presentation order, so only python-pptx's file has
+  parts out of order. It keeps the hidden slide, the notes, the group shapes, the table's
+  `gridSpan`, `rowSpan`, `hMerge`, and `vMerge`, the empty placeholder (as an empty paragraph),
+  and the pictures' descriptions in one part per content.
+- LibreOffice drops a picture's title (`slide-objects`: its LibreOffice truth says so), writes
+  each notes page's slide-number placeholder with a `<number>` field, writes a centered title as
+  a title, and drops the chart's embedded workbook, keeping its caches.
+
 ## Regenerating
 
 From the repository root, with LibreOffice's `soffice` on the path and no LibreOffice window open
@@ -118,8 +149,8 @@ on the same profile (the script uses a throwaway one):
 mise run fixtures
 ```
 
-That runs `uv run --script fixtures/generate.py`; the script's inline metadata pins python-docx
-and openpyxl, and `generate.py.lock` pins the rest. It rewrites every file of `generated/`, or with fixture
+That runs `uv run --script fixtures/generate.py`; the script's inline metadata pins python-docx,
+openpyxl, and python-pptx, and `generate.py.lock` pins the rest. It rewrites every file of `generated/`, or with fixture
 names as arguments (`uv run --script fixtures/generate.py notes media`) only those fixtures'
 files, and the section below, which lists every fixture's files as they are on disk. Both
 writers stamp the time into the package, so a rerun changes a package's bytes and checksum
@@ -184,4 +215,17 @@ LibreOffice: `LibreOffice 26.8.1.1 680(Build:1)`
 | `generated/xlsx/dates-1904.openpyxl.xlsx` | `1b35da15738c50395bc484dffc0450381121b1204671adaaf8a23c3364e89df2` |
 | `generated/xlsx/dates-1904.libreoffice.xlsx` | `2d7e9b1992ee47476404f0c5d279bcde64013579e31dad9812b5d22f2fdd6a99` |
 | `generated/xlsx/dates-1904.truth.json` | `482d62d7d9fd3c8bf92d81e6d29ca3aab2912338f3d51d0fb7e653dff3e81fd9` |
+| `generated/pptx/slides.python-pptx.pptx` | `fc9f5f4fb65f618489c0561fa1b6aa4c1395d815fc438535058d86711cbe47f0` |
+| `generated/pptx/slides.libreoffice.pptx` | `956895b6d18ea6609ac03cbb8e723dd639b131beade1b4d2bde17da2ae71736b` |
+| `generated/pptx/slides.truth.json` | `feca71bc485c7f545641188beb60ef4bef05a54c52e9b406574c32a15abc4635` |
+| `generated/pptx/bullets.python-pptx.pptx` | `368cb19ff346a43e5b61440624effb435db23d7986ec160a5eb3d46e0b55f843` |
+| `generated/pptx/bullets.libreoffice.pptx` | `b90c750a44e99340f0eb422337f85269bbd05ebbae99a38e8d0c48ee62f9af18` |
+| `generated/pptx/bullets.truth.json` | `f0e86d26d97b4d7f998212e9a30516935a749fe5ea49d44b740a0831b2bf5835` |
+| `generated/pptx/groups.python-pptx.pptx` | `7e8b0812be4623916fc2405c30af04f8e7989cc7a19d769b39a2e6ffb0dd5050` |
+| `generated/pptx/groups.libreoffice.pptx` | `12c2fbb5418348021492f912227f590a70bf8bc0f25f91d6ed716bd12a7db0bb` |
+| `generated/pptx/groups.truth.json` | `9d1fd65bf64bbe477837e058956471fb92c6411ad5409e7f41bf9c190d0b9515` |
+| `generated/pptx/slide-objects.python-pptx.pptx` | `32514146bd061049ebdbe813375913454a131ad6c6fc714adc60020fabc39717` |
+| `generated/pptx/slide-objects.libreoffice.pptx` | `7c0b5e40f22001166b9e4ee6f3b8e68a5c21fc6ea73e8ed77e15caffd4918995` |
+| `generated/pptx/slide-objects.truth.json` | `0e73928c821d142f0ecf57d86fac74ad0d38cd27572baf926eac968a386232f4` |
+| `generated/pptx/slide-objects.libreoffice.truth.json` | `efb18854ec9704698f7d250f747f85b3acc4a21d6654096004f80fe1258376e8` |
 <!-- generated: end -->

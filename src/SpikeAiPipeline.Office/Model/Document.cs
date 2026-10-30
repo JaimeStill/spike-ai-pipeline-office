@@ -6,13 +6,13 @@ namespace SpikeAiPipeline.Office.Model;
 // A document is an ordered list of blocks; a block's "type" names its kind in the JSON. Every
 // block but a media block is the document's text, complete without inference.
 //
-// The kinds this schema version holds are heading, paragraph, list, table, chart, media, and
-// sheet; a docx document also holds its sections' headers and footers, its footnotes and
+// The kinds this schema version holds are heading, paragraph, list, table, chart, media, sheet,
+// and slide; a docx document also holds its sections' headers and footers, its footnotes and
 // endnotes, and its comments, referred to from the text by the footnote, endnote, and comment
 // inlines. An xlsx document's blocks are its sheets, each holding a table of its cells, whose
-// values are typed, then its charts and pictures. The model grows by adding kinds and optional
-// properties, never by reshaping these: slide is a Block kind to come, holding its own blocks
-// (its notes beside them), and a media block's slide joins its section and sheet.
+// values are typed, then its charts and pictures. A pptx document's blocks are its slides in
+// presentation order, each holding its own blocks and its notes' blocks beside them. The model
+// grows by adding kinds and optional properties, never by reshaping these.
 
 /// <summary>The formats office reads; the JSON names them by their file extension.</summary>
 [JsonConverter(typeof(JsonStringEnumConverter<SourceFormat>))]
@@ -101,6 +101,7 @@ public sealed record CommentReply(int Id, string? Author, IReadOnlyList<Block> B
 [JsonDerivedType(typeof(Chart), "chart")]
 [JsonDerivedType(typeof(Media), "media")]
 [JsonDerivedType(typeof(Sheet), "sheet")]
+[JsonDerivedType(typeof(Slide), "slide")]
 public abstract record Block;
 
 /// <summary>A heading, level 1 the outermost.</summary>
@@ -205,12 +206,25 @@ public sealed record Media : Block
 
     /// <summary>The index of the xlsx sheet the picture is on, in the document's blocks.</summary>
     public int? Sheet { get; init; }
+
+    /// <summary>The index of the pptx slide the picture is on, in the document's blocks: its
+    /// number less one.</summary>
+    public int? Slide { get; init; }
 }
 
 /// <summary>An xlsx sheet, in workbook order: its name, whether it is hidden (hidden or very
 /// hidden, both read the same), and its blocks: a table of its cells when it has any, then its
 /// charts and pictures in the order its drawing anchors them.</summary>
 public sealed record Sheet(string Name, bool Hidden, IReadOnlyList<Block> Blocks) : Block;
+
+/// <summary>A pptx slide, in presentation order: its number from 1 (hidden slides counted),
+/// whether it is hidden from the slide show, its blocks in the order of its shape tree, and its
+/// notes' blocks, null when it has no notes text.</summary>
+public sealed record Slide(int Number, bool Hidden, IReadOnlyList<Block> Blocks) : Block
+{
+    /// <summary>The blocks of the slide's notes page: the text of its notes placeholder.</summary>
+    public IReadOnlyList<Block>? Notes { get; init; }
+}
 
 /// <summary>The type of a sheet cell's value.</summary>
 [JsonConverter(typeof(JsonStringEnumConverter<CellValueType>))]
