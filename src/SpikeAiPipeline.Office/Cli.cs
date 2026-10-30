@@ -12,6 +12,10 @@ public static class Cli
     /// <summary>The document was converted and written to stdout.</summary>
     public const int Converted = 0;
 
+    /// <summary>The document was converted but its media could not be written to the media
+    /// directory; the reason went to stderr and nothing to stdout.</summary>
+    public const int MediaNotWritten = 1;
+
     /// <summary>The arguments were wrong; usage went to stderr.</summary>
     public const int UsageError = 2;
 
@@ -46,7 +50,7 @@ public static class Cli
             format,
             media,
         };
-        root.SetAction(parsed => Convert(parsed.GetValue(input)!, parsed.GetValue(format)!, stdout, stderr));
+        root.SetAction(parsed => Convert(parsed.GetValue(input)!, parsed.GetValue(format)!, parsed.GetValue(media), stdout, stderr));
 
         var result = root.Parse(args);
         if (result.Errors.Count > 0)
@@ -62,22 +66,40 @@ public static class Cli
         return result.Invoke(new InvocationConfiguration { Output = stdout, Error = stderr });
     }
 
-    // The whole rendering is made before any of it is written, so a refusal leaves stdout empty.
-    // Media are written to the --media directory as they are found, and the body has none yet,
-    // so the directory is neither written nor created.
-    private static int Convert(string path, string format, TextWriter stdout, TextWriter stderr)
+    // The whole conversion and rendering are made before anything is written, so a refusal leaves
+    // stdout empty and the media directory untouched. Media are written next, the directory
+    // created if missing, each distinct content once (a file of the same name holds the same
+    // bytes, so it is rewritten); stdout comes last, so it is written only when they all were.
+    private static int Convert(string path, string format, string? mediaDirectory, TextWriter stdout, TextWriter stderr)
     {
-        Document document;
+        Conversion conversion;
         try
         {
-            document = OfficeReader.Read(path);
+            conversion = OfficeReader.Convert(path);
         }
         catch (RefusalException e)
         {
             stderr.WriteLine($"spike-ai-pipeline-office: refused: {e.Message}");
             return Refused;
         }
-        stdout.Write(format == "markdown" ? MarkdownRenderer.Render(document) : DocumentJson.Serialize(document));
+        var output = format == "markdown" ? MarkdownRenderer.Render(conversion.Document) : DocumentJson.Serialize(conversion.Document);
+        if (mediaDirectory is not null)
+        {
+            try
+            {
+                Directory.CreateDirectory(mediaDirectory);
+                foreach (var (name, bytes) in conversion.Media)
+                {
+                    File.WriteAllBytes(Path.Combine(mediaDirectory, name), bytes);
+                }
+            }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            {
+                stderr.WriteLine($"spike-ai-pipeline-office: media not written: {e.Message}");
+                return MediaNotWritten;
+            }
+        }
+        stdout.Write(output);
         stdout.Flush();
         return Converted;
     }

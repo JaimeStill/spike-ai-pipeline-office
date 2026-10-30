@@ -99,6 +99,15 @@
       ]
     },
     {
+      "type": "paragraph",
+      "inlines": [
+        {
+          "type": "text",
+          "text": "A paragraph whose mark was deleted, right before a table."
+        }
+      ]
+    },
+    {
       "type": "table",
       "rows": [
         {

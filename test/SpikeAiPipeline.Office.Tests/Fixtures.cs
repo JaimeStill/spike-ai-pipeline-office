@@ -7,7 +7,11 @@ internal static class Fixtures
     public static string Root { get; } = FindRoot();
 
     /// <summary>The generated docx fixtures, by name.</summary>
-    public static readonly string[] Docx = ["headings", "lists", "tables", "tracked-changes"];
+    public static readonly string[] Docx =
+    [
+        "headings", "lists", "tables", "tracked-changes",
+        "sections", "headers-even-off", "notes", "comments", "comments-plain", "media", "charts",
+    ];
 
     /// <summary>The writers of each generated fixture: python-docx, and LibreOffice's re-save.</summary>
     public static readonly string[] Variants = ["python-docx", "libreoffice"];
@@ -32,12 +36,22 @@ internal static class Fixtures
     public static string DocxPath(string name, string variant) =>
         Path.Combine(Root, "fixtures", "generated", "docx", $"{name}.{variant}.docx");
 
-    public static string TruthPath(string name) =>
-        Path.Combine(Root, "fixtures", "generated", "docx", $"{name}.truth.json");
+    /// <summary>A fixture variant's ground truth: the variant's own where the generator wrote one,
+    /// because LibreOffice's re-save changed what the document holds, or else the fixture's.</summary>
+    public static string TruthPath(string name, string variant)
+    {
+        var own = Path.Combine(Root, "fixtures", "generated", "docx", $"{name}.{variant}.truth.json");
+        return File.Exists(own) ? own : Path.Combine(Root, "fixtures", "generated", "docx", $"{name}.truth.json");
+    }
 
-    /// <summary>Office's exact output for a fixture, one file for both variants.</summary>
-    public static string Expected(string name, string extension) =>
-        File.ReadAllText(Path.Combine(Root, "test", "SpikeAiPipeline.Office.Tests", "Expected", $"{name}.{extension}"));
+    /// <summary>Office's exact output for a fixture variant: the variant's own file where the
+    /// variants' outputs differ (part names, ids), or else one file for both.</summary>
+    public static string Expected(string name, string variant, string extension)
+    {
+        var directory = Path.Combine(Root, "test", "SpikeAiPipeline.Office.Tests", "Expected");
+        var own = Path.Combine(directory, $"{name}.{variant}.{extension}");
+        return File.ReadAllText(File.Exists(own) ? own : Path.Combine(directory, $"{name}.{extension}"));
+    }
 
     private static string FindRoot()
     {

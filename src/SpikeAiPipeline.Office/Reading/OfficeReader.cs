@@ -10,7 +10,11 @@ namespace SpikeAiPipeline.Office.Reading;
 /// written.</summary>
 public sealed class RefusalException(string message) : Exception(message);
 
-/// <summary>Office's converter: a document in, the model out.</summary>
+/// <summary>A conversion's result: the model, and the embedded media its media blocks name, by
+/// file name.</summary>
+public sealed record Conversion(Document Document, IReadOnlyDictionary<string, byte[]> Media);
+
+/// <summary>Office's converter: a document in, the model and its media out.</summary>
 public static class OfficeReader
 {
     private static readonly byte[] CompoundFileSignature = [0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1];
@@ -19,7 +23,12 @@ public static class OfficeReader
     /// <summary>Converts the document at path into the model.</summary>
     /// <exception cref="RefusalException">The file is missing or unreadable, isn't a docx, xlsx,
     /// or pptx package, is encrypted or a legacy binary format, or is malformed.</exception>
-    public static Document Read(string path)
+    public static Document Read(string path) => Convert(path).Document;
+
+    /// <summary>Converts the document at path into the model and the media it embeds, read whole
+    /// before anything is written.</summary>
+    /// <exception cref="RefusalException">As <see cref="Read"/>.</exception>
+    public static Conversion Convert(string path)
     {
         if (!File.Exists(path))
         {
@@ -27,7 +36,7 @@ public static class OfficeReader
         }
         try
         {
-            return Convert(path, Sniff(path));
+            return ConvertPackage(path, Sniff(path));
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException)
         {
@@ -36,7 +45,7 @@ public static class OfficeReader
         }
     }
 
-    private static Document Convert(string path, SourceFormat format)
+    private static Conversion ConvertPackage(string path, SourceFormat format)
     {
         if (format != SourceFormat.Docx)
         {

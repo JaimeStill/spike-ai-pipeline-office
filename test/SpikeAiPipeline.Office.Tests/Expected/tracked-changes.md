@@ -15,5 +15,7 @@ A newly inserted paragraph.
 - Kept item
 - Inserted item
 
+A paragraph whose mark was deleted, right before a table.
+
 | Cell fresh value | Plain cell |
 | --- | --- |

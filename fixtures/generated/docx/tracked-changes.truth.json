@@ -46,6 +46,10 @@
       "text": "Inserted item"
     },
     {
+      "kind": "paragraph",
+      "text": "A paragraph whose mark was deleted, right before a table."
+    },
+    {
       "kind": "table",
       "rows": [
         [

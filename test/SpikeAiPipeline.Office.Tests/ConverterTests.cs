@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text.Json.Nodes;
 using SpikeAiPipeline.Office.Model;
 using SpikeAiPipeline.Office.Reading;
@@ -17,7 +18,7 @@ public sealed class ConverterTests
     public void ModelMatchesTheGroundTruth(string name, string variant)
     {
         var document = OfficeReader.Read(Fixtures.DocxPath(name, variant));
-        var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name)))!;
+        var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name, variant)))!;
 
         Assert.Equal(SourceFormat.Docx, document.Format);
         Assert.Equal("docx", (string?)truth["format"]);
@@ -32,12 +33,79 @@ public sealed class ConverterTests
         Assert.Equal(expected.Count, actual.Count);
     }
 
+    // Sections with their headers and footers, footnotes, endnotes, and comments, each compared
+    // whole; a part the truth leaves out the model must not have.
+    [Theory]
+    [MemberData(nameof(Cases))]
+    public void OtherPartsMatchTheGroundTruth(string name, string variant)
+    {
+        var document = OfficeReader.Read(Fixtures.DocxPath(name, variant));
+        var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name, variant)))!;
+
+        foreach (var part in GroundTruth.Parts)
+        {
+            var expected = truth[part];
+            var actual = GroundTruth.Part(document, part);
+            Assert.True(
+                JsonNode.DeepEquals(expected, actual),
+                $"{part}: expected {expected?.ToJsonString() ?? "none"}, got {actual?.ToJsonString() ?? "none"}");
+        }
+    }
+
+    // Every media file the conversion holds is named by its bytes' SHA-256 and its part's
+    // extension, and is exactly the set the media blocks name: one per distinct content.
+    [Theory]
+    [MemberData(nameof(Cases))]
+    public void MediaFilesAreNamedByTheirContent(string name, string variant)
+    {
+        var conversion = OfficeReader.Convert(Fixtures.DocxPath(name, variant));
+        var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name, variant)))!;
+
+        foreach (var (file, bytes) in conversion.Media)
+        {
+            Assert.StartsWith(Convert.ToHexStringLower(SHA256.HashData(bytes)) + ".", file, StringComparison.Ordinal);
+        }
+        Assert.Equal(Names(truth).Order(StringComparer.Ordinal), conversion.Media.Keys.Order(StringComparer.Ordinal));
+    }
+
+    // The distinct names of the truth's media elements, wherever they are.
+    private static HashSet<string> Names(JsonNode? node)
+    {
+        var names = new HashSet<string>(StringComparer.Ordinal);
+        void Walk(JsonNode? n)
+        {
+            switch (n)
+            {
+                case JsonObject o:
+                    if ((string?)o["kind"] == "media" && o["name"] is { } fileName)
+                    {
+                        names.Add((string)fileName!);
+                    }
+                    foreach (var (_, value) in o)
+                    {
+                        Walk(value);
+                    }
+                    break;
+                case JsonArray a:
+                    foreach (var value in a)
+                    {
+                        Walk(value);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        Walk(node);
+        return names;
+    }
+
     [Theory]
     [MemberData(nameof(Cases))]
     public void DeletedTextIsGoneAndMovedTextAppearsOnce(string name, string variant)
     {
         var document = OfficeReader.Read(Fixtures.DocxPath(name, variant));
-        var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name)))!;
+        var truth = JsonNode.Parse(File.ReadAllText(Fixtures.TruthPath(name, variant)))!;
         string[] outputs = [DocumentJson.Serialize(document), MarkdownRenderer.Render(document)];
 
         foreach (var output in outputs)
@@ -56,10 +124,10 @@ public sealed class ConverterTests
     [Theory]
     [MemberData(nameof(Cases))]
     public void JsonIsExact(string name, string variant) =>
-        Assert.Equal(Fixtures.Expected(name, "json"), DocumentJson.Serialize(OfficeReader.Read(Fixtures.DocxPath(name, variant))));
+        Assert.Equal(Fixtures.Expected(name, variant, "json"), DocumentJson.Serialize(OfficeReader.Read(Fixtures.DocxPath(name, variant))));
 
     [Theory]
     [MemberData(nameof(Cases))]
     public void MarkdownIsExact(string name, string variant) =>
-        Assert.Equal(Fixtures.Expected(name, "md"), MarkdownRenderer.Render(OfficeReader.Read(Fixtures.DocxPath(name, variant))));
+        Assert.Equal(Fixtures.Expected(name, variant, "md"), MarkdownRenderer.Render(OfficeReader.Read(Fixtures.DocxPath(name, variant))));
 }

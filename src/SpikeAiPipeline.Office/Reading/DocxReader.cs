@@ -2,28 +2,129 @@ using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using SpikeAiPipeline.Office.Model;
+using A = DocumentFormat.OpenXml.Drawing;
+using C = DocumentFormat.OpenXml.Drawing.Charts;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using V = DocumentFormat.OpenXml.Vml;
 using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace SpikeAiPipeline.Office.Reading;
 
-/// <summary>Reads a docx package's body into the model, its tracked changes accepted.</summary>
-internal static class DocxReader
+/// <summary>Reads a docx package into the model, its tracked changes accepted: the body, each
+/// section's headers and footers, the notes the text references, and the comments.</summary>
+internal static partial class DocxReader
 {
-    public static Document Read(WordprocessingDocument package)
+    public static Conversion Read(WordprocessingDocument package)
     {
         var main = package.MainDocumentPart ?? throw new OpenXmlPackageException("the package has no main document part");
         var body = main.Document?.Body ?? throw new OpenXmlPackageException("the main document part has no body");
-        var reader = new BodyReader(
+        var context = new DocxContext(
+            main,
             new Styles(main.StyleDefinitionsPart?.Styles),
             new Numbering(main.NumberingDefinitionsPart?.Numbering));
-        return new Document(Document.CurrentSchema, SourceFormat.Docx, reader.ReadBlocks(body));
+        var blocks = new BodyReader(context, main, isBody: true).ReadBlocks(body);
+        var sections = ReadSections(context, body);
+        var comments = context.Comments.Build(context);
+        return new Conversion(
+            new Document(Document.CurrentSchema, SourceFormat.Docx, blocks)
+            {
+                Sections = sections.Any(s => s.Headers is not null || s.Footers is not null) ? sections : null,
+                Footnotes = context.Footnotes.Read is { Count: > 0 } footnotes ? footnotes : null,
+                Endnotes = context.Endnotes.Read is { Count: > 0 } endnotes ? endnotes : null,
+                Comments = comments.Count > 0 ? comments : null,
+            },
+            context.Media.Files);
     }
 
-    private sealed class BodyReader(Styles styles, Numbering numbering)
+    // Each section's headers and footers, in body order: a section is a paragraph's w:sectPr, and
+    // the body's own w:sectPr is the last. A section without a reference of a kind inherits the
+    // previous section's; the first-page kind counts only with a title page, the even-page kind
+    // only when the settings turn even and odd headers on. A header or footer is read for each
+    // section that shows it, so its media are placed in that section.
+    private static List<Section> ReadSections(DocxContext context, W.Body body)
     {
-        // The blocks of a body or a table cell. Tracked changes are read in their accepted state:
-        // a paragraph whose mark was deleted (or moved away) runs on into the next paragraph,
-        // which keeps its own properties, as the mark that survives is the next one's.
+        var evenAndOdd = context.Main.DocumentSettingsPart?.Settings?.GetFirstChild<W.EvenAndOddHeaders>() is { } setting && OnOff(setting.Val);
+        var properties = body.Descendants<W.Paragraph>()
+            .Select(p => p.ParagraphProperties?.SectionProperties)
+            .OfType<W.SectionProperties>()
+            .ToList();
+        if (body.Elements<W.SectionProperties>().LastOrDefault() is { } last)
+        {
+            properties.Add(last);
+        }
+        var headers = new Dictionary<HeaderFooterKind, string>();
+        var footers = new Dictionary<HeaderFooterKind, string>();
+        var sections = new List<Section>();
+        for (var i = 0; i < properties.Count; i++)
+        {
+            var sectPr = properties[i];
+            foreach (var reference in sectPr.Elements<W.HeaderReference>())
+            {
+                Inherit(headers, KindOf(reference.Type?.Value), reference.Id?.Value);
+            }
+            foreach (var reference in sectPr.Elements<W.FooterReference>())
+            {
+                Inherit(footers, KindOf(reference.Type?.Value), reference.Id?.Value);
+            }
+            List<HeaderFooterKind> kinds = [HeaderFooterKind.Default];
+            if (sectPr.GetFirstChild<W.TitlePage>() is { } titlePage && OnOff(titlePage.Val))
+            {
+                kinds.Add(HeaderFooterKind.First);
+            }
+            if (evenAndOdd)
+            {
+                kinds.Add(HeaderFooterKind.Even);
+            }
+            context.Section = i;
+            sections.Add(new Section(Stories(context, headers, kinds), Stories(context, footers, kinds)));
+        }
+        context.Section = null;
+        return sections;
+    }
+
+    private static void Inherit(Dictionary<HeaderFooterKind, string> stories, HeaderFooterKind kind, string? relationshipId)
+    {
+        if (relationshipId is not null)
+        {
+            stories[kind] = relationshipId;
+        }
+    }
+
+    private static HeaderFooterKind KindOf(W.HeaderFooterValues? type) =>
+        type == W.HeaderFooterValues.First ? HeaderFooterKind.First
+        : type == W.HeaderFooterValues.Even ? HeaderFooterKind.Even
+        : HeaderFooterKind.Default;
+
+    private static List<HeaderFooter>? Stories(DocxContext context, Dictionary<HeaderFooterKind, string> stories, List<HeaderFooterKind> kinds)
+    {
+        var result = new List<HeaderFooter>();
+        foreach (var kind in kinds)
+        {
+            if (stories.TryGetValue(kind, out var id)
+                && context.Main.TryGetPartById(id, out var part)
+                && part.RootElement is W.Header or W.Footer)
+            {
+                var blocks = new BodyReader(context, part, isBody: false).ReadBlocks(part.RootElement);
+                if (blocks.Count > 0)
+                {
+                    result.Add(new HeaderFooter(kind, blocks));
+                }
+            }
+        }
+        return result.Count > 0 ? result : null;
+    }
+
+    // An on/off property's value: present with no value is on.
+    private static bool OnOff(OnOffValue? value) => value?.Value ?? true;
+
+    // The blocks of one story part: the body, a header or footer, a note, or a comment. Only the
+    // body counts sections and collects comment anchors.
+    private sealed class BodyReader(DocxContext context, OpenXmlPart part, bool isBody)
+    {
+        // The blocks of a container. Tracked changes are read in their accepted state: a paragraph
+        // whose mark was deleted (or moved away) runs on into the next paragraph, which keeps its
+        // own properties, as the mark that survives is the next one's. A table ends that: the text
+        // carried to it stays a paragraph of its own before the table.
         public List<Block> ReadBlocks(OpenXmlElement container)
         {
             var blocks = new BlockList();
@@ -32,6 +133,11 @@ internal static class DocxReader
             {
                 if (element is W.Table table)
                 {
+                    if (carried is not null)
+                    {
+                        AddCarried(blocks, carried);
+                        carried = null;
+                    }
                     blocks.Add(ReadTable(table));
                     continue;
                 }
@@ -45,32 +151,57 @@ internal static class DocxReader
                     continue;
                 }
                 AddParagraph(blocks, paragraph, inlines);
+                if (isBody)
+                {
+                    context.Comments.EndParagraph();
+                    if (paragraph.ParagraphProperties?.SectionProperties is not null)
+                    {
+                        context.Section++;
+                    }
+                }
             }
-            if (carried is { IsBlank: false })
+            if (carried is not null)
+            {
+                AddCarried(blocks, carried);
+            }
+            return blocks.Build();
+        }
+
+        private static void AddCarried(BlockList blocks, InlineBuilder carried)
+        {
+            if (!carried.IsBlank)
             {
                 blocks.Add(new Paragraph(carried.Build()));
             }
-            return blocks.Build();
+            foreach (var block in carried.Blocks)
+            {
+                blocks.Add(block);
+            }
         }
 
         private void AddParagraph(BlockList blocks, W.Paragraph paragraph, InlineBuilder inlines)
         {
             var properties = paragraph.ParagraphProperties;
             var styleId = properties?.ParagraphStyleId?.Val?.Value;
-            if (ListLevel(properties, styleId) is var (numId, level) && numbering.Resolve(numId, level, styles) is { } numberingLevel)
+            if (ListLevel(properties, styleId) is var (numId, level) && context.Numbering.Resolve(numId, level, context.Styles) is { } numberingLevel)
             {
-                // A list item is kept even when empty: it is still an item of its list.
-                blocks.AddItem(level, numId, numberingLevel, new Paragraph(inlines.Build()));
+                // A list item is kept even when empty: it is still an item of its list. Its
+                // pictures and charts are blocks of the item, after its paragraph.
+                blocks.AddItem(level, numId, numberingLevel, [new Paragraph(inlines.Build()), .. inlines.Blocks]);
                 return;
             }
-            // Empty paragraphs and headings are spacing, not text.
-            if (inlines.IsBlank)
+            // Empty paragraphs and headings are spacing, not text. A paragraph's pictures and
+            // charts follow it as blocks of their own, in the order they occur.
+            if (!inlines.IsBlank)
             {
-                return;
+                blocks.Add(HeadingLevel(properties, styleId) is int headingLevel
+                    ? new Heading(headingLevel, inlines.Build())
+                    : new Paragraph(inlines.Build()));
             }
-            blocks.Add(HeadingLevel(properties, styleId) is int headingLevel
-                ? new Heading(headingLevel, inlines.Build())
-                : new Paragraph(inlines.Build()));
+            foreach (var block in inlines.Blocks)
+            {
+                blocks.Add(block);
+            }
         }
 
         // The level a paragraph's own outline level gives it, or else its style's: an outline level
@@ -81,7 +212,7 @@ internal static class DocxReader
             {
                 return own < 9 ? own + 1 : null;
             }
-            foreach (var style in styles.Chain(styleId))
+            foreach (var style in context.Styles.Chain(styleId))
             {
                 if (style.StyleParagraphProperties?.OutlineLevel?.Val?.Value is int outline)
                 {
@@ -108,7 +239,7 @@ internal static class DocxReader
             int? level = own?.NumberingLevelReference?.Val?.Value;
             if (numId is null)
             {
-                foreach (var style in styles.Chain(styleId))
+                foreach (var style in context.Styles.Chain(styleId))
                 {
                     if (style.StyleParagraphProperties?.NumberingProperties is { NumberingId.Val.Value: var styleNumId } styleNumbering)
                     {
@@ -160,6 +291,165 @@ internal static class DocxReader
             }
             return new Table([.. rows.Select(cells => new TableRow([.. cells.Select(c => c.Build())]))]);
         }
+
+        // A paragraph's text in its accepted state. The runs are walked explicitly: the SDK's
+        // InnerText includes w:delText, and every w:t would include a move's source, so insertions
+        // and a move's destination are read through, deletions and a move's source skipped. A
+        // comment's anchored range ends in a reference to it.
+        private void ReadInlines(OpenXmlElement container, InlineBuilder inlines)
+        {
+            foreach (var child in container.ChildElements)
+            {
+                switch (child)
+                {
+                    case W.Run run:
+                        ReadRun(run, inlines);
+                        break;
+                    case W.DeletedRun or W.MoveFromRun:
+                        break;
+                    case W.InsertedRun or W.MoveToRun or W.Hyperlink or W.SimpleField or W.CustomXmlRun:
+                        ReadInlines(child, inlines);
+                        break;
+                    case W.SdtRun { SdtContentRun: { } content }:
+                        ReadInlines(content, inlines);
+                        break;
+                    case W.CommentRangeStart start when isBody:
+                        context.Comments.Start(start.Id?.Value);
+                        break;
+                    case W.CommentRangeEnd end when isBody:
+                        if (context.Comments.End(end.Id?.Value) is int ended)
+                        {
+                            inlines.Add(new CommentReference(ended));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        // A run's text, references, pictures, and charts. Field codes are instructions, not text;
+        // a field's result is ordinary runs.
+        private void ReadRun(W.Run run, InlineBuilder inlines)
+        {
+            foreach (var child in run.ChildElements)
+            {
+                switch (child)
+                {
+                    case W.Text text:
+                        Append(inlines, text.Text);
+                        break;
+                    case W.TabChar or W.PositionalTab:
+                        Append(inlines, "\t");
+                        break;
+                    case W.Break or W.CarriageReturn:
+                        Append(inlines, "\n");
+                        break;
+                    case W.NoBreakHyphen:
+                        Append(inlines, "-");
+                        break;
+                    case W.FootnoteReference reference when reference.Id?.Value is long id:
+                        if (context.Footnotes.Reference(context, (int)id))
+                        {
+                            inlines.Add(new FootnoteReference((int)id));
+                        }
+                        break;
+                    case W.EndnoteReference reference when reference.Id?.Value is long id:
+                        if (context.Endnotes.Reference(context, (int)id))
+                        {
+                            inlines.Add(new EndnoteReference((int)id));
+                        }
+                        break;
+                    // A comment with no range is marked where its reference is.
+                    case W.CommentReference reference when isBody:
+                        if (context.Comments.Point(reference.Id?.Value) is int pointed)
+                        {
+                            inlines.Add(new CommentReference(pointed));
+                        }
+                        break;
+                    case W.Drawing drawing:
+                        ReadDrawing(drawing, inlines);
+                        break;
+                    case W.Picture picture:
+                        ReadVmlPicture(picture, inlines);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void Append(InlineBuilder inlines, string text)
+        {
+            inlines.Append(text);
+            if (isBody)
+            {
+                context.Comments.Append(text);
+            }
+        }
+
+        // A DrawingML drawing's pictures and charts, in document order, with the drawing's
+        // description and title. A picture's blip embeds a part or links an external target.
+        private void ReadDrawing(W.Drawing drawing, InlineBuilder inlines)
+        {
+            var properties = drawing.Descendants<DW.DocProperties>().FirstOrDefault();
+            var alt = NonEmpty(properties?.Description?.Value);
+            var title = NonEmpty(properties?.Title?.Value);
+            foreach (var element in drawing.Descendants())
+            {
+                switch (element)
+                {
+                    case A.Blip blip when (blip.Embed?.Value ?? blip.Link?.Value) is { } id:
+                        if (ReadPicture(id, alt, title) is { } media)
+                        {
+                            inlines.Blocks.Add(media);
+                        }
+                        break;
+                    case C.ChartReference chart when chart.Id?.Value is { } id:
+                        if (part.TryGetPartById(id, out var chartPart) && chartPart is ChartPart charts)
+                        {
+                            inlines.Blocks.Add(ChartReader.Read(charts));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        // A VML picture's image, with its title as the alternative text, VML having no other.
+        private void ReadVmlPicture(W.Picture picture, InlineBuilder inlines)
+        {
+            foreach (var image in picture.Descendants<V.ImageData>())
+            {
+                if (image.RelationshipId?.Value is { } id && ReadPicture(id, NonEmpty(image.Title?.Value), null) is { } media)
+                {
+                    inlines.Blocks.Add(media);
+                }
+            }
+        }
+
+        private Media? ReadPicture(string relationshipId, string? alt, string? title)
+        {
+            if (part.TryGetPartById(relationshipId, out var target))
+            {
+                var (name, contentType) = context.Media.Add(target);
+                return new Media
+                {
+                    Name = name,
+                    ContentType = contentType,
+                    Alt = alt,
+                    Title = title,
+                    Source = target.Uri.OriginalString,
+                    Section = context.Section,
+                };
+            }
+            if (part.ExternalRelationships.FirstOrDefault(r => r.Id == relationshipId) is { } link)
+            {
+                return new Media { Target = link.Uri.OriginalString, Alt = alt, Title = title, Section = context.Section };
+            }
+            return null;
+        }
     }
 
     // The paragraphs and tables of a container in document order, through the content controls
@@ -195,77 +485,43 @@ internal static class DocxReader
         paragraph.ParagraphProperties?.ParagraphMarkRunProperties is { } mark
         && (mark.GetFirstChild<W.Deleted>() is not null || mark.GetFirstChild<W.MoveFrom>() is not null);
 
-    // A paragraph's text in its accepted state. The runs are walked explicitly: the SDK's
-    // InnerText includes w:delText, and every w:t would include a move's source, so insertions
-    // and a move's destination are read through, deletions and a move's source skipped.
-    private static void ReadInlines(OpenXmlElement container, InlineBuilder inlines)
-    {
-        foreach (var child in container.ChildElements)
-        {
-            switch (child)
-            {
-                case W.Run run:
-                    ReadRun(run, inlines);
-                    break;
-                case W.DeletedRun or W.MoveFromRun:
-                    break;
-                case W.InsertedRun or W.MoveToRun or W.Hyperlink or W.SimpleField or W.CustomXmlRun:
-                    ReadInlines(child, inlines);
-                    break;
-                case W.SdtRun { SdtContentRun: { } content }:
-                    ReadInlines(content, inlines);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    // A run's text. Field codes are instructions, not text; a field's result is ordinary runs.
-    private static void ReadRun(W.Run run, InlineBuilder inlines)
-    {
-        foreach (var child in run.ChildElements)
-        {
-            switch (child)
-            {
-                case W.Text text:
-                    inlines.Append(text.Text);
-                    break;
-                case W.TabChar or W.PositionalTab:
-                    inlines.Append("\t");
-                    break;
-                case W.Break or W.CarriageReturn:
-                    inlines.Append("\n");
-                    break;
-                case W.NoBreakHyphen:
-                    inlines.Append("-");
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
     /// <summary>A block's inlines as they are read, adjacent text merged into one run.</summary>
     private sealed class InlineBuilder
     {
         private readonly List<Inline> inlines = [];
         private readonly StringBuilder text = new();
 
+        /// <summary>The pictures and charts the paragraph holds, the blocks that follow it.</summary>
+        public List<Block> Blocks { get; } = [];
+
+        /// <summary>Whether the paragraph has neither text nor a reference.</summary>
         public bool IsBlank => inlines.Count == 0 && string.IsNullOrWhiteSpace(text.ToString());
 
         public void Append(string value) => text.Append(value);
 
+        public void Add(Inline inline)
+        {
+            Flush();
+            inlines.Add(inline);
+        }
+
         public List<Inline> Build()
         {
-            var result = new List<Inline>(inlines);
+            Flush();
+            return [.. inlines];
+        }
+
+        private void Flush()
+        {
             if (text.Length > 0)
             {
-                result.Add(new TextRun(text.ToString()));
+                inlines.Add(new TextRun(text.ToString()));
+                text.Clear();
             }
-            return result;
         }
     }
+
+    private static string? NonEmpty(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
 
     private sealed class CellBuilder(IReadOnlyList<Block> blocks, int colSpan)
     {
@@ -298,7 +554,7 @@ internal static class DocxReader
             blocks.Add(block);
         }
 
-        public void AddItem(int level, int numId, NumberingLevel numbering, Paragraph paragraph)
+        public void AddItem(int level, int numId, NumberingLevel numbering, List<Block> item)
         {
             while (open.Count > 0 && open[^1].Level > level)
             {
@@ -316,7 +572,7 @@ internal static class DocxReader
                 open.Add(new OpenList(level, numbering.Ordered, numbering.AbstractId));
             }
             open[^1].NumId = numId;
-            open[^1].Items.Add([paragraph]);
+            open[^1].Items.Add(item);
         }
 
         public List<Block> Build()

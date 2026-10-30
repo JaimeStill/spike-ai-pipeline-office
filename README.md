@@ -16,11 +16,14 @@ spike-ai-pipeline-office <input> [--format json|markdown] [--media <dir>]
 ```
 
 It writes the chosen rendering of the input to stdout, JSON when `--format` is left out, and
-nothing else there. Embedded media go to the `--media` directory, each distinct content once,
-named by the SHA-256 of its bytes and its stored extension. The exit code is 0 on success, 2 on
-a usage error (usage goes to stderr), and 3 when the document is refused: missing or unreadable,
-not a docx, xlsx, or pptx package, encrypted or a legacy binary format, or malformed. A refusal
-happens before any output is written, with its reason on stderr. The JSON carries a `schema`
+nothing else there. Embedded media go to the `--media` directory, created if missing, each
+distinct content once, as stored, named by the lowercase hex SHA-256 of its bytes and its stored
+extension; without `--media` nothing is written to disk, and a linked picture is never fetched.
+The exit code is 0 on success, 2 on a usage error (usage goes to stderr), 3 when the document is
+refused: missing or unreadable, not a docx, xlsx, or pptx package, encrypted or a legacy binary
+format, or malformed, and 1 when the media could not be written. A refusal happens before any
+output is written, with its reason on stderr, and media are written only once the whole
+conversion has succeeded, before stdout. The JSON carries a `schema`
 version, the output contract's.
 
 It is released by tag, `vX.Y.Z`, with a CHANGELOG. The spike's question, evidence, and answer are

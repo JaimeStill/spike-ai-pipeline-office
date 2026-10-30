@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.IO.Compression;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SpikeAiPipeline.Office.Tests;
@@ -33,7 +34,7 @@ public sealed class CliTests : IDisposable
         var result = format is null ? Run(path) : Run(path, "--format", format);
 
         Assert.Equal(Cli.Converted, result.ExitCode);
-        Assert.Equal(Fixtures.Expected("tracked-changes", "json"), result.Stdout);
+        Assert.Equal(Fixtures.Expected("tracked-changes", "libreoffice", "json"), result.Stdout);
         Assert.Empty(result.Stderr);
     }
 
@@ -43,20 +44,85 @@ public sealed class CliTests : IDisposable
         var result = Run(Fixtures.DocxPath("tables", "libreoffice"), "--format", "markdown");
 
         Assert.Equal(Cli.Converted, result.ExitCode);
-        Assert.Equal(Fixtures.Expected("tables", "md"), result.Stdout);
+        Assert.Equal(Fixtures.Expected("tables", "libreoffice", "md"), result.Stdout);
         Assert.Empty(result.Stderr);
     }
 
+    // Each distinct picture once, named by its bytes, however many parts and blocks hold it: the
+    // media fixture's python-docx variant stores the red square in two parts and shows it three
+    // times, and links one picture, which is never written. The directory and its missing parent
+    // are created.
+    [Theory]
+    [InlineData("json")]
+    [InlineData("markdown")]
+    public void MediaAreWrittenOnceEachNamedByTheirContent(string format)
+    {
+        var media = Path.Combine(scratch.FullName, "out", "media");
+        var path = Fixtures.DocxPath("media", "python-docx");
+
+        var result = Run(path, "--format", format, "--media", media);
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Equal(Fixtures.Expected("media", "python-docx", format == "json" ? "json" : "md"), result.Stdout);
+        var files = Directory.GetFiles(media).Select(Path.GetFileName).Order(StringComparer.Ordinal).ToList();
+        Assert.Equal(
+            [
+                "0fcca33bb0baf1a0669bd2fcdcaeb34e33d27196f7ffb5294b27aea8a9e46446.png",
+                "10a86bd779a80e60e5d3314ec1edeab643cb454a4c7dfee671132090878d7aea.png",
+                "670be6349ed84b27d6ca43d66ba6e9454c632f68de8d9b8fea78a480e90afb31.emf",
+                "df026100fd6fe38e22923c5152a33ea6f6879e38073fb47f022ed9d90dec65a8.png",
+            ],
+            files);
+        using var package = ZipFile.OpenRead(path);
+        var stored = package.Entries.Where(e => e.FullName.StartsWith("word/media/", StringComparison.Ordinal)).ToList();
+        Assert.Equal(5, stored.Count); // The red square's copy is a fifth part, written as the same file.
+        foreach (var entry in stored)
+        {
+            using var stream = entry.Open();
+            using var bytes = new MemoryStream();
+            stream.CopyTo(bytes);
+            var name = Convert.ToHexStringLower(SHA256.HashData(bytes.ToArray())) + Path.GetExtension(entry.Name);
+            Assert.Equal(bytes.ToArray(), File.ReadAllBytes(Path.Combine(media, name)));
+        }
+    }
+
     [Fact]
-    public void MediaDirectoryIsAcceptedAndUntouchedWhenTheBodyHasNoMedia()
+    public void NothingIsWrittenWithoutTheMediaOption()
+    {
+        var before = Directory.GetFileSystemEntries(Path.GetDirectoryName(Fixtures.DocxPath("media", "python-docx"))!);
+
+        var result = RunIn(scratch.FullName, Fixtures.DocxPath("media", "python-docx"));
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Equal(Fixtures.Expected("media", "python-docx", "json"), result.Stdout);
+        Assert.Empty(Directory.GetFileSystemEntries(scratch.FullName));
+        Assert.Equal(before, Directory.GetFileSystemEntries(Path.GetDirectoryName(Fixtures.DocxPath("media", "python-docx"))!));
+    }
+
+    // The media directory is created on every conversion it is given for, so it existing says the
+    // conversion succeeded, even when the document has no media.
+    [Fact]
+    public void TheMediaDirectoryIsCreatedEvenWithoutMedia()
     {
         var media = Path.Combine(scratch.FullName, "media");
 
         var result = Run(Fixtures.DocxPath("headings", "python-docx"), "--media", media);
 
         Assert.Equal(Cli.Converted, result.ExitCode);
-        Assert.Equal(Fixtures.Expected("headings", "json"), result.Stdout);
-        Assert.False(Directory.Exists(media));
+        Assert.Equal(Fixtures.Expected("headings", "python-docx", "json"), result.Stdout);
+        Assert.Empty(Directory.GetFileSystemEntries(media));
+    }
+
+    [Fact]
+    public void MediaThatCannotBeWrittenLeaveStdoutEmptyAndExitOne()
+    {
+        var media = Write("media", [1, 2, 3]); // A file where the directory would be.
+
+        var result = Run(Fixtures.DocxPath("media", "python-docx"), "--media", media);
+
+        Assert.Equal(Cli.MediaNotWritten, result.ExitCode);
+        Assert.Empty(result.Stdout);
+        Assert.StartsWith("spike-ai-pipeline-office: media not written: ", result.Stderr, StringComparison.Ordinal);
     }
 
     [Theory]
@@ -107,6 +173,24 @@ public sealed class CliTests : IDisposable
             Package("broken.docx", "word/document.xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml", "<w:document"),
             "a malformed package");
 
+    // The sections fixture's third section reads its default header, which holds a picture,
+    // before its first-page header, broken here: the picture was read, and still nothing is
+    // written, as media are written only once the whole conversion has succeeded.
+    [Fact]
+    public void APackageMalformedAfterItsMediaIsRefusedAndWritesNoMedia()
+    {
+        var path = Path.Combine(scratch.FullName, "late.docx");
+        File.Copy(Fixtures.DocxPath("sections", "python-docx"), path);
+        using (var zip = ZipFile.Open(path, ZipArchiveMode.Update))
+        {
+            zip.GetEntry("word/header5.xml")!.Delete();
+            using var writer = new StreamWriter(zip.CreateEntry("word/header5.xml").Open());
+            writer.Write("<w:hdr");
+        }
+
+        AssertRefused(path, "a malformed package");
+    }
+
     [Theory]
     [InlineData("xlsx", "xl/workbook.xml", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml")]
     [InlineData("pptx", "ppt/presentation.xml", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml")]
@@ -115,10 +199,12 @@ public sealed class CliTests : IDisposable
 
     private void AssertRefused(string path, string reason)
     {
-        var result = Run(path, "--format", "markdown", "--media", Path.Combine(scratch.FullName, "media"));
+        var media = Path.Combine(scratch.FullName, "media");
+        var result = Run(path, "--format", "markdown", "--media", media);
 
         Assert.Equal(Cli.Refused, result.ExitCode);
         Assert.Empty(result.Stdout);
+        Assert.False(Directory.Exists(media));
         Assert.StartsWith("spike-ai-pipeline-office: refused: ", result.Stderr, StringComparison.Ordinal);
         Assert.Contains(reason, result.Stderr, StringComparison.Ordinal);
     }
@@ -158,11 +244,14 @@ public sealed class CliTests : IDisposable
 
     private sealed record Result(int ExitCode, string Stdout, string Stderr);
 
-    private static Result Run(params string[] args)
+    private static Result Run(params string[] args) => RunIn(Environment.CurrentDirectory, args);
+
+    private static Result RunIn(string directory, params string[] args)
     {
         Assert.True(File.Exists(Binary), $"{Binary} is missing: `mise run check` publishes it before the tests run");
         var start = new ProcessStartInfo(Binary)
         {
+            WorkingDirectory = directory,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             StandardOutputEncoding = Encoding.UTF8,
