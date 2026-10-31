@@ -210,13 +210,15 @@ public sealed class MarkdownRenderer
 
     // An item's first paragraph follows its marker; its other blocks are indented to the
     // marker's width, a nested list on the next line, keeping the list tight, anything else after
-    // a blank line.
+    // a blank line. An ordered list counts from its start, which Markdown takes from its first
+    // item's number.
     private string RenderList(ListBlock list, bool alternate)
     {
         var text = new StringBuilder();
+        var first = (long)(list.Start ?? 1);
         for (var i = 0; i < list.Items.Count; i++)
         {
-            var marker = list.Ordered ? $"{i + 1}{(alternate ? ')' : '.')}" : alternate ? "*" : "-";
+            var marker = list.Ordered ? $"{(first + i).ToString(CultureInfo.InvariantCulture)}{(alternate ? ')' : '.')}" : alternate ? "*" : "-";
             var indent = new string(' ', marker.Length + 1);
             var chunks = RenderBlocks(list.Items[i].Blocks);
             if (i > 0)
@@ -278,8 +280,8 @@ public sealed class MarkdownRenderer
     }
 
     // A GFM table, its first row the header. GFM has no merged cells, so a merged cell's text sits
-    // in its top-left grid position and the positions it covers are empty. A sheet's table has a
-    // grid of its own.
+    // in its top-left grid position and the positions it covers are empty, as are the positions a
+    // row that starts late skips. A sheet's table has a grid of its own.
     private string RenderTable(Table table)
     {
         if (table.Rows.Count == 0)
@@ -296,6 +298,7 @@ public sealed class MarkdownRenderer
             var column = 0;
             foreach (var cell in table.Rows[r].Cells)
             {
+                column += cell.SkipBefore ?? 0;
                 while (At(grid, r, column) is not null)
                 {
                     column++;

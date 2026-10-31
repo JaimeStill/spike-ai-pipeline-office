@@ -10,11 +10,18 @@ public static class DocumentJson
 {
     // Non-ASCII text is written as itself rather than as \u escapes: the JSON is a data file for
     // the pipeline, never embedded in HTML, so the relaxed encoder's one risk doesn't apply.
+    // The model is deeper than the serializer's default limit of 64 allows: a docx reply's table
+    // nested eight deep (the readers refuse more), six levels each, holding a list nested nine
+    // deep (Word's levels, four each), is 93 deep, so the limit is set above that.
     private static readonly DocumentJsonContext Context = new(
         new JsonSerializerOptions(DocumentJsonContext.Default.Options)
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            MaxDepth = MaxDepth,
         });
+
+    /// <summary>The deepest JSON the model can make, with room to spare.</summary>
+    internal const int MaxDepth = 128;
 
     /// <summary>The document as JSON: camelCase, indented two spaces, null properties left out,
     /// and ending in a newline. The same model always gives the same bytes.</summary>

@@ -111,7 +111,14 @@ public sealed record Heading(int Level, IReadOnlyList<Inline> Inlines) : Block;
 public sealed record Paragraph(IReadOnlyList<Inline> Inlines) : Block;
 
 /// <summary>A list, ordered or not. A nested list is a block of the item it belongs to.</summary>
-public sealed record ListBlock(bool Ordered, IReadOnlyList<ListItem> Items) : Block;
+public sealed record ListBlock([property: JsonPropertyOrder(-2)] bool Ordered, IReadOnlyList<ListItem> Items) : Block
+{
+    /// <summary>An ordered list's first number, or null when it is 1 or the list is unordered: the
+    /// numbering's start value, or where a list resumes the count of one an unnumbered paragraph
+    /// interrupted, the number it resumes at, so its items count on from there.</summary>
+    [JsonPropertyOrder(-1)]
+    public int? Start { get; init; }
+}
 
 /// <summary>A list item: its own blocks, usually a paragraph, then any nested list.</summary>
 public sealed record ListItem(IReadOnlyList<Block> Blocks);
@@ -158,6 +165,12 @@ public sealed record TableCell(IReadOnlyList<Block>? Blocks)
     /// which holds the formula's text; the cell's own text is never derived from it.</summary>
     [JsonPropertyOrder(-1)]
     public string? SharedFrom { get; init; }
+
+    /// <summary>The grid columns before a docx cell that no cell fills, as a row that starts late
+    /// leaves them (its <c>w:gridBefore</c>), on its row's first cell; null for none. The columns
+    /// a merged cell from above covers are not counted: they are skipped as they always are.</summary>
+    [JsonPropertyOrder(-1)]
+    public int? SkipBefore { get; init; }
 
     /// <summary>The columns the cell spans, or null for one.</summary>
     public int? ColSpan { get; init; }

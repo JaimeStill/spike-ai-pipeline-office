@@ -23,18 +23,22 @@ internal static class XlsxReader
             new NumberFormats(workbookPart.WorkbookStylesPart?.Stylesheet),
             workbook.WorkbookProperties?.Date1904?.Value ?? false);
         var blocks = new List<Block>();
+        var warnings = new List<string>();
         foreach (var sheet in workbook.Sheets?.Elements<S.Sheet>() ?? [])
         {
-            var id = sheet.Id?.Value ?? throw new OpenXmlPackageException($"sheet {sheet.Name} has no relationship");
-            if (!workbookPart.TryGetPartById(id, out var part))
+            // A sheet whose reference names no part (an empty or unknown relationship id) is one
+            // invalid reference: it is skipped, with a warning, and the other sheets are read.
+            var id = sheet.Id?.Value;
+            if (string.IsNullOrEmpty(id) || !workbookPart.TryGetPartById(id, out var part))
             {
-                throw new OpenXmlPackageException($"sheet {sheet.Name}'s part is missing");
+                warnings.Add($"sheet \"{sheet.Name?.Value}\" was skipped: its relationship id \"{id}\" names no part");
+                continue;
             }
             var state = sheet.State?.Value;
             var hidden = state == S.SheetStateValues.Hidden || state == S.SheetStateValues.VeryHidden;
             blocks.Add(new Model.Sheet(sheet.Name?.Value ?? "", hidden, ReadSheet(context, part, blocks.Count)));
         }
-        return new Conversion(new Document(Document.CurrentSchema, SourceFormat.Xlsx, blocks), context.Media.Files);
+        return new Conversion(new Document(Document.CurrentSchema, SourceFormat.Xlsx, blocks), context.Media.Files) { Warnings = warnings };
     }
 
     private sealed class XlsxContext(IReadOnlyList<string> strings, NumberFormats formats, bool date1904)

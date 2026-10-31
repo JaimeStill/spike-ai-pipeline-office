@@ -30,6 +30,9 @@ internal static partial class DocxReader
         public NoteSet Endnotes { get; } = new(main.EndnotesPart?.Endnotes?.Elements<W.Endnote>(), main.EndnotesPart);
 
         public CommentSet Comments { get; } = new(main);
+
+        /// <summary>What the conversion skipped, each a line for stderr.</summary>
+        public List<string> Warnings { get; } = [];
     }
 
     /// <summary>A notes part's footnotes or endnotes, each read when the text first references
@@ -82,7 +85,8 @@ internal static partial class DocxReader
     /// names a parent is a reply in its root's thread, and a thread is resolved when its root's
     /// entry is done. Without commentsExtended every comment is a thread of its own, unresolved.
     /// The body reader gives each thread's root its anchor, the accepted text between its range's
-    /// start and end, and marks where the range ends.</summary>
+    /// start and end, and marks where the range ends, or where its reference is when the range
+    /// ends between paragraphs.</summary>
     private sealed class CommentSet
     {
         private readonly OpenXmlPart? part;
@@ -156,19 +160,13 @@ internal static partial class DocxReader
             }
         }
 
-        /// <summary>Ends a range; returns the comment to mark here, the first time its root's
-        /// range ends.</summary>
-        public int? End(string? id)
+        /// <summary>Ends a range, its anchor the text read since it started.</summary>
+        public void Close(string? id)
         {
-            if (id is null)
-            {
-                return null;
-            }
-            if (open.Remove(id, out var anchor))
+            if (id is not null && open.Remove(id, out var anchor))
             {
                 anchors[id] = anchor.ToString().TrimEnd('\n');
             }
-            return Point(id);
         }
 
         /// <summary>A comment's reference; returns the comment to mark here when its root has no

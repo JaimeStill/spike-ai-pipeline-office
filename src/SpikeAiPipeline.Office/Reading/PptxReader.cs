@@ -186,7 +186,8 @@ internal static class PptxReader
     // A text body's paragraphs as paragraphs and lists. A paragraph is a list item when its
     // bullet is a character, a picture, or an auto-number (ordered), its own or else the first
     // the list styles give for its level, nearest first; with none, or buNone, it is a paragraph.
-    // An empty paragraph is spacing and is left out.
+    // An auto-number counts from its startAt, 1 by default. An empty paragraph is spacing and is
+    // left out.
     private static List<Block> ReadText(OpenXmlElement body, List<OpenXmlElement?> styles)
     {
         var blocks = new TextBlocks();
@@ -203,7 +204,8 @@ internal static class PptxReader
             var block = new Paragraph([new TextRun(text)]);
             if (bullet is { } kind && kind != Bullet.None)
             {
-                blocks.AddItem(level, kind == Bullet.Ordered, block);
+                var start = AutoNumberOf(properties) ?? styles.Select(style => AutoNumberOf(LevelProperties(style, level))).FirstOrDefault(n => n is not null);
+                blocks.AddItem(level, kind == Bullet.Ordered, start?.StartAt?.Value ?? 1, block);
             }
             else
             {
@@ -240,6 +242,11 @@ internal static class PptxReader
         }
         return null;
     }
+
+    // The auto-number a paragraph's or a list style level's properties set, which the bullet
+    // that applies has when it is ordered.
+    private static A.AutoNumberedBullet? AutoNumberOf(OpenXmlElement? properties) =>
+        properties?.ChildElements.FirstOrDefault(c => c is A.NoBullet or A.CharacterBullet or A.PictureBullet or A.AutoNumberedBullet) as A.AutoNumberedBullet;
 
     // A list style's properties for a level from 0: its lvl1pPr to lvl9pPr. The presentation's
     // default style and the masters' text styles hold the same elements as a shape's list style.
@@ -310,11 +317,12 @@ internal static class PptxReader
 
     // A text body's blocks as they are read. Consecutive list paragraphs make up lists: a deeper
     // level opens a list inside the last item, and at the same level an item continues the list
-    // unless it is ordered where the list isn't, or the reverse. A paragraph ends every list.
+    // unless it is ordered where the list isn't, or the reverse. A paragraph ends every list. A
+    // list starts at its first item's number.
     private sealed class TextBlocks
     {
         private readonly List<Block> blocks = [];
-        private readonly List<(int Level, bool Ordered, List<List<Block>> Items)> open = [];
+        private readonly List<(int Level, bool Ordered, int Start, List<List<Block>> Items)> open = [];
 
         public void Add(Block block)
         {
@@ -325,7 +333,7 @@ internal static class PptxReader
             blocks.Add(block);
         }
 
-        public void AddItem(int level, bool ordered, Block paragraph)
+        public void AddItem(int level, bool ordered, int start, Block paragraph)
         {
             while (open.Count > 0 && open[^1].Level > level)
             {
@@ -337,7 +345,7 @@ internal static class PptxReader
             }
             if (open.Count == 0 || open[^1].Level < level)
             {
-                open.Add((level, ordered, []));
+                open.Add((level, ordered, start, []));
             }
             open[^1].Items.Add([paragraph]);
         }
@@ -355,7 +363,10 @@ internal static class PptxReader
         {
             var list = open[^1];
             open.RemoveAt(open.Count - 1);
-            var block = new ListBlock(list.Ordered, [.. list.Items.Select(item => new ListItem(item))]);
+            var block = new ListBlock(list.Ordered, [.. list.Items.Select(item => new ListItem(item))])
+            {
+                Start = list.Ordered && list.Start != 1 ? list.Start : null,
+            };
             if (open.Count > 0)
             {
                 open[^1].Items[^1].Add(block);

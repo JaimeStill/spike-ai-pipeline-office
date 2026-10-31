@@ -6,8 +6,9 @@ namespace SpikeAiPipeline.Office.Tests;
 
 /// <summary>A model in the ground truth's shape, element by element, so the two compare
 /// directly: headings, paragraphs, list items with their nesting level and whether each starts its
-/// list, tables with each cell's paragraphs joined by a newline (and its pictures and charts as
-/// its media), pictures, and charts. A paragraph's or list item's references are its marks: each
+/// list (and the first number of an ordered list that doesn't start at 1, on its first item),
+/// tables with each cell's paragraphs joined by a newline (and its pictures and charts as its
+/// media, and the grid columns a row that starts late skips before it), pictures, and charts. A paragraph's or list item's references are its marks: each
 /// one's offset in the text, its kind, and its note's or comment's place, from 1, in the
 /// document's list of them, so ids, which writers renumber, never enter the comparison. The
 /// document's sections, notes, and comments are compared in the same shape. A sheet is its name,
@@ -92,17 +93,19 @@ internal static class GroundTruth
                         var rest = item.Blocks;
                         if (item.Blocks is [Paragraph first, ..])
                         {
-                            elements.Add(Marked(
-                                document,
-                                new JsonObject
-                                {
-                                    ["kind"] = "listItem",
-                                    ["level"] = listLevel,
-                                    ["ordered"] = list.Ordered,
-                                    ["start"] = i == 0,
-                                    ["text"] = InlineText.Of(first.Inlines),
-                                },
-                                first.Inlines));
+                            var listItem = new JsonObject
+                            {
+                                ["kind"] = "listItem",
+                                ["level"] = listLevel,
+                                ["ordered"] = list.Ordered,
+                                ["start"] = i == 0,
+                                ["text"] = InlineText.Of(first.Inlines),
+                            };
+                            if (i == 0 && list.Start is int startAt)
+                            {
+                                listItem["startAt"] = startAt;
+                            }
+                            elements.Add(Marked(document, listItem, first.Inlines));
                             rest = [.. item.Blocks.Skip(1)];
                         }
                         AddBlocks(document, rest, elements, listLevel + 1);
@@ -164,6 +167,10 @@ internal static class GroundTruth
                     ["colSpan"] = cell.ColSpan ?? 1,
                     ["rowSpan"] = cell.RowSpan ?? 1,
                 };
+                if (cell.SkipBefore is int skipBefore)
+                {
+                    json["skipBefore"] = skipBefore;
+                }
                 var media = new List<JsonObject>();
                 AddBlocks(document, [.. (cell.Blocks ?? []).Where(b => b is Media or Chart)], media);
                 if (media.Count > 0)

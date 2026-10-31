@@ -1,0 +1,79 @@
+{
+  "fixture": "content-control-rows",
+  "format": "docx",
+  "elements": [
+    {
+      "kind": "paragraph",
+      "text": "Sample 1:"
+    },
+    {
+      "kind": "table",
+      "rows": [
+        [
+          {
+            "text": "Note",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Details",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Here is just a sample",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ]
+      ]
+    }
+  ],
+  "absent": [
+    "Choose an item."
+  ],
+  "once": []
+}

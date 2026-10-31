@@ -1,0 +1,515 @@
+{
+  "fixture": "form-footnotes",
+  "format": "docx",
+  "elements": [
+    {
+      "kind": "table",
+      "rows": [
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1,
+            "media": [
+              {
+                "kind": "media",
+                "name": "0e71f09f2cb22c9ad4b1bdf6d7b168e500f2b9c531c5b4ed8d4f5d2ff995daae.png",
+                "contentType": "image/png",
+                "section": 0
+              }
+            ]
+          },
+          {
+            "text": "REPÚBLICA  FEDERATIVA DO BRASIL\nMINISTÉRIO DAS RELAÇÕES EXTERIORES\nCONSULADO-GERAL EM SAN FRANCISCO",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Protocol number",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Visa number",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ]
+      ]
+    },
+    {
+      "kind": "heading",
+      "level": 4,
+      "text": "VISA APPLICATION FORM"
+    },
+    {
+      "kind": "table",
+      "rows": [
+        [
+          {
+            "text": "01 -   Full name  (as per passport; do not abbreviate or omit any name)\n                            First                                      Middle                                           Last ",
+            "colSpan": 13,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 3,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 4,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 6,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "02 -   Place of birth (city/state/country)",
+            "colSpan": 5,
+            "rowSpan": 1
+          },
+          {
+            "text": "03 -  Date of birth\n      Day               Month                Year",
+            "colSpan": 8,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 5,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 3,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 3,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "04 -  Country of  citizenship",
+            "colSpan": 4,
+            "rowSpan": 1
+          },
+          {
+            "text": "05 -   Sex\n          male        female    ",
+            "colSpan": 4,
+            "rowSpan": 1
+          },
+          {
+            "text": "06 - Marital status",
+            "colSpan": 5,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "07 -   Passport # ",
+            "colSpan": 4,
+            "rowSpan": 1
+          },
+          {
+            "text": "08 -  Issuing country ",
+            "colSpan": 4,
+            "rowSpan": 1
+          },
+          {
+            "text": "09 -   Expiration date \n    Day      Month       Year ",
+            "colSpan": 5,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 4,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 4,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "10 -   Parent’s full name (do not abbreviate or omit any name) and country of birth",
+            "colSpan": 15,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Father’s:",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 12,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 15,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Mother’s:",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 12,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 15,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "11 – Highest level of education (check only one box)\n\t  no diploma\n\t  high school diploma or the equivalent (e.g., GED)\n\t  some college credit, but less than one year\n\t  more than one year of college, but no degree\n\t  associate’s degree (e.g., AA, AS)\n\t  bachelor’s degree (e.g., BA, AB, BS)\n\t  master’s degree\n\t  professional degree (e.g.,  MD, DDS DVM, LLB,\n                     JD)\n\t  doctorate degree",
+            "colSpan": 6,
+            "rowSpan": 1
+          },
+          {
+            "text": "12 -  Major/primary field of study\n13 -  List any special skill and/or certificates\n14 -  Job position (as per business card) or title\n15 -  Employer (for students, name school/university)\n 16 – E-mail: ",
+            "colSpan": 9,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "17 -  Business address",
+            "colSpan": 9,
+            "rowSpan": 1
+          },
+          {
+            "text": "18 -   Business telephone # (with area code)",
+            "colSpan": 6,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "19 -  Home address",
+            "colSpan": 9,
+            "rowSpan": 1
+          },
+          {
+            "text": "20 -   Home telephone # (with area code)",
+            "colSpan": 6,
+            "rowSpan": 1
+          }
+        ]
+      ]
+    },
+    {
+      "kind": "table",
+      "rows": [
+        [
+          {
+            "text": "",
+            "colSpan": 6,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "A -   Consulta à SERE\n  OF       TEL           No. _______",
+            "colSpan": 2,
+            "rowSpan": 1
+          },
+          {
+            "text": "B -   Autorização da SERE\nDESP     DESPTEL     No.  ______ ",
+            "colSpan": 2,
+            "rowSpan": 1
+          },
+          {
+            "text": "C -  Tipo do Visto\n        ___________________",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "D -      Concessão",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "E -      Uma entrada\n           Múltiplas entradas ",
+            "colSpan": 2,
+            "rowSpan": 1
+          },
+          {
+            "text": "F -  Validade\n      _____________anos/dias",
+            "colSpan": 2,
+            "rowSpan": 1
+          },
+          {
+            "text": "G -  Data\n     ______/______/______",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "H -  Observações",
+            "colSpan": 3,
+            "rowSpan": 1
+          },
+          {
+            "text": "I -  Assinaturas\n      Funcionário                                          Chefia                                                             ",
+            "colSpan": 3,
+            "rowSpan": 1
+          }
+        ]
+      ]
+    },
+    {
+      "kind": "table",
+      "rows": [
+        [
+          {
+            "text": "21 -  Purpose of trip (check item that is the most applicable to the circumstances of your trip)",
+            "colSpan": 5,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Provide services in Brazil of a temporary nature, including activities such as office and technical support, installation and repair of equipment, including computer and telecommunications systems, construction activities, and direct supervision of  personnel in Brazil \nU.S.-based personnel involved in business development activities, including negotiating contracts, marketing, opportunity assessments, specifying orders for contracts, customer relations related activities, performance assessments, project reviews, and establishing a  framework for doing business in Brazil\nDirect participation in oil and gas exploration and/or production activities\nWork under an employment contract with a company/organization in Brazil  -  i.e., hired under a Brazilian labor contract as a local employee  (this applies to the foreign employees of multinationals working in their Brazilian subsidiaries)\nTransfer of residence to Brazil under permanent residency status\nAttend conference, seminar or workshop (note under  “Comments” below whether attendee, paid/unpaid speaker, trainer, and provide name of event sponsor)\nProvide religious or missionary services and/or assistance\nProvide community and/or medical services \nAttend school or pursue studies\nConduct research or pursue scientific-technologic activities under an international cooperation program\nPursue professorial studies/research/teaching and/or pursue scientific/technologic activities at an university,  research or similar organization (attach letter specifying conditions: employment contract? research scholarship? )\nParticipation in athletic or performing arts events (note under “Comments”  below  whether paid/unpaid participation)\nJournalism activities and/or  film making\nTourism, visit friend(s) and/or relatives (under “Comments”  below  provide further insight on intended trip and, as applicable, list relationship to parties being visited)",
+            "colSpan": 4,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "22 -   Expected port of entry and date of arrival in Brazil       ",
+            "colSpan": 3,
+            "rowSpan": 1
+          },
+          {
+            "text": "23 -   Expected duration of  immediate trip        ",
+            "colSpan": 2,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "24 -   Name and address of person, institution or company through whom you can be contacted in Brazil",
+            "colSpan": 5,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "25 -  Address  in Brazil where you will be staying  (e.g., hotel, vessel, friend, other)",
+            "colSpan": 4,
+            "rowSpan": 1
+          },
+          {
+            "text": "26 -   Telephone # in Brazil (with city code)",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "27 -   Have you ever been to Brazil?  \n               Yes                      No",
+            "colSpan": 2,
+            "rowSpan": 1
+          },
+          {
+            "text": "28 -    If yes for item 27, provide date, place and duration of last visit",
+            "colSpan": 3,
+            "rowSpan": 1
+          }
+        ]
+      ]
+    },
+    {
+      "kind": "heading",
+      "level": 7,
+      "text": "IMPORTANT: FORMS THAT ARE INCOMPLETE  AND INCORRECTLY  FILLED OUT  WILL  BE  RETURNED. "
+    },
+    {
+      "kind": "paragraph",
+      "text": "                         CAREFULLY READ AND FOLLOW INSTRUCTIONS AT THE BOTTOM OF THIS PAGE."
+    },
+    {
+      "kind": "table",
+      "rows": [
+        [
+          {
+            "text": "29 -   I declare that  the above information is true and accurate.\n   Name (type or print)                                                                  Date                                    Signature ",
+            "colSpan": 5,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 5,
+            "rowSpan": 1
+          }
+        ],
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Day",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Month",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "Year",
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ]
+      ]
+    },
+    {
+      "kind": "table",
+      "rows": [
+        [
+          {
+            "text": "",
+            "colSpan": 1,
+            "rowSpan": 1
+          }
+        ]
+      ]
+    }
+  ],
+  "absent": [],
+  "once": [],
+  "footnotes": [
+    {
+      "elements": [
+        {
+          "kind": "paragraph",
+          "text": " testdoc       test phrase"
+        }
+      ]
+    }
+  ]
+}

@@ -12,13 +12,17 @@ set can't have: Word's own chart and tracked changes, Excel's cached formula res
 formulas, and 1904 dates, PowerPoint's bullets inherited from a real master. They are copied
 byte for byte from the test data of three permissively licensed repositories, each pinned to a
 commit: dotnet/Open-XML-SDK (MIT), apache/poi (Apache-2.0), and docling-project/docling (MIT).
+One, `docx/word-tables.docx`, is Word's file with tables added to its XML by hand and re-zipped
+by a tool, which `SOURCES.md` says. Several are the regression files of a reading fault, each
+named in `SOURCES.md`, so the fault's return fails the check.
 `realworld/SOURCES.md` lists each file's repository, commit, path, license, writer, size, and
 SHA-256, what it covers, and what its truth covers; the repositories' licenses and notices are
 in `realworld/licenses/`.
 
 Each file is `realworld/<format>/<name>.<format>`, with its ground truth beside it in the
 generated set's format, `<name>.truth.json`, written by hand from the file's XML rather than
-from office's output. Every truth is whole. The tests compare the model against it as they do a
+from office's output, or for the larger files drafted from the XML by a throwaway script that
+knows nothing of office and checked by hand. Every truth is whole. The tests compare the model against it as they do a
 generated fixture's, and run each file through the published binary; they keep no exact JSON or
 Markdown of these files, whose truth is the check. Nothing regenerates the set: a file is added
 by hand, with its row in `SOURCES.md` and its truth.
@@ -40,11 +44,14 @@ re-saves it through LibreOffice headless. The docx fixtures are in `generated/do
 - `<name>.truth.json`: the ground truth both files share, written by the script from the same
   definitions: the accepted-state text of each element in document order (`heading` with its
   level, `paragraph`, `listItem` with its nesting level, whether its level is ordered, and
-  whether it starts a list rather than continuing the one before it, `table` with each cell's
-  text, its paragraphs joined by a newline, its spans, and its pictures and charts as `media`,
-  covered cells left out, `media` with its file name (the SHA-256 of its bytes and its
-  extension) and content type or its linked `target`, its `alt` and `title`, and its `section`,
-  and `chart` with its type, title, and series), the strings that must appear nowhere in office's
+  whether it starts a list rather than continuing the one before it, and on a list's first item
+  its first number, `startAt`, when the list is ordered and doesn't start at 1, `table` with each
+  cell's text, its paragraphs joined by a newline, its spans, its pictures and charts as `media`,
+  and the grid columns a row that starts late skips before it, `skipBefore` (no generated
+  fixture has either, so the script writes neither; real-world truths do), covered cells left
+  out, `media` with its file name (the SHA-256 of its bytes and its extension) and content type
+  or its linked `target`, its `alt` and `title`, and its `section`, and `chart` with its type,
+  title, and series), the strings that must appear nowhere in office's
   output (`absent`: deleted text), and the strings that must appear exactly once (`once`: moved
   text). A paragraph's or list item's note and comment references are its `marks`: each one's
   offset in the text, its kind, and its note's or comment's place, from 1, in the truth's list

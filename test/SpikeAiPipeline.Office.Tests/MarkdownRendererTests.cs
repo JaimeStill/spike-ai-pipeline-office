@@ -90,6 +90,55 @@ public sealed class MarkdownRendererTests
             markdown);
     }
 
+    // A list that resumes a count after a paragraph starts at the number it resumes at; a list
+    // with no start counts from 1, and an unordered one has no numbers.
+    [Fact]
+    public void AnOrderedListCountsFromItsStart()
+    {
+        var markdown = Render(
+            new ListBlock(true, [new ListItem([Para("ten")]), new ListItem([Para("eleven")])]) { Start = 10 },
+            Para("text"),
+            new ListBlock(true, [new ListItem([Para("twelve")])]) { Start = 12 },
+            List(true, "one"));
+
+        Assert.Equal(
+            """
+            10. ten
+            11. eleven
+
+            text
+
+            12. twelve
+
+            1) one
+
+            """,
+            markdown);
+    }
+
+    // A row that starts late leaves the columns it skips empty, its first cell in the column after
+    // them, under a merged cell from above too.
+    [Fact]
+    public void ARowThatStartsLateLeavesTheColumnsItSkipsEmpty()
+    {
+        var markdown = Render(new Table(
+        [
+            new TableRow([new TableCell([Para("A")]), new TableCell([Para("B")]) { RowSpan = 2 }, new TableCell([Para("C")])]),
+            new TableRow([new TableCell([Para("F")]) { SkipBefore = 1 }]),
+            new TableRow([new TableCell([Para("I")]) { SkipBefore = 2 }]),
+        ]));
+
+        Assert.Equal(
+            """
+            | A | B | C |
+            | --- | --- | --- |
+            |  |  | F |
+            |  |  | I |
+
+            """,
+            markdown);
+    }
+
     // A footnote and an endnote share id 1 in the document; their labels count both kinds in
     // reference order, so they never collide, and a second reference reuses its note's label.
     [Fact]

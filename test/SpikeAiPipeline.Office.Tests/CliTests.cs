@@ -336,19 +336,148 @@ public sealed class CliTests : IDisposable
             Package("broken.pptx", "ppt/presentation.xml", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml", "<p:presentation"),
             "a malformed package");
 
-    // An attribute outside its type's values, as poi's test file for its bug 60293 has: a header
-    // reference of type "odd", which no header kind is.
+    // A single invalid reference is skipped with a warning and the rest converts, as in poi's test
+    // file for its bug 60293: a header reference of type "odd", which no header kind is.
     [Fact]
-    public void AnAttributeOutsideItsValuesIsRefusedAsMalformed() =>
+    public void AHeaderReferenceOfAnInvalidTypeIsSkippedWithAWarning()
+    {
+        var path = Package(
+            "odd.docx",
+            "word/document.xml",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
+            Document(
+                "<w:p><w:r><w:t>kept</w:t></w:r></w:p>" +
+                "<w:sectPr><w:headerReference w:type=\"odd\" r:id=\"rId9\"/><w:footerReference w:type=\"default\" r:id=\"rId8\"/></w:sectPr>"));
+
+        var result = Run(path, "--format", "markdown");
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Equal("kept\n", result.Stdout);
+        Assert.Equal(
+            $"spike-ai-pipeline-office: warning: {path}: a header reference of type \"odd\" in section 1 was skipped: no header has that type\n",
+            result.Stderr);
+    }
+
+    // As in poi's test file for its bug 60825: a sheet whose relationship id is empty, so it
+    // names no part, is skipped with a warning, and the sheet beside it converts.
+    [Fact]
+    public void ASheetThatNamesNoPartIsSkippedWithAWarning()
+    {
+        var path = Zip(
+            "unnamed.xlsx",
+            ("[Content_Types].xml",
+                "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">" +
+                "<Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/>" +
+                "<Override PartName=\"/xl/workbook.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml\"/>" +
+                "<Override PartName=\"/xl/worksheets/sheet1.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\"/></Types>"),
+            ("_rels/.rels",
+                "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
+                "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"xl/workbook.xml\"/>" +
+                "</Relationships>"),
+            ("xl/workbook.xml",
+                "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" " +
+                "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><sheets>" +
+                "<sheet name=\"Module\" sheetId=\"1\" r:id=\"\"/><sheet name=\"Data\" sheetId=\"2\" r:id=\"rId1\"/></sheets></workbook>"),
+            ("xl/_rels/workbook.xml.rels",
+                "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
+                "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet1.xml\"/>" +
+                "</Relationships>"),
+            ("xl/worksheets/sheet1.xml",
+                "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData>" +
+                "<row r=\"1\"><c r=\"A1\"><v>42</v></c></row></sheetData></worksheet>"));
+
+        var result = Run(path, "--format", "markdown");
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Equal("# Data\n\n|  | A |\n| --- | --- |\n| 1 | 42 |\n", result.Stdout);
+        Assert.Equal(
+            $"spike-ai-pipeline-office: warning: {path}: sheet \"Module\" was skipped: its relationship id \"\" names no part\n",
+            result.Stderr);
+    }
+
+    // Tables nested past eight deep are refused as they are reached, before any output, with
+    // where: the ninth table's first paragraph, the body's second, after the one before them.
+    [Fact]
+    public void TablesNestedPastTheLimitAreRefused() =>
         AssertRefused(
             Package(
-                "odd.docx",
+                "deep.docx",
                 "word/document.xml",
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
-                "<w:document xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" " +
-                "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><w:body><w:p/>" +
-                "<w:sectPr><w:headerReference w:type=\"odd\" r:id=\"rId9\"/></w:sectPr></w:body></w:document>"),
-            "a malformed package");
+                Document("<w:p><w:r><w:t>before</w:t></w:r></w:p>" + NestedTables(9, "") + "<w:sectPr/>")),
+            "deep.docx: tables nested 9 deep (limit 8), at body paragraph 2");
+
+    // Eight tables deep converts, and so does the deepest model that allows: a list nested Word's
+    // nine levels in the innermost cell, past the serializer's default depth of 64.
+    [Theory]
+    [InlineData("json")]
+    [InlineData("markdown")]
+    public void TablesNestedToTheLimitConvertWithTheDeepestList(string format)
+    {
+        var levels = string.Concat(Enumerable.Range(0, 9).Select(l =>
+            $"<w:lvl w:ilvl=\"{l}\"><w:numFmt w:val=\"bullet\"/><w:lvlText w:val=\"-\"/></w:lvl>"));
+        var items = string.Concat(Enumerable.Range(0, 9).Select(l =>
+            $"<w:p><w:pPr><w:numPr><w:ilvl w:val=\"{l}\"/><w:numId w:val=\"1\"/></w:numPr></w:pPr><w:r><w:t>item {l}</w:t></w:r></w:p>"));
+        var path = Zip(
+            "eight.docx",
+            ("[Content_Types].xml",
+                "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">" +
+                "<Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/>" +
+                "<Override PartName=\"/word/document.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml\"/>" +
+                "<Override PartName=\"/word/numbering.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml\"/></Types>"),
+            ("_rels/.rels",
+                "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
+                "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"word/document.xml\"/>" +
+                "</Relationships>"),
+            ("word/document.xml", Document(NestedTables(8, items) + "<w:sectPr/>")),
+            ("word/_rels/document.xml.rels",
+                "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
+                "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering\" Target=\"numbering.xml\"/>" +
+                "</Relationships>"),
+            ("word/numbering.xml",
+                "<w:numbering xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\">" +
+                $"<w:abstractNum w:abstractNumId=\"0\">{levels}</w:abstractNum><w:num w:numId=\"1\"><w:abstractNumId w:val=\"0\"/></w:num></w:numbering>"));
+
+        var result = Run(path, "--format", format);
+
+        Assert.Equal(Cli.Converted, result.ExitCode);
+        Assert.Empty(result.Stderr);
+        Assert.Contains("item 8", result.Stdout, StringComparison.Ordinal);
+    }
+
+    // An exception office doesn't expect, here from a stdout that can't be written, is exit code
+    // 4 and never 1, which says the media were not written.
+    [Fact]
+    public void AnUnexpectedErrorFailsWithItsOwnExitCode()
+    {
+        var stderr = new StringWriter();
+
+        var code = Cli.Run([Fixtures.DocumentPath("headings", "python-docx")], new UnwritableWriter(), stderr);
+
+        Assert.Equal(Cli.Failed, code);
+        Assert.StartsWith(
+            "spike-ai-pipeline-office: failed: " + Fixtures.DocumentPath("headings", "python-docx") + ": an unexpected System.InvalidOperationException: ",
+            stderr.ToString(),
+            StringComparison.Ordinal);
+    }
+
+    private sealed class UnwritableWriter : TextWriter
+    {
+        public override Encoding Encoding => Encoding.UTF8;
+
+        public override void Write(char value) => throw new InvalidOperationException("stdout is closed");
+
+        public override void Write(string? value) => throw new InvalidOperationException("stdout is closed");
+    }
+
+    // Tables nested the given number deep, each one cell, the innermost holding the given
+    // paragraphs; each cell's own paragraph comes after the table it holds.
+    private static string NestedTables(int depth, string innermost) =>
+        depth == 0 ? innermost : $"<w:tbl><w:tr><w:tc>{NestedTables(depth - 1, innermost)}<w:p><w:r><w:t>depth {depth}</w:t></w:r></w:p></w:tc></w:tr></w:tbl>";
+
+    private static string Document(string body) =>
+        "<w:document xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" " +
+        $"xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><w:body>{body}</w:body></w:document>";
 
     // A relationship to a part the package lacks, as poi's picture.xlsx has (its connections
     // part), fails the SDK when it first loads the package's parts.

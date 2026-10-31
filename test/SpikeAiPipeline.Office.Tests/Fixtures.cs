@@ -33,7 +33,11 @@ internal static class Fixtures
     public const string RealWorld = "realworld";
 
     /// <summary>The real-world docx files, by name; no name is a generated fixture's too.</summary>
-    public static readonly string[] RealWorldDocx = ["chart-column", "delins", "footnote", "test-comment", "unit-test-formatting"];
+    public static readonly string[] RealWorldDocx =
+    [
+        "chart-column", "complex-numbered-lists", "content-control-rows", "delins", "endnotes", "footnote", "form-footnotes",
+        "ruby", "test-comment", "unit-test-formatting", "word-tables", "word-with-attachments",
+    ];
 
     /// <summary>The real-world xlsx files, by name.</summary>
     public static readonly string[] RealWorldXlsx = ["chart-sheet", "date-format-tests", "excel-online-index-space", "simple-monthly-budget", "with-two-charts"];

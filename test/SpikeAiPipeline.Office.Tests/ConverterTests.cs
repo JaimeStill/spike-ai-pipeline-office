@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text.Json.Nodes;
 using SpikeAiPipeline.Office.Model;
@@ -10,8 +11,12 @@ namespace SpikeAiPipeline.Office.Tests;
 // model, against the generated fixtures and the real-world files: the model element by element
 // against the ground truth (the generator's, or a real-world file's, written by hand), then, for
 // the generated fixtures, the JSON and the Markdown exactly.
-public sealed class ConverterTests
+public sealed class ConverterTests : IDisposable
 {
+    private readonly DirectoryInfo scratch = Directory.CreateTempSubdirectory("office-converter-tests-");
+
+    public void Dispose() => scratch.Delete(recursive: true);
+
     // Every fixture with its ground truth: the generated variants and the real-world files.
     public static TheoryData<string, string> Cases => Fixtures.All;
 
@@ -124,6 +129,89 @@ public sealed class ConverterTests
                 Assert.Equal(2, output.Split(once).Length); // One occurrence splits the output in two.
             }
         }
+    }
+
+    // A macro-enabled document, template, or slide show is read as its base format, its macros
+    // ignored and never run: a fixture whose main part is given each such content type, the
+    // macro-enabled document with a VBA project part too, converts to the fixture's own model.
+    [Theory]
+    [InlineData("headings", "python-docx", "application/vnd.ms-word.document.macroEnabled.main+xml")]
+    [InlineData("headings", "python-docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml")]
+    [InlineData("headings", "python-docx", "application/vnd.ms-word.template.macroEnabledTemplate.main+xml")]
+    [InlineData("cells", "openpyxl", "application/vnd.ms-excel.sheet.macroEnabled.main+xml")]
+    [InlineData("cells", "openpyxl", "application/vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml")]
+    [InlineData("cells", "openpyxl", "application/vnd.ms-excel.template.macroEnabled.main+xml")]
+    [InlineData("slides", "python-pptx", "application/vnd.ms-powerpoint.presentation.macroEnabled.main+xml")]
+    [InlineData("slides", "python-pptx", "application/vnd.openxmlformats-officedocument.presentationml.template.main+xml")]
+    [InlineData("slides", "python-pptx", "application/vnd.ms-powerpoint.template.macroEnabled.main+xml")]
+    [InlineData("slides", "python-pptx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow.main+xml")]
+    public void AMacroEnabledFileOrTemplateIsReadAsItsBaseFormat(string name, string variant, string contentType)
+    {
+        var source = Fixtures.DocumentPath(name, variant);
+        var path = Path.Combine(scratch.FullName, Path.GetFileName(source));
+        File.Copy(source, path);
+        using (var zip = ZipFile.Open(path, ZipArchiveMode.Update))
+        {
+            var baseType = $"application/vnd.openxmlformats-officedocument.{Fixtures.Format(name) switch
+            {
+                "docx" => "wordprocessingml.document",
+                "xlsx" => "spreadsheetml.sheet",
+                _ => "presentationml.presentation",
+            }}.main+xml";
+            var types = Read(zip, "[Content_Types].xml");
+            Assert.Contains(baseType, types, StringComparison.Ordinal);
+            types = types.Replace(baseType, contentType, StringComparison.Ordinal);
+            if (contentType.Contains("ms-word.document.macroEnabled", StringComparison.Ordinal))
+            {
+                // A VBA project of bytes that are no macro at all: nothing reads, let alone runs, it.
+                types = types.Replace("</Types>", "<Override PartName=\"/word/vbaProject.bin\" ContentType=\"application/vnd.ms-office.vbaProject\"/></Types>", StringComparison.Ordinal);
+                Write(zip, "word/vbaProject.bin", "not a macro");
+                var relationships = Read(zip, "word/_rels/document.xml.rels").Replace(
+                    "</Relationships>",
+                    "<Relationship Id=\"rIdVba\" Type=\"http://schemas.microsoft.com/office/2006/relationships/vbaProject\" Target=\"vbaProject.bin\"/></Relationships>",
+                    StringComparison.Ordinal);
+                Write(zip, "word/_rels/document.xml.rels", relationships);
+            }
+            Write(zip, "[Content_Types].xml", types);
+        }
+
+        Assert.Equal(DocumentJson.Serialize(OfficeReader.Read(source)), DocumentJson.Serialize(OfficeReader.Read(path)));
+    }
+
+    // An auto-number's startAt is its list's start, and a startAt of 1 is the default's: the
+    // bullets fixture's first numbered list given startAt 3, its second one 1.
+    [Fact]
+    public void APptxAutoNumberStartsItsListAtItsStartAt()
+    {
+        var path = Path.Combine(scratch.FullName, "bullets.pptx");
+        File.Copy(Fixtures.DocumentPath("bullets", "python-pptx"), path);
+        using (var zip = ZipFile.Open(path, ZipArchiveMode.Update))
+        {
+            foreach (var (slide, startAt) in new[] { ("ppt/slides/slide1.xml", 3), ("ppt/slides/slide2.xml", 1) })
+            {
+                var xml = Read(zip, slide);
+                var at = xml.IndexOf("<a:buAutoNum type=\"arabicPeriod\"/>", StringComparison.Ordinal);
+                Write(zip, slide, xml[..at] + $"<a:buAutoNum type=\"arabicPeriod\" startAt=\"{startAt}\"/>" + xml[(at + "<a:buAutoNum type=\"arabicPeriod\"/>".Length)..]);
+            }
+        }
+
+        var lists = OfficeReader.Read(path).Blocks.OfType<Slide>()
+            .Select(slide => slide.Blocks.OfType<ListBlock>().First(list => list.Ordered))
+            .ToList();
+        Assert.Equal([3, null], lists.Select(list => list.Start));
+    }
+
+    private static string Read(ZipArchive zip, string entry)
+    {
+        using var reader = new StreamReader(zip.GetEntry(entry)!.Open());
+        return reader.ReadToEnd();
+    }
+
+    private static void Write(ZipArchive zip, string entry, string content)
+    {
+        zip.GetEntry(entry)?.Delete();
+        using var writer = new StreamWriter(zip.CreateEntry(entry).Open());
+        writer.Write(content);
     }
 
     [Theory]

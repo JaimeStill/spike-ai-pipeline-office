@@ -20,9 +20,13 @@ public static class Cli
     public const int UsageError = 2;
 
     /// <summary>The document was refused (missing, unreadable, not docx, xlsx, or pptx,
-    /// encrypted or legacy, or malformed); the reason went to stderr and nothing to
-    /// stdout.</summary>
+    /// encrypted or legacy, malformed, or past a limit of office's); the reason went to stderr
+    /// and nothing to stdout.</summary>
     public const int Refused = 3;
+
+    /// <summary>The conversion failed in a way office doesn't expect of any document: a fault of
+    /// office's, never the document's; the error went to stderr and nothing to stdout.</summary>
+    public const int Failed = 4;
 
     /// <summary>The CLI's version, from its assembly.</summary>
     public static string Version =>
@@ -66,11 +70,28 @@ public static class Cli
         return result.Invoke(new InvocationConfiguration { Output = stdout, Error = stderr });
     }
 
-    // The whole conversion and rendering are made before anything is written, so a refusal leaves
-    // stdout empty and the media directory untouched. Media are written next, the directory
-    // created if missing, each distinct content once (a file of the same name holds the same
-    // bytes, so it is rewritten); stdout comes last, so it is written only when they all were.
+    // Any exception the conversion doesn't expect is a failure of its own, exit code 4, so it can
+    // never pass for another outcome: System.CommandLine would otherwise report it with exit
+    // code 1, which says the media could not be written.
     private static int Convert(string path, string format, string? mediaDirectory, TextWriter stdout, TextWriter stderr)
+    {
+        try
+        {
+            return ConvertDocument(path, format, mediaDirectory, stdout, stderr);
+        }
+        catch (Exception e)
+        {
+            stderr.WriteLine($"spike-ai-pipeline-office: failed: {path}: an unexpected {e.GetType().FullName}: {e.Message}");
+            return Failed;
+        }
+    }
+
+    // The whole conversion and rendering are made before anything is written, so a refusal leaves
+    // stdout empty and the media directory untouched. What the conversion skipped goes to stderr
+    // as warnings. Media are written next, the directory created if missing, each distinct
+    // content once (a file of the same name holds the same bytes, so it is rewritten); stdout
+    // comes last, so it is written only when they all were.
+    private static int ConvertDocument(string path, string format, string? mediaDirectory, TextWriter stdout, TextWriter stderr)
     {
         Conversion conversion;
         try
@@ -81,6 +102,10 @@ public static class Cli
         {
             stderr.WriteLine($"spike-ai-pipeline-office: refused: {e.Message}");
             return Refused;
+        }
+        foreach (var warning in conversion.Warnings)
+        {
+            stderr.WriteLine($"spike-ai-pipeline-office: warning: {path}: {warning}");
         }
         var output = format == "markdown" ? MarkdownRenderer.Render(conversion.Document) : DocumentJson.Serialize(conversion.Document);
         if (mediaDirectory is not null)

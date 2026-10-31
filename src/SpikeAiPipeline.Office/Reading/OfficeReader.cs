@@ -10,9 +10,19 @@ namespace SpikeAiPipeline.Office.Reading;
 /// written.</summary>
 public sealed class RefusalException(string message) : Exception(message);
 
+/// <summary>A document office reads but won't convert, as its readers find it: what in it goes
+/// past a limit, and where. The converter refuses the document with this reason.</summary>
+internal sealed class ContentRefusedException(string reason) : Exception(reason);
+
 /// <summary>A conversion's result: the model, and the embedded media its media blocks name, by
 /// file name.</summary>
-public sealed record Conversion(Document Document, IReadOnlyDictionary<string, byte[]> Media);
+public sealed record Conversion(Document Document, IReadOnlyDictionary<string, byte[]> Media)
+{
+    /// <summary>What the conversion skipped and converted the rest without: a single invalid
+    /// reference, such as a header reference of a type no header has, or a sheet that names no
+    /// part, each one line, its path left to the caller.</summary>
+    public IReadOnlyList<string> Warnings { get; init; } = [];
+}
 
 /// <summary>Office's converter: a document in, the model and its media out.</summary>
 public static class OfficeReader
@@ -22,7 +32,8 @@ public static class OfficeReader
 
     /// <summary>Converts the document at path into the model.</summary>
     /// <exception cref="RefusalException">The file is missing or unreadable, isn't a docx, xlsx,
-    /// or pptx package, is encrypted or a legacy binary format, or is malformed.</exception>
+    /// or pptx package, is encrypted or a legacy binary format, is malformed, or goes past a limit
+    /// of office's (tables nested more than eight deep).</exception>
     public static Document Read(string path) => Convert(path).Document;
 
     /// <summary>Converts the document at path into the model and the media it embeds, read whole
@@ -65,6 +76,10 @@ public static class OfficeReader
         catch (Exception e) when (IsMalformed(e))
         {
             throw Malformed(path, e);
+        }
+        catch (ContentRefusedException e)
+        {
+            throw new RefusalException($"{path}: {e.Message}");
         }
     }
 
@@ -167,8 +182,8 @@ public static class OfficeReader
         return XDocument.Load(stream);
     }
 
-    // A FormatException is the SDK's for an attribute that isn't one of its type's values, such
-    // as a header reference of type "odd".
+    // A FormatException is the SDK's for an attribute that isn't one of its type's values, where
+    // a reader doesn't skip the one element that holds it.
     private static bool IsMalformed(Exception e) =>
         e is InvalidDataException or XmlException or OpenXmlPackageException or FileFormatException or FormatException;
 
