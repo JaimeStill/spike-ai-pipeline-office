@@ -77,10 +77,7 @@ internal static class Fixtures
         get
         {
             var data = new TheoryData<string, string>();
-            foreach (var name in RealWorldDocx.Concat(RealWorldXlsx).Concat(RealWorldPptx))
-            {
-                data.Add(name, RealWorld);
-            }
+            AddRealWorld(data);
             return data;
         }
     }
@@ -91,11 +88,16 @@ internal static class Fixtures
         get
         {
             var data = Variants;
-            foreach (var name in RealWorldDocx.Concat(RealWorldXlsx).Concat(RealWorldPptx))
-            {
-                data.Add(name, RealWorld);
-            }
+            AddRealWorld(data);
             return data;
+        }
+    }
+
+    private static void AddRealWorld(TheoryData<string, string> data)
+    {
+        foreach (var name in RealWorldDocx.Concat(RealWorldXlsx).Concat(RealWorldPptx))
+        {
+            data.Add(name, RealWorld);
         }
     }
 

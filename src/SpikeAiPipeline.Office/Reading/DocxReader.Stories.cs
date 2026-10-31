@@ -101,7 +101,7 @@ internal static partial class DocxReader
         public CommentSet(MainDocumentPart main)
         {
             part = main.WordprocessingCommentsPart;
-            var comments = part is null ? [] : main.WordprocessingCommentsPart?.Comments?.Elements<W.Comment>().Where(c => c.Id?.Value is not null).ToList() ?? [];
+            var comments = main.WordprocessingCommentsPart?.Comments?.Elements<W.Comment>().Where(c => c.Id?.Value is not null).ToList() ?? [];
             var extended = new Dictionary<string, W15.CommentEx>(StringComparer.OrdinalIgnoreCase);
             foreach (var entry in main.WordprocessingCommentsExPart?.CommentsEx?.Elements<W15.CommentEx>() ?? [])
             {

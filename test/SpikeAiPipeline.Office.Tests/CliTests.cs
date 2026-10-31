@@ -76,17 +76,7 @@ public sealed class CliTests : IDisposable
                 "df026100fd6fe38e22923c5152a33ea6f6879e38073fb47f022ed9d90dec65a8.png",
             ],
             files);
-        using var package = ZipFile.OpenRead(path);
-        var stored = package.Entries.Where(e => e.FullName.StartsWith("word/media/", StringComparison.Ordinal)).ToList();
-        Assert.Equal(5, stored.Count); // The red square's copy is a fifth part, written as the same file.
-        foreach (var entry in stored)
-        {
-            using var stream = entry.Open();
-            using var bytes = new MemoryStream();
-            stream.CopyTo(bytes);
-            var name = Convert.ToHexStringLower(SHA256.HashData(bytes.ToArray())) + Path.GetExtension(entry.Name);
-            Assert.Equal(bytes.ToArray(), File.ReadAllBytes(Path.Combine(media, name)));
-        }
+        AssertEachStoredPartIsWritten(path, "word/media/", 5, media); // The red square's copy is a fifth part, written as the same file.
     }
 
     [Theory]
@@ -120,17 +110,7 @@ public sealed class CliTests : IDisposable
                 "10a86bd779a80e60e5d3314ec1edeab643cb454a4c7dfee671132090878d7aea.png",
             ],
             files);
-        using var package = ZipFile.OpenRead(path);
-        var stored = package.Entries.Where(e => e.FullName.StartsWith("xl/media/", StringComparison.Ordinal)).ToList();
-        Assert.Equal(3, stored.Count);
-        foreach (var entry in stored)
-        {
-            using var stream = entry.Open();
-            using var bytes = new MemoryStream();
-            stream.CopyTo(bytes);
-            var name = Convert.ToHexStringLower(SHA256.HashData(bytes.ToArray())) + Path.GetExtension(entry.Name);
-            Assert.Equal(bytes.ToArray(), File.ReadAllBytes(Path.Combine(media, name)));
-        }
+        AssertEachStoredPartIsWritten(path, "xl/media/", 3, media);
     }
 
     // The slides fixture's python-pptx variant presents its slides in an order that isn't their
@@ -168,17 +148,7 @@ public sealed class CliTests : IDisposable
                 "10a86bd779a80e60e5d3314ec1edeab643cb454a4c7dfee671132090878d7aea.png",
             ],
             files);
-        using var package = ZipFile.OpenRead(path);
-        var stored = package.Entries.Where(e => e.FullName.StartsWith("ppt/media/", StringComparison.Ordinal)).ToList();
-        Assert.Equal(2, stored.Count);
-        foreach (var entry in stored)
-        {
-            using var stream = entry.Open();
-            using var bytes = new MemoryStream();
-            stream.CopyTo(bytes);
-            var name = Convert.ToHexStringLower(SHA256.HashData(bytes.ToArray())) + Path.GetExtension(entry.Name);
-            Assert.Equal(bytes.ToArray(), File.ReadAllBytes(Path.Combine(media, name)));
-        }
+        AssertEachStoredPartIsWritten(path, "ppt/media/", 2, media);
     }
 
     public static TheoryData<string, string> RealWorldFiles => Fixtures.RealWorldFiles;
@@ -500,6 +470,23 @@ public sealed class CliTests : IDisposable
                     "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/connections\" Target=\"connections.xml\"/>" +
                     "</Relationships>")),
             "doesn't exist in the package");
+
+    // The package stores the given number of parts under the media prefix, and each one's bytes
+    // are in the media directory under its content's name.
+    private static void AssertEachStoredPartIsWritten(string path, string prefix, int parts, string media)
+    {
+        using var package = ZipFile.OpenRead(path);
+        var stored = package.Entries.Where(e => e.FullName.StartsWith(prefix, StringComparison.Ordinal)).ToList();
+        Assert.Equal(parts, stored.Count);
+        foreach (var entry in stored)
+        {
+            using var stream = entry.Open();
+            using var bytes = new MemoryStream();
+            stream.CopyTo(bytes);
+            var name = Convert.ToHexStringLower(SHA256.HashData(bytes.ToArray())) + Path.GetExtension(entry.Name);
+            Assert.Equal(bytes.ToArray(), File.ReadAllBytes(Path.Combine(media, name)));
+        }
+    }
 
     private void AssertRefused(string path, string reason)
     {
