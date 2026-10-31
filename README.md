@@ -198,9 +198,11 @@ NativeAOT binary over the committed pool, scores its Markdown element by element
 truth (`bench/SpikeAiPipeline.Office.Baseline`, with Markdig, never in office's binary), and
 measures each run's time and peak memory and the binary's size. Its scoring rules have tests of
 their own, `test/SpikeAiPipeline.Office.Baseline.Tests`, which the check runs. Its findings are
-[`docs/findings/office-cli.md`](docs/findings/office-cli.md), each run's results in
+[`docs/findings/office-cli.md`](docs/findings/office-cli.md), from the runs kept in
 `docs/findings/office-cli/runs/`; that page is the evidence the root's evidence 12 asks of the Open
-XML CLI. Its comparison with markitdown and xberg was measured once and is closed; the page keeps
+XML CLI. A plain run keeps nothing: it prints its summary and writes only
+`.state/baseline/results.json`. `mise run baseline -- --record [name]` records a run in a new
+`docs/findings/office-cli/runs/<name>/`, `<date>-<n>` by default, and never overwrites one. Its comparison with markitdown and xberg was measured once and is closed; the page keeps
 it as measured.
 
 The spike's question, evidence, and answer are in the root repository's README.

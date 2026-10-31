@@ -17,5 +17,6 @@ The README gives each capability's contract, and `CHANGELOG.md` records its chan
 - **refuse**: legacy, encrypted, and malformed packages, and tables nested past eight, before any
   output.
 - **release**: NativeAOT binaries for linux-x64 and linux-arm64 by `vX.Y.Z` tag.
-- **baseline**: office scored over the pool on the laptop (`docs/findings/office-cli.md`, the
-  root's evidence 12, and its closed comparison with markitdown and xberg).
+- **baseline**: office scored over the pool on the laptop, kept only when recorded with
+  `--record [name]` (`docs/findings/office-cli.md`, the root's evidence 12, from runs `office` and
+  `comparison`, its closed comparison with markitdown and xberg).

@@ -12,8 +12,11 @@ start from `context/README.md`.
   NativeAOT publish for this machine into `.state/aot/` with warnings as errors, then the tests,
   whose CLI tests run that published binary.
 - **Baseline:** `mise run baseline`, on the laptop, never in CI or the check: office alone over
-  the pool, scored by `bench/SpikeAiPipeline.Office.Baseline`, which the check only builds; it
-  writes a new `docs/findings/office-cli/runs/<date>-<n>/`, and `docs/findings/office-cli.md` reads it.
+  the pool, scored by `bench/SpikeAiPipeline.Office.Baseline`, which the check only builds. A plain
+  run keeps nothing (`.state/baseline/results.json` and the terminal);
+  `mise run baseline -- --record [name]` records one in a new
+  `docs/findings/office-cli/runs/<name>/` (`<date>-<n>` by default, never overwritten), and
+  `docs/findings/office-cli.md` reads runs `office` and `comparison`.
 - **CI:** `.github/workflows/ci.yml` runs `mise run check` on pull requests into main and pushes
   to main, on x64 and arm64; marathon's merge (`.claude/marathon.toml`) waits on the pull
   request's checks. main's ruleset is `.github/rulesets/main.json`, applied with `gh api

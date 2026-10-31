@@ -4,15 +4,15 @@ This page records the baseline tier of task `office-cli` (the root's goal record
 `context/goals/experiment.ai.spike-ai-pipeline.md`): office's NativeAOT binary converts every
 document of the committed pool to Markdown, its Markdown is scored element by element against the
 pool's ground truth, and each run is measured for time and peak memory, with the binary's size.
-Runs 2026-10-31-1 and -2 also ran markitdown and xberg; that comparison is closed and stays below
-as measured ("The comparison (closed)"). Run 2026-10-31-3 and every later run measure office
-alone.
+Two runs are kept, in `office-cli/runs/`: run `office` measures office alone ("office alone"), and
+run `comparison` also ran markitdown and xberg, a comparison that is closed and stays below as
+measured ("The comparison (closed)"). A run is kept only when it is recorded ("Rerunning").
 
 ## office alone
 
 Every number in this section but the linux-arm64 binary size comes from run
-[`office-cli/runs/2026-10-31-3/results.json`](office-cli/runs/2026-10-31-3/results.json), on the
-laptop on 2026-10-31 from 19:22:48 to 19:22:56 (UTC-4), office 0.1.0+1f209b5, on the same host
+[`office-cli/runs/office/results.json`](office-cli/runs/office/results.json), on the
+laptop on 2026-10-31 from 19:27:57 to 19:28:05 (UTC-4), office 0.1.0+6ed0d0e, on the same host
 and pool as the comparison ("The pool and the tools", below) and with the same scorer ("How the
 fidelity is scored"); that file has every file's detail. office exited 0 on all 72 files, wrote
 the same Markdown on all 5 runs of each, and no run timed out.
@@ -42,11 +42,11 @@ Each cell is found / expected, then the score, summed over every file whose trut
 
 office ran 5 times on each file, back to back, files in pool order, each run started through
 `bench/rusage.c` as in the comparison ("Memory and time", below). The wrapper's floor was
-1,528 KiB and 0.54 ms. The timeout was 60 s a run.
+1,528 KiB and 0.79 ms. The timeout was 60 s a run.
 
 | Median file, median of 5 | Fastest and slowest file | Whole pool | Peak memory, median file | Least and most |
 |---|---|---|---|---|
-| 17.21 ms | 12.76 to 29.86 ms | 1,395 ms | 35.32 MiB | 30.53 to 44.25 MiB (`generated/docx/sections.libreoffice.docx`) |
+| 16.37 ms | 12.08 to 29.98 ms | 1,306 ms | 35.29 MiB | 30.47 to 44.25 MiB (`generated/docx/sections.libreoffice.docx`) |
 
 The columns read as in the comparison's table: the median over the 72 files of each file's median
 run, the sum of the files' medians, and a file's largest `ru_maxrss` of its 5 runs; every number
@@ -54,11 +54,11 @@ includes the process's start and exit.
 
 | First run of the whole baseline | First run of a file, median file | First run less the other four's median, median file | Spread of 5 runs (max less min), median file |
 |---|---|---|---|
-| 29.17 ms | 17.13 ms | 0.02 ms | 3.95 ms |
+| 24.76 ms | 17.16 ms | 0.08 ms | 3.18 ms |
 
 "Cold" is as weak here as in the comparison: the run dropped no page cache, and office's binary had
 been run minutes before, so its files were very likely in memory. Only the first process of all,
-29.17 ms, stands out from the runs' spread, at 1.7 times the median file's time.
+24.76 ms, stands out from the runs' spread, at 1.5 times the median file's time.
 
 ### Footprint
 
@@ -72,7 +72,7 @@ office's linux-arm64 binary can't be measured on this laptop: a NativeAOT publis
 linux-arm64 on x64 fails at the link (the system linker has no aarch64 target). Its figure is the
 binary's own size, not a release archive's, as CI's check job publishes it natively on
 `ubuntu-24.04-arm` and reports it to the job summary ("Report the published binary's size"),
-recorded from the pull request's CI run. Every other row is the laptop's, from run 2026-10-31-3.
+recorded from the pull request's CI run. Every other row is the laptop's, from run `office`.
 
 ## How the fidelity is scored
 
@@ -161,12 +161,8 @@ truth, and each run was measured for time and peak memory; the comparison also r
 tool's footprint on disk and its licenses. It is reproducible from commit 1f209b5, the last to
 have the comparison's bench (`mise run baseline` there installs markitdown and xberg from its
 `mise.baseline.toml`). Every number in this section comes from run
-[`office-cli/runs/2026-10-31-2/results.json`](office-cli/runs/2026-10-31-2/results.json), on the
-laptop on 2026-10-31 from 17:48:49 to 17:53:21 (UTC-4); that file has every file's detail. The
-earlier run, [`office-cli/runs/2026-10-31-1/results.json`](office-cli/runs/2026-10-31-1/results.json)
-(16:51:19 to 16:55:41), stays committed as the record of the first scoring: it has the pooled
-fidelity only, and its `chartValue` is the table-only rule this run reports as `chartValueTable`
-(its counts are the same in both runs). This section takes no number from it.
+[`office-cli/runs/comparison/results.json`](office-cli/runs/comparison/results.json), on the
+laptop on 2026-10-31 from 17:48:49 to 17:53:21 (UTC-4); that file has every file's detail.
 
 No tool was asked to call a model, and none called one over the network. office calls none.
 markitdown ran with no LLM client and no Document Intelligence endpoint, and as shipped: it always
@@ -372,7 +368,7 @@ tool's first process of all, which took 1.5 times (office), 1.4 times (markitdow
 | xberg | its install directory: the binary, the shared libraries beside it (libx265, libaom, libheif, libde265, libnuma), and its license files | 159,701,853 | 152.30 |
 
 office's linux-arm64 binary is under "office alone" above. Every row here is the laptop's, from run
-2026-10-31-2.
+`comparison`.
 
 ### Licenses
 
@@ -457,11 +453,21 @@ mise run baseline
 ```
 
 It publishes office for this machine into `.state/baseline/office/`, builds the bench and the
-wrapper (`cc`) into `.state/baseline/`, runs office on every pool file, and writes a new
-`docs/findings/office-cli/runs/<date>-<n>/results.json`. For run 2026-10-31-3, just after the
-check had built, `mise run baseline` took 11 seconds, the bench 7.7 of them (`started` to
-`finished`). `BASELINE_RUNS` (5) sets the runs per file,
-`BASELINE_TIMEOUT` (60) the seconds a run may take, and `BASELINE_OUT` another runs directory.
+wrapper (`cc`) into `.state/baseline/`, runs office on every pool file, and prints the summary:
+the files that ran, the median file's time and peak memory, and each kind's found and expected.
+A plain run keeps nothing: it writes `.state/baseline/results.json`, which the next run
+overwrites, and `.state/` is ignored. To keep a run, record it:
+
+```sh
+mise run baseline -- --record [name]
+```
+
+That writes `docs/findings/office-cli/runs/<name>/results.json`, `<name>` by default
+`<date>-<n>`, the first such directory that doesn't exist. A name is letters, digits, `.`, `_`,
+and `-`, not starting with `.`, and an existing run directory is never overwritten: the run is
+refused, with a nonzero exit. For run `office` the bench took 7.2 seconds (`started` to
+`finished`). `BASELINE_RUNS` (5) sets the runs per file and `BASELINE_TIMEOUT` (60) the seconds a
+run may take.
 To see the texts the scoring reads in one Markdown file:
 `.state/baseline/bench/SpikeAiPipeline.Office.Baseline --dump <file.md>`; to score one against a
 truth, each kind's found and expected and its misses:
@@ -474,6 +480,6 @@ subset (`pooled`, `generated`, `realworld`), each kind's files, expected, found,
 above; `footprint` office's sizes and its packages' licenses; `wrapperFloor` the wrapper's own;
 and `files` each file's status, exit code, stderr when it failed, Markdown size, whether its 5
 outputs were the same, its runs (wall, user, and system time, peak memory), and each kind's
-expected, found, and first ten misses. Schema 2 (run 2026-10-31-2) held the same for each of three
+expected, found, and first ten misses. Schema 2 (run `comparison`) held the same for each of three
 tools, `tools` a list, `performance` one entry a tool, `footprint` one a tool, and each file's
 results under `tools.<name>`.

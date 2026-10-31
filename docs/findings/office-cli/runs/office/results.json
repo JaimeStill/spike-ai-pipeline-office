@@ -1,7 +1,7 @@
 {
   "schema": 3,
-  "started": "2026-10-31T19:22:48.8535895-04:00",
-  "finished": "2026-10-31T19:22:56.5034705-04:00",
+  "started": "2026-10-31T19:27:57.8348592-04:00",
+  "finished": "2026-10-31T19:28:05.0270356-04:00",
   "host": {
     "cpu": "Intel(R) Core(TM) Ultra 9 185H",
     "logicalCpus": 22,
@@ -13,7 +13,7 @@
   },
   "tool": {
     "name": "office",
-    "version": "0.1.0+1f209b5c4f84d3c4d18eeb14eb0264b3cc2c8688",
+    "version": "0.1.0+6ed0d0e403517fda965950e0d26e48728e15f6cb",
     "command": "~/experiments/spike-ai-pipeline-office/.state/baseline/office/spike-ai-pipeline-office <file> --format markdown"
   },
   "markdig": "1.5.1+bbf197eaf3c96b9a6ada6532ec970b59751ca9c6",
@@ -31,7 +31,7 @@
   },
   "wrapperFloor": {
     "program": "/bin/true",
-    "medianMs": 0.54,
+    "medianMs": 0.789,
     "maxRssKiB": 1528
   },
   "workDirectoryLeftBehind": [],
@@ -322,16 +322,16 @@
     "failed": 0,
     "timedOut": 0,
     "signaled": 0,
-    "firstInvocationMs": 29.17,
-    "medianOfMediansMs": 17.21,
-    "minMedianMs": 12.76,
-    "maxMedianMs": 29.86,
-    "sumOfMediansMs": 1394.66,
-    "medianFirstRunMs": 17.13,
-    "medianFirstRunOverRestMs": 0.02,
-    "medianSpreadMs": 3.95,
-    "medianPeakRssMiB": 35.32,
-    "minPeakRssMiB": 30.53,
+    "firstInvocationMs": 24.76,
+    "medianOfMediansMs": 16.37,
+    "minMedianMs": 12.08,
+    "maxMedianMs": 29.98,
+    "sumOfMediansMs": 1306.1,
+    "medianFirstRunMs": 17.16,
+    "medianFirstRunOverRestMs": 0.08,
+    "medianSpreadMs": 3.18,
+    "medianPeakRssMiB": 35.29,
+    "minPeakRssMiB": 30.47,
     "maxPeakRssMiB": 44.25,
     "maxPeakRssFile": "fixtures/generated/docx/sections.libreoffice.docx"
   },
@@ -383,52 +383,52 @@
       "stderr": null,
       "markdownBytes": 323,
       "sameOutputEveryRun": true,
-      "firstMs": 29.17,
-      "medianMs": 28.67,
-      "minMs": 24.86,
-      "maxMs": 29.37,
-      "peakRssKiB": 39072,
-      "medianRssKiB": 38684,
+      "firstMs": 24.76,
+      "medianMs": 25.37,
+      "minMs": 21.8,
+      "maxMs": 27.23,
+      "peakRssKiB": 38768,
+      "medianRssKiB": 38552,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 29.166,
-          "userMs": 18.462,
-          "sysMs": 9.7,
+          "wallMs": 24.756,
+          "userMs": 13.563,
+          "sysMs": 9.987,
+          "maxRssKiB": 38408
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.37,
+          "userMs": 11.559,
+          "sysMs": 13.632,
+          "maxRssKiB": 38768
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.798,
+          "userMs": 13.82,
+          "sysMs": 7.887,
           "maxRssKiB": 38604
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.861,
-          "userMs": 20.935,
-          "sysMs": 3.805,
-          "maxRssKiB": 38684
+          "wallMs": 25.634,
+          "userMs": 22.535,
+          "sysMs": 2.95,
+          "maxRssKiB": 38552
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 29.371,
-          "userMs": 21.163,
-          "sysMs": 8.062,
-          "maxRssKiB": 38836
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 26.008,
-          "userMs": 16.549,
-          "sysMs": 9.299,
-          "maxRssKiB": 39072
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 28.668,
-          "userMs": 14.249,
-          "sysMs": 14.266,
-          "maxRssKiB": 38524
+          "wallMs": 27.228,
+          "userMs": 16.034,
+          "sysMs": 11.02,
+          "maxRssKiB": 38408
         }
       ],
       "fidelity": {
@@ -464,52 +464,52 @@
       "stderr": null,
       "markdownBytes": 323,
       "sameOutputEveryRun": true,
-      "firstMs": 28.29,
-      "medianMs": 25.87,
-      "minMs": 24.05,
-      "maxMs": 28.29,
-      "peakRssKiB": 39240,
-      "medianRssKiB": 39104,
+      "firstMs": 27.63,
+      "medianMs": 25.32,
+      "minMs": 24.48,
+      "maxMs": 27.63,
+      "peakRssKiB": 39320,
+      "medianRssKiB": 39160,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.288,
-          "userMs": 20.161,
-          "sysMs": 8.072,
-          "maxRssKiB": 38988
+          "wallMs": 27.631,
+          "userMs": 14.29,
+          "sysMs": 13.28,
+          "maxRssKiB": 39320
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.872,
-          "userMs": 19.751,
-          "sysMs": 5.915,
-          "maxRssKiB": 39240
+          "wallMs": 24.813,
+          "userMs": 17.789,
+          "sysMs": 6.924,
+          "maxRssKiB": 39204
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.046,
-          "userMs": 17.934,
-          "sysMs": 5.978,
-          "maxRssKiB": 39188
+          "wallMs": 25.319,
+          "userMs": 18.118,
+          "sysMs": 7.027,
+          "maxRssKiB": 38872
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.795,
-          "userMs": 18.69,
-          "sysMs": 7.873,
-          "maxRssKiB": 38996
+          "wallMs": 26.079,
+          "userMs": 14.946,
+          "sysMs": 10.939,
+          "maxRssKiB": 39160
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.23,
-          "userMs": 13.456,
-          "sysMs": 10.578,
-          "maxRssKiB": 39104
+          "wallMs": 24.476,
+          "userMs": 15.172,
+          "sysMs": 9.083,
+          "maxRssKiB": 38876
         }
       ],
       "fidelity": {
@@ -545,52 +545,52 @@
       "stderr": null,
       "markdownBytes": 124,
       "sameOutputEveryRun": true,
-      "firstMs": 25.01,
-      "medianMs": 24.03,
-      "minMs": 22.68,
+      "firstMs": 22.43,
+      "medianMs": 24.51,
+      "minMs": 21.46,
       "maxMs": 25.01,
-      "peakRssKiB": 35948,
-      "medianRssKiB": 35792,
+      "peakRssKiB": 36008,
+      "medianRssKiB": 35532,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.015,
-          "userMs": 20.929,
-          "sysMs": 3.983,
-          "maxRssKiB": 35816
+          "wallMs": 22.426,
+          "userMs": 14.474,
+          "sysMs": 7.73,
+          "maxRssKiB": 36008
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.292,
-          "userMs": 17.141,
-          "sysMs": 7.041,
-          "maxRssKiB": 35704
+          "wallMs": 24.51,
+          "userMs": 16.55,
+          "sysMs": 7.788,
+          "maxRssKiB": 35356
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.031,
-          "userMs": 19.914,
-          "sysMs": 3.991,
-          "maxRssKiB": 35580
+          "wallMs": 24.881,
+          "userMs": 9.9,
+          "sysMs": 14.853,
+          "maxRssKiB": 35512
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.557,
-          "userMs": 17.204,
-          "sysMs": 6.069,
-          "maxRssKiB": 35792
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 22.682,
-          "userMs": 15.595,
-          "sysMs": 6.828,
+          "wallMs": 21.46,
+          "userMs": 14.527,
+          "sysMs": 6.767,
           "maxRssKiB": 35948
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.015,
+          "userMs": 14.918,
+          "sysMs": 9.963,
+          "maxRssKiB": 35532
         }
       ],
       "fidelity": {
@@ -616,52 +616,52 @@
       "stderr": null,
       "markdownBytes": 124,
       "sameOutputEveryRun": true,
-      "firstMs": 24.93,
-      "medianMs": 24.93,
-      "minMs": 21.8,
-      "maxMs": 26.13,
-      "peakRssKiB": 36780,
-      "medianRssKiB": 36604,
+      "firstMs": 23.35,
+      "medianMs": 22.79,
+      "minMs": 21.49,
+      "maxMs": 27.23,
+      "peakRssKiB": 36608,
+      "medianRssKiB": 36428,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.929,
-          "userMs": 15.516,
-          "sysMs": 9.305,
-          "maxRssKiB": 36244
+          "wallMs": 23.353,
+          "userMs": 14.159,
+          "sysMs": 9.083,
+          "maxRssKiB": 36416
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.129,
-          "userMs": 19.992,
-          "sysMs": 6.032,
-          "maxRssKiB": 36124
+          "wallMs": 22.792,
+          "userMs": 14.823,
+          "sysMs": 7.903,
+          "maxRssKiB": 36052
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.758,
-          "userMs": 17.762,
-          "sysMs": 6.903,
-          "maxRssKiB": 36604
+          "wallMs": 22.096,
+          "userMs": 17.901,
+          "sysMs": 3.982,
+          "maxRssKiB": 36608
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.799,
-          "userMs": 12.382,
-          "sysMs": 9.283,
-          "maxRssKiB": 36708
+          "wallMs": 21.494,
+          "userMs": 15.606,
+          "sysMs": 5.844,
+          "maxRssKiB": 36428
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.086,
-          "userMs": 18.998,
-          "sysMs": 5.993,
-          "maxRssKiB": 36780
+          "wallMs": 27.227,
+          "userMs": 17.015,
+          "sysMs": 10.019,
+          "maxRssKiB": 36460
         }
       ],
       "fidelity": {
@@ -687,52 +687,52 @@
       "stderr": null,
       "markdownBytes": 539,
       "sameOutputEveryRun": true,
-      "firstMs": 24.23,
-      "medianMs": 24.44,
-      "minMs": 22.42,
-      "maxMs": 27.06,
-      "peakRssKiB": 36276,
-      "medianRssKiB": 36100,
+      "firstMs": 24.05,
+      "medianMs": 24.88,
+      "minMs": 23.63,
+      "maxMs": 29,
+      "peakRssKiB": 36292,
+      "medianRssKiB": 36132,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.226,
-          "userMs": 21.046,
-          "sysMs": 3.023,
-          "maxRssKiB": 36008
+          "wallMs": 24.053,
+          "userMs": 14.966,
+          "sysMs": 8.909,
+          "maxRssKiB": 35972
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.415,
-          "userMs": 15.495,
-          "sysMs": 6.781,
-          "maxRssKiB": 36276
+          "wallMs": 29.005,
+          "userMs": 18.883,
+          "sysMs": 9.938,
+          "maxRssKiB": 36132
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.44,
-          "userMs": 16.499,
-          "sysMs": 7.751,
+          "wallMs": 24.88,
+          "userMs": 17.734,
+          "sysMs": 6.926,
+          "maxRssKiB": 36292
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.582,
+          "userMs": 20.255,
+          "sysMs": 5.065,
           "maxRssKiB": 36152
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.059,
-          "userMs": 19.943,
-          "sysMs": 6.969,
-          "maxRssKiB": 36016
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 25.647,
-          "userMs": 16.335,
-          "sysMs": 9.179,
-          "maxRssKiB": 36100
+          "wallMs": 23.628,
+          "userMs": 15.665,
+          "sysMs": 7.834,
+          "maxRssKiB": 35688
         }
       ],
       "fidelity": {
@@ -763,52 +763,52 @@
       "stderr": null,
       "markdownBytes": 539,
       "sameOutputEveryRun": true,
-      "firstMs": 25.73,
-      "medianMs": 25.85,
-      "minMs": 25.04,
-      "maxMs": 28.01,
-      "peakRssKiB": 36800,
-      "medianRssKiB": 36764,
+      "firstMs": 22.21,
+      "medianMs": 23.54,
+      "minMs": 22.21,
+      "maxMs": 28.64,
+      "peakRssKiB": 36776,
+      "medianRssKiB": 36640,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.733,
-          "userMs": 20.433,
-          "sysMs": 5.105,
-          "maxRssKiB": 36792
+          "wallMs": 22.211,
+          "userMs": 15.123,
+          "sysMs": 7.061,
+          "maxRssKiB": 36776
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.011,
-          "userMs": 19.862,
-          "sysMs": 7.916,
-          "maxRssKiB": 36596
+          "wallMs": 27.395,
+          "userMs": 18.502,
+          "sysMs": 8.785,
+          "maxRssKiB": 36640
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.617,
-          "userMs": 18.668,
-          "sysMs": 7.86,
-          "maxRssKiB": 36748
+          "wallMs": 23.386,
+          "userMs": 14.52,
+          "sysMs": 8.713,
+          "maxRssKiB": 36556
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.849,
-          "userMs": 17.851,
-          "sysMs": 7.925,
-          "maxRssKiB": 36764
+          "wallMs": 23.543,
+          "userMs": 19.326,
+          "sysMs": 4.067,
+          "maxRssKiB": 36612
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.035,
-          "userMs": 20.723,
-          "sysMs": 4.155,
-          "maxRssKiB": 36800
+          "wallMs": 28.641,
+          "userMs": 24.492,
+          "sysMs": 4.062,
+          "maxRssKiB": 36756
         }
       ],
       "fidelity": {
@@ -839,52 +839,52 @@
       "stderr": null,
       "markdownBytes": 80,
       "sameOutputEveryRun": true,
-      "firstMs": 27.01,
-      "medianMs": 26.94,
-      "minMs": 26,
-      "maxMs": 29.82,
-      "peakRssKiB": 36088,
-      "medianRssKiB": 35760,
+      "firstMs": 23.76,
+      "medianMs": 23.24,
+      "minMs": 22.09,
+      "maxMs": 27.85,
+      "peakRssKiB": 35908,
+      "medianRssKiB": 35628,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.015,
-          "userMs": 20.607,
-          "sysMs": 6.195,
-          "maxRssKiB": 35684
+          "wallMs": 23.76,
+          "userMs": 13.785,
+          "sysMs": 9.851,
+          "maxRssKiB": 35440
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.841,
-          "userMs": 20.958,
-          "sysMs": 5.704,
-          "maxRssKiB": 36032
+          "wallMs": 22.086,
+          "userMs": 13.932,
+          "sysMs": 7.924,
+          "maxRssKiB": 35908
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 29.819,
-          "userMs": 24.723,
-          "sysMs": 4.948,
-          "maxRssKiB": 35424
+          "wallMs": 27.846,
+          "userMs": 16.781,
+          "sysMs": 10.835,
+          "maxRssKiB": 35628
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.939,
-          "userMs": 16.898,
-          "sysMs": 9.935,
-          "maxRssKiB": 36088
+          "wallMs": 22.937,
+          "userMs": 16.752,
+          "sysMs": 5.913,
+          "maxRssKiB": 35596
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.999,
-          "userMs": 19.88,
-          "sysMs": 5.965,
-          "maxRssKiB": 35760
+          "wallMs": 23.241,
+          "userMs": 14.98,
+          "sysMs": 8.002,
+          "maxRssKiB": 35748
         }
       ],
       "fidelity": {
@@ -910,52 +910,52 @@
       "stderr": null,
       "markdownBytes": 80,
       "sameOutputEveryRun": true,
-      "firstMs": 25.77,
-      "medianMs": 25.77,
-      "minMs": 23.1,
-      "maxMs": 28.01,
-      "peakRssKiB": 36844,
-      "medianRssKiB": 36236,
+      "firstMs": 21.76,
+      "medianMs": 22.56,
+      "minMs": 21.66,
+      "maxMs": 28.53,
+      "peakRssKiB": 36676,
+      "medianRssKiB": 36416,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.767,
-          "userMs": 16.128,
-          "sysMs": 9.487,
-          "maxRssKiB": 36844
+          "wallMs": 21.755,
+          "userMs": 16.746,
+          "sysMs": 4.911,
+          "maxRssKiB": 36416
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.519,
-          "userMs": 21.361,
-          "sysMs": 5.065,
-          "maxRssKiB": 36364
+          "wallMs": 28.534,
+          "userMs": 19.584,
+          "sysMs": 8.802,
+          "maxRssKiB": 36336
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.005,
-          "userMs": 21.89,
-          "sysMs": 5.971,
-          "maxRssKiB": 36208
+          "wallMs": 21.663,
+          "userMs": 17.747,
+          "sysMs": 3.942,
+          "maxRssKiB": 36676
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.102,
-          "userMs": 16.873,
-          "sysMs": 5.966,
-          "maxRssKiB": 36236
+          "wallMs": 23.984,
+          "userMs": 13.895,
+          "sysMs": 9.88,
+          "maxRssKiB": 36436
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.305,
-          "userMs": 20.146,
-          "sysMs": 5.028,
-          "maxRssKiB": 36136
+          "wallMs": 22.565,
+          "userMs": 15.364,
+          "sysMs": 7.135,
+          "maxRssKiB": 36248
         }
       ],
       "fidelity": {
@@ -981,52 +981,52 @@
       "stderr": null,
       "markdownBytes": 441,
       "sameOutputEveryRun": true,
-      "firstMs": 24.56,
-      "medianMs": 24.56,
-      "minMs": 23.02,
-      "maxMs": 27.83,
-      "peakRssKiB": 35692,
-      "medianRssKiB": 35616,
+      "firstMs": 26.64,
+      "medianMs": 23.98,
+      "minMs": 22.27,
+      "maxMs": 26.64,
+      "peakRssKiB": 35760,
+      "medianRssKiB": 35560,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.564,
-          "userMs": 17.85,
-          "sysMs": 6.575,
-          "maxRssKiB": 35616
+          "wallMs": 26.639,
+          "userMs": 20.375,
+          "sysMs": 6.122,
+          "maxRssKiB": 35188
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.218,
-          "userMs": 15.694,
-          "sysMs": 8.369,
-          "maxRssKiB": 35488
+          "wallMs": 22.27,
+          "userMs": 16.125,
+          "sysMs": 6.052,
+          "maxRssKiB": 35348
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.959,
-          "userMs": 20.644,
-          "sysMs": 6.198,
-          "maxRssKiB": 35592
+          "wallMs": 23.979,
+          "userMs": 15.558,
+          "sysMs": 8.292,
+          "maxRssKiB": 35760
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.025,
-          "userMs": 14.945,
-          "sysMs": 7.954,
-          "maxRssKiB": 35692
+          "wallMs": 26.451,
+          "userMs": 20.301,
+          "sysMs": 6.084,
+          "maxRssKiB": 35664
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.832,
-          "userMs": 20.792,
-          "sysMs": 6.917,
-          "maxRssKiB": 35644
+          "wallMs": 23.533,
+          "userMs": 14.163,
+          "sysMs": 9.101,
+          "maxRssKiB": 35560
         }
       ],
       "fidelity": {
@@ -1052,52 +1052,52 @@
       "stderr": null,
       "markdownBytes": 441,
       "sameOutputEveryRun": true,
-      "firstMs": 30.44,
-      "medianMs": 23.87,
-      "minMs": 22.89,
-      "maxMs": 30.44,
-      "peakRssKiB": 36520,
-      "medianRssKiB": 36156,
+      "firstMs": 23.2,
+      "medianMs": 22.58,
+      "minMs": 21.01,
+      "maxMs": 24.53,
+      "peakRssKiB": 36812,
+      "medianRssKiB": 36388,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 30.437,
-          "userMs": 26.205,
-          "sysMs": 4.022,
-          "maxRssKiB": 36064
+          "wallMs": 23.201,
+          "userMs": 17.102,
+          "sysMs": 6.062,
+          "maxRssKiB": 36308
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.541,
-          "userMs": 14.227,
-          "sysMs": 9.165,
-          "maxRssKiB": 36264
+          "wallMs": 21.013,
+          "userMs": 15.953,
+          "sysMs": 4.984,
+          "maxRssKiB": 36628
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.893,
-          "userMs": 15.511,
-          "sysMs": 7.247,
-          "maxRssKiB": 36520
+          "wallMs": 22.579,
+          "userMs": 16.612,
+          "sysMs": 5.86,
+          "maxRssKiB": 36812
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.21,
-          "userMs": 22.024,
-          "sysMs": 5.024,
-          "maxRssKiB": 36000
+          "wallMs": 24.532,
+          "userMs": 22.397,
+          "sysMs": 2.038,
+          "maxRssKiB": 36112
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.872,
-          "userMs": 18.701,
-          "sysMs": 4.977,
-          "maxRssKiB": 36156
+          "wallMs": 21.049,
+          "userMs": 11.951,
+          "sysMs": 8.966,
+          "maxRssKiB": 36388
         }
       ],
       "fidelity": {
@@ -1123,52 +1123,52 @@
       "stderr": null,
       "markdownBytes": 527,
       "sameOutputEveryRun": true,
-      "firstMs": 27.27,
-      "medianMs": 26.46,
-      "minMs": 22.98,
-      "maxMs": 29.18,
-      "peakRssKiB": 36008,
-      "medianRssKiB": 35932,
+      "firstMs": 23.5,
+      "medianMs": 23.5,
+      "minMs": 20.96,
+      "maxMs": 27.6,
+      "peakRssKiB": 35820,
+      "medianRssKiB": 35768,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.274,
-          "userMs": 17.09,
-          "sysMs": 10.054,
-          "maxRssKiB": 35700
+          "wallMs": 23.505,
+          "userMs": 16.598,
+          "sysMs": 6.829,
+          "maxRssKiB": 35732
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.922,
-          "userMs": 20.816,
-          "sysMs": 4.947,
-          "maxRssKiB": 35932
+          "wallMs": 20.962,
+          "userMs": 14.917,
+          "sysMs": 5.97,
+          "maxRssKiB": 35820
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.983,
-          "userMs": 18.928,
-          "sysMs": 3.989,
-          "maxRssKiB": 35668
+          "wallMs": 27.604,
+          "userMs": 20.261,
+          "sysMs": 7.076,
+          "maxRssKiB": 35768
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.461,
-          "userMs": 18.172,
-          "sysMs": 8.079,
-          "maxRssKiB": 36008
+          "wallMs": 21.825,
+          "userMs": 15.829,
+          "sysMs": 5.94,
+          "maxRssKiB": 35792
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 29.182,
-          "userMs": 20.042,
-          "sysMs": 8.998,
-          "maxRssKiB": 35996
+          "wallMs": 23.871,
+          "userMs": 18.733,
+          "sysMs": 4.952,
+          "maxRssKiB": 35656
         }
       ],
       "fidelity": {
@@ -1194,52 +1194,52 @@
       "stderr": null,
       "markdownBytes": 527,
       "sameOutputEveryRun": true,
-      "firstMs": 28.14,
-      "medianMs": 25.42,
-      "minMs": 23.73,
-      "maxMs": 28.76,
-      "peakRssKiB": 36668,
-      "medianRssKiB": 36500,
+      "firstMs": 25.5,
+      "medianMs": 23.64,
+      "minMs": 22.55,
+      "maxMs": 25.5,
+      "peakRssKiB": 36836,
+      "medianRssKiB": 36324,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.143,
-          "userMs": 22.205,
-          "sysMs": 5.806,
-          "maxRssKiB": 36260
+          "wallMs": 25.505,
+          "userMs": 14.644,
+          "sysMs": 10.722,
+          "maxRssKiB": 36836
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.731,
-          "userMs": 18.744,
-          "sysMs": 4.932,
-          "maxRssKiB": 36548
+          "wallMs": 23.775,
+          "userMs": 14.472,
+          "sysMs": 9.286,
+          "maxRssKiB": 35920
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.761,
-          "userMs": 24.401,
-          "sysMs": 4.06,
-          "maxRssKiB": 36500
+          "wallMs": 22.55,
+          "userMs": 14.361,
+          "sysMs": 8.182,
+          "maxRssKiB": 36000
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.42,
-          "userMs": 15.215,
-          "sysMs": 10.119,
-          "maxRssKiB": 36360
+          "wallMs": 23.64,
+          "userMs": 16.308,
+          "sysMs": 7.127,
+          "maxRssKiB": 36324
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.264,
-          "userMs": 20.09,
-          "sysMs": 4.015,
-          "maxRssKiB": 36668
+          "wallMs": 22.611,
+          "userMs": 15.676,
+          "sysMs": 6.858,
+          "maxRssKiB": 36484
         }
       ],
       "fidelity": {
@@ -1265,52 +1265,52 @@
       "stderr": null,
       "markdownBytes": 866,
       "sameOutputEveryRun": true,
-      "firstMs": 29.86,
-      "medianMs": 29.86,
-      "minMs": 26.67,
-      "maxMs": 31.09,
-      "peakRssKiB": 44216,
-      "medianRssKiB": 43820,
+      "firstMs": 27.17,
+      "medianMs": 27.25,
+      "minMs": 27.17,
+      "maxMs": 32.08,
+      "peakRssKiB": 43732,
+      "medianRssKiB": 43496,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 29.86,
-          "userMs": 20.453,
-          "sysMs": 9.201,
-          "maxRssKiB": 43820
+          "wallMs": 27.168,
+          "userMs": 19.026,
+          "sysMs": 8,
+          "maxRssKiB": 43496
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 30.908,
-          "userMs": 18.833,
-          "sysMs": 11.87,
-          "maxRssKiB": 43812
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 31.091,
-          "userMs": 23.017,
-          "sysMs": 8.003,
+          "wallMs": 27.247,
+          "userMs": 18.016,
+          "sysMs": 9.003,
           "maxRssKiB": 43688
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.675,
-          "userMs": 19.648,
-          "sysMs": 6.895,
-          "maxRssKiB": 44216
+          "wallMs": 27.203,
+          "userMs": 22.033,
+          "sysMs": 5.006,
+          "maxRssKiB": 43732
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.607,
-          "userMs": 18.579,
-          "sysMs": 9.802,
-          "maxRssKiB": 43932
+          "wallMs": 27.726,
+          "userMs": 17.769,
+          "sysMs": 9.853,
+          "maxRssKiB": 43468
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 32.084,
+          "userMs": 18.904,
+          "sysMs": 12.921,
+          "maxRssKiB": 43496
         }
       ],
       "fidelity": {
@@ -1346,52 +1346,52 @@
       "stderr": null,
       "markdownBytes": 855,
       "sameOutputEveryRun": true,
-      "firstMs": 28.42,
-      "medianMs": 28.42,
-      "minMs": 25.84,
-      "maxMs": 33.69,
-      "peakRssKiB": 44292,
-      "medianRssKiB": 44044,
+      "firstMs": 25.89,
+      "medianMs": 26.21,
+      "minMs": 25.89,
+      "maxMs": 29.13,
+      "peakRssKiB": 44352,
+      "medianRssKiB": 44156,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.419,
-          "userMs": 17.582,
-          "sysMs": 10.707,
-          "maxRssKiB": 44100
+          "wallMs": 25.888,
+          "userMs": 14.86,
+          "sysMs": 10.831,
+          "maxRssKiB": 44352
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 33.694,
-          "userMs": 28.38,
-          "sysMs": 5.077,
-          "maxRssKiB": 44044
+          "wallMs": 27.921,
+          "userMs": 23.803,
+          "sysMs": 3.975,
+          "maxRssKiB": 44220
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.566,
-          "userMs": 22.335,
-          "sysMs": 5.072,
-          "maxRssKiB": 43840
+          "wallMs": 29.127,
+          "userMs": 16.786,
+          "sysMs": 11.883,
+          "maxRssKiB": 44108
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 30.653,
-          "userMs": 24.416,
-          "sysMs": 6.111,
-          "maxRssKiB": 44000
+          "wallMs": 26.203,
+          "userMs": 18.33,
+          "sysMs": 7.701,
+          "maxRssKiB": 44156
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.836,
-          "userMs": 17.305,
-          "sysMs": 8.164,
-          "maxRssKiB": 44292
+          "wallMs": 26.211,
+          "userMs": 18.391,
+          "sysMs": 7.74,
+          "maxRssKiB": 44080
         }
       ],
       "fidelity": {
@@ -1427,52 +1427,52 @@
       "stderr": null,
       "markdownBytes": 295,
       "sameOutputEveryRun": true,
-      "firstMs": 24.89,
-      "medianMs": 28.89,
-      "minMs": 24.89,
-      "maxMs": 31.37,
-      "peakRssKiB": 36512,
-      "medianRssKiB": 36328,
+      "firstMs": 23.17,
+      "medianMs": 25.13,
+      "minMs": 23.17,
+      "maxMs": 27.11,
+      "peakRssKiB": 36640,
+      "medianRssKiB": 36308,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.888,
-          "userMs": 18.788,
-          "sysMs": 5.936,
-          "maxRssKiB": 36512
+          "wallMs": 23.169,
+          "userMs": 16.981,
+          "sysMs": 5.997,
+          "maxRssKiB": 36308
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.892,
-          "userMs": 19.149,
-          "sysMs": 9.536,
-          "maxRssKiB": 36076
+          "wallMs": 27.109,
+          "userMs": 12.185,
+          "sysMs": 14.178,
+          "maxRssKiB": 35788
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 30.209,
-          "userMs": 22.235,
-          "sysMs": 7.743,
-          "maxRssKiB": 36196
+          "wallMs": 25.134,
+          "userMs": 16.984,
+          "sysMs": 7.992,
+          "maxRssKiB": 36316
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.288,
-          "userMs": 24.062,
-          "sysMs": 4.016,
-          "maxRssKiB": 36472
+          "wallMs": 25.536,
+          "userMs": 17.587,
+          "sysMs": 7.818,
+          "maxRssKiB": 35992
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 31.375,
-          "userMs": 22.103,
-          "sysMs": 9.043,
-          "maxRssKiB": 36328
+          "wallMs": 23.721,
+          "userMs": 20.51,
+          "sysMs": 3.074,
+          "maxRssKiB": 36640
         }
       ],
       "fidelity": {
@@ -1508,52 +1508,52 @@
       "stderr": null,
       "markdownBytes": 295,
       "sameOutputEveryRun": true,
-      "firstMs": 30.9,
-      "medianMs": 27.28,
-      "minMs": 22.72,
-      "maxMs": 30.9,
-      "peakRssKiB": 36668,
-      "medianRssKiB": 36632,
+      "firstMs": 23.72,
+      "medianMs": 23.72,
+      "minMs": 22.21,
+      "maxMs": 25.11,
+      "peakRssKiB": 37020,
+      "medianRssKiB": 36800,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 30.901,
-          "userMs": 23.098,
-          "sysMs": 7.683,
-          "maxRssKiB": 36668
+          "wallMs": 23.723,
+          "userMs": 17.09,
+          "sysMs": 6.041,
+          "maxRssKiB": 36800
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.086,
-          "userMs": 18.626,
-          "sysMs": 8.819,
-          "maxRssKiB": 36632
+          "wallMs": 25.108,
+          "userMs": 16.898,
+          "sysMs": 7.966,
+          "maxRssKiB": 36652
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.369,
-          "userMs": 20.179,
-          "sysMs": 6.024,
-          "maxRssKiB": 36656
+          "wallMs": 22.302,
+          "userMs": 17.158,
+          "sysMs": 5.018,
+          "maxRssKiB": 37020
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.278,
-          "userMs": 20.114,
-          "sysMs": 7.015,
-          "maxRssKiB": 36528
+          "wallMs": 24.905,
+          "userMs": 17.872,
+          "sysMs": 6.961,
+          "maxRssKiB": 37008
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.722,
-          "userMs": 17.361,
-          "sysMs": 4.826,
-          "maxRssKiB": 36352
+          "wallMs": 22.211,
+          "userMs": 15.09,
+          "sysMs": 7.051,
+          "maxRssKiB": 36568
         }
       ],
       "fidelity": {
@@ -1589,52 +1589,52 @@
       "stderr": null,
       "markdownBytes": 367,
       "sameOutputEveryRun": true,
-      "firstMs": 27.97,
-      "medianMs": 28.7,
-      "minMs": 27.97,
-      "maxMs": 31.72,
-      "peakRssKiB": 45312,
-      "medianRssKiB": 45208,
+      "firstMs": 30.23,
+      "medianMs": 29.98,
+      "minMs": 28.51,
+      "maxMs": 30.78,
+      "peakRssKiB": 45308,
+      "medianRssKiB": 45076,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.974,
-          "userMs": 17.955,
-          "sysMs": 9.979,
-          "maxRssKiB": 45208
+          "wallMs": 30.228,
+          "userMs": 21.319,
+          "sysMs": 8.744,
+          "maxRssKiB": 44628
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 31.368,
-          "userMs": 22.438,
-          "sysMs": 8.8,
-          "maxRssKiB": 45108
+          "wallMs": 28.513,
+          "userMs": 17.254,
+          "sysMs": 11.164,
+          "maxRssKiB": 45076
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.171,
-          "userMs": 16.973,
-          "sysMs": 10.972,
-          "maxRssKiB": 45064
+          "wallMs": 29.983,
+          "userMs": 15.353,
+          "sysMs": 14.378,
+          "maxRssKiB": 45308
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 31.719,
-          "userMs": 26.475,
-          "sysMs": 5.096,
-          "maxRssKiB": 45280
+          "wallMs": 30.776,
+          "userMs": 20.738,
+          "sysMs": 9.885,
+          "maxRssKiB": 44740
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.696,
-          "userMs": 18.746,
-          "sysMs": 9.842,
-          "maxRssKiB": 45312
+          "wallMs": 28.796,
+          "userMs": 19.47,
+          "sysMs": 9.21,
+          "maxRssKiB": 45188
         }
       ],
       "fidelity": {
@@ -1670,52 +1670,52 @@
       "stderr": null,
       "markdownBytes": 380,
       "sameOutputEveryRun": true,
-      "firstMs": 32.29,
-      "medianMs": 29.77,
-      "minMs": 27.91,
-      "maxMs": 32.29,
-      "peakRssKiB": 44728,
-      "medianRssKiB": 44648,
+      "firstMs": 27.21,
+      "medianMs": 28.41,
+      "minMs": 27.21,
+      "maxMs": 29.81,
+      "peakRssKiB": 44720,
+      "medianRssKiB": 44564,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 32.286,
-          "userMs": 26.066,
-          "sysMs": 6.01,
+          "wallMs": 27.214,
+          "userMs": 16.037,
+          "sysMs": 11.049,
+          "maxRssKiB": 44632
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.561,
+          "userMs": 20.251,
+          "sysMs": 8.108,
           "maxRssKiB": 44564
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.673,
-          "userMs": 17.717,
-          "sysMs": 10.817,
-          "maxRssKiB": 44648
+          "wallMs": 28.413,
+          "userMs": 16.107,
+          "sysMs": 12.127,
+          "maxRssKiB": 44720
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 29.77,
-          "userMs": 18.788,
-          "sysMs": 10.883,
-          "maxRssKiB": 44464
+          "wallMs": 29.813,
+          "userMs": 20.791,
+          "sysMs": 8.879,
+          "maxRssKiB": 44428
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.913,
-          "userMs": 19.856,
-          "sysMs": 7.954,
-          "maxRssKiB": 44708
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 31.978,
-          "userMs": 21.919,
-          "sysMs": 9.959,
-          "maxRssKiB": 44728
+          "wallMs": 27.934,
+          "userMs": 17.864,
+          "sysMs": 9.914,
+          "maxRssKiB": 44332
         }
       ],
       "fidelity": {
@@ -1751,52 +1751,52 @@
       "stderr": null,
       "markdownBytes": 164,
       "sameOutputEveryRun": true,
-      "firstMs": 23.67,
-      "medianMs": 26.34,
-      "minMs": 23.67,
-      "maxMs": 30.91,
-      "peakRssKiB": 36356,
-      "medianRssKiB": 36044,
+      "firstMs": 25.3,
+      "medianMs": 24.35,
+      "minMs": 22.04,
+      "maxMs": 28.32,
+      "peakRssKiB": 36212,
+      "medianRssKiB": 36052,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.673,
-          "userMs": 14.738,
-          "sysMs": 8.834,
-          "maxRssKiB": 36048
+          "wallMs": 25.296,
+          "userMs": 21.143,
+          "sysMs": 4.03,
+          "maxRssKiB": 36052
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.917,
-          "userMs": 15.88,
-          "sysMs": 8.919,
-          "maxRssKiB": 35888
+          "wallMs": 22.885,
+          "userMs": 21.78,
+          "sysMs": 1.038,
+          "maxRssKiB": 36184
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 30.912,
-          "userMs": 23.556,
-          "sysMs": 7.161,
-          "maxRssKiB": 35728
+          "wallMs": 22.041,
+          "userMs": 15.019,
+          "sysMs": 6.996,
+          "maxRssKiB": 36212
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.336,
-          "userMs": 22.195,
-          "sysMs": 4.026,
-          "maxRssKiB": 36356
+          "wallMs": 28.323,
+          "userMs": 17.006,
+          "sysMs": 10.997,
+          "maxRssKiB": 35900
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.944,
-          "userMs": 15.896,
-          "sysMs": 10.95,
-          "maxRssKiB": 36044
+          "wallMs": 24.352,
+          "userMs": 19.208,
+          "sysMs": 5.054,
+          "maxRssKiB": 36036
         }
       ],
       "fidelity": {
@@ -1827,52 +1827,52 @@
       "stderr": null,
       "markdownBytes": 164,
       "sameOutputEveryRun": true,
-      "firstMs": 25.25,
-      "medianMs": 25.25,
-      "minMs": 22.89,
-      "maxMs": 26.16,
-      "peakRssKiB": 36968,
-      "medianRssKiB": 36828,
+      "firstMs": 23.32,
+      "medianMs": 23.32,
+      "minMs": 22.33,
+      "maxMs": 28.02,
+      "peakRssKiB": 36820,
+      "medianRssKiB": 36700,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.247,
-          "userMs": 17.185,
-          "sysMs": 8.086,
-          "maxRssKiB": 36968
+          "wallMs": 23.324,
+          "userMs": 16.167,
+          "sysMs": 7.069,
+          "maxRssKiB": 36720
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.112,
-          "userMs": 13.976,
-          "sysMs": 8.99,
-          "maxRssKiB": 36848
+          "wallMs": 23.727,
+          "userMs": 17.401,
+          "sysMs": 6.137,
+          "maxRssKiB": 36820
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.89,
-          "userMs": 14.796,
-          "sysMs": 7.873,
-          "maxRssKiB": 36828
+          "wallMs": 28.017,
+          "userMs": 21.925,
+          "sysMs": 5.978,
+          "maxRssKiB": 36264
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.869,
-          "userMs": 17.118,
-          "sysMs": 8.568,
-          "maxRssKiB": 36632
+          "wallMs": 22.793,
+          "userMs": 17.456,
+          "sysMs": 5.133,
+          "maxRssKiB": 36700
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 26.165,
-          "userMs": 20.011,
-          "sysMs": 5.997,
-          "maxRssKiB": 36488
+          "wallMs": 22.331,
+          "userMs": 15.141,
+          "sysMs": 7.06,
+          "maxRssKiB": 36492
         }
       ],
       "fidelity": {
@@ -1903,52 +1903,52 @@
       "stderr": null,
       "markdownBytes": 409,
       "sameOutputEveryRun": true,
-      "firstMs": 24.48,
-      "medianMs": 25.58,
-      "minMs": 23.81,
-      "maxMs": 27.33,
-      "peakRssKiB": 36564,
-      "medianRssKiB": 36376,
+      "firstMs": 25.2,
+      "medianMs": 25.2,
+      "minMs": 23.53,
+      "maxMs": 25.69,
+      "peakRssKiB": 36560,
+      "medianRssKiB": 36440,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.484,
-          "userMs": 16.228,
-          "sysMs": 8.115,
-          "maxRssKiB": 36564
+          "wallMs": 25.197,
+          "userMs": 15.067,
+          "sysMs": 10.014,
+          "maxRssKiB": 36560
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.81,
-          "userMs": 20.537,
-          "sysMs": 3.092,
-          "maxRssKiB": 36444
+          "wallMs": 25.196,
+          "userMs": 16.975,
+          "sysMs": 7.941,
+          "maxRssKiB": 36440
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.332,
-          "userMs": 16.106,
-          "sysMs": 11.062,
-          "maxRssKiB": 36184
+          "wallMs": 25.692,
+          "userMs": 18.334,
+          "sysMs": 7.122,
+          "maxRssKiB": 36384
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.239,
-          "userMs": 16.051,
-          "sysMs": 11.021,
-          "maxRssKiB": 36340
+          "wallMs": 23.531,
+          "userMs": 16.262,
+          "sysMs": 7.117,
+          "maxRssKiB": 36520
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.578,
-          "userMs": 18.575,
-          "sysMs": 6.862,
-          "maxRssKiB": 36376
+          "wallMs": 25.597,
+          "userMs": 20.358,
+          "sysMs": 5.036,
+          "maxRssKiB": 36032
         }
       ],
       "fidelity": {
@@ -1984,52 +1984,52 @@
       "stderr": null,
       "markdownBytes": 409,
       "sameOutputEveryRun": true,
-      "firstMs": 23.52,
-      "medianMs": 24.76,
-      "minMs": 23.52,
-      "maxMs": 27.82,
-      "peakRssKiB": 37212,
-      "medianRssKiB": 36876,
+      "firstMs": 23.46,
+      "medianMs": 24.87,
+      "minMs": 22.45,
+      "maxMs": 25.49,
+      "peakRssKiB": 37060,
+      "medianRssKiB": 37012,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.515,
-          "userMs": 14.696,
-          "sysMs": 8.815,
-          "maxRssKiB": 36840
+          "wallMs": 23.459,
+          "userMs": 16.531,
+          "sysMs": 6.811,
+          "maxRssKiB": 37060
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 27.824,
-          "userMs": 17.774,
-          "sysMs": 9.859,
-          "maxRssKiB": 36876
+          "wallMs": 25.486,
+          "userMs": 12.659,
+          "sysMs": 12.663,
+          "maxRssKiB": 37056
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.761,
-          "userMs": 17.481,
-          "sysMs": 7.202,
+          "wallMs": 22.447,
+          "userMs": 14.437,
+          "sysMs": 7.771,
+          "maxRssKiB": 36564
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.978,
+          "userMs": 16.949,
+          "sysMs": 7.894,
           "maxRssKiB": 36864
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.944,
-          "userMs": 16.549,
-          "sysMs": 7.238,
-          "maxRssKiB": 37212
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 26.368,
-          "userMs": 19.181,
-          "sysMs": 7.095,
-          "maxRssKiB": 37064
+          "wallMs": 24.867,
+          "userMs": 15.905,
+          "sysMs": 8.886,
+          "maxRssKiB": 37012
         }
       ],
       "fidelity": {
@@ -2065,52 +2065,52 @@
       "stderr": null,
       "markdownBytes": 926,
       "sameOutputEveryRun": true,
-      "firstMs": 14.93,
-      "medianMs": 14.86,
-      "minMs": 13,
-      "maxMs": 18.42,
-      "peakRssKiB": 32464,
-      "medianRssKiB": 32204,
+      "firstMs": 17.18,
+      "medianMs": 14.37,
+      "minMs": 12.05,
+      "maxMs": 17.18,
+      "peakRssKiB": 32200,
+      "medianRssKiB": 32136,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.927,
-          "userMs": 10.588,
-          "sysMs": 4.249,
-          "maxRssKiB": 32128
+          "wallMs": 17.179,
+          "userMs": 9.971,
+          "sysMs": 7.003,
+          "maxRssKiB": 32160
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.999,
-          "userMs": 4.958,
-          "sysMs": 7.937,
-          "maxRssKiB": 32204
+          "wallMs": 15.242,
+          "userMs": 12.09,
+          "sysMs": 3.014,
+          "maxRssKiB": 32136
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.859,
-          "userMs": 7.855,
-          "sysMs": 6.892,
-          "maxRssKiB": 32016
+          "wallMs": 12.049,
+          "userMs": 5.995,
+          "sysMs": 6.006,
+          "maxRssKiB": 32200
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.799,
-          "userMs": 9.127,
-          "sysMs": 4.564,
-          "maxRssKiB": 32464
+          "wallMs": 14.368,
+          "userMs": 9.235,
+          "sysMs": 5.137,
+          "maxRssKiB": 31956
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.423,
-          "userMs": 13.256,
-          "sysMs": 5.105,
-          "maxRssKiB": 32248
+          "wallMs": 12.219,
+          "userMs": 7.483,
+          "sysMs": 4.691,
+          "maxRssKiB": 32112
         }
       ],
       "fidelity": {
@@ -2136,52 +2136,52 @@
       "stderr": null,
       "markdownBytes": 935,
       "sameOutputEveryRun": true,
-      "firstMs": 11.28,
-      "medianMs": 12.76,
-      "minMs": 11.28,
-      "maxMs": 13.51,
-      "peakRssKiB": 31588,
-      "medianRssKiB": 31328,
+      "firstMs": 12.99,
+      "medianMs": 12.29,
+      "minMs": 10.37,
+      "maxMs": 12.99,
+      "peakRssKiB": 31640,
+      "medianRssKiB": 31256,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 11.283,
-          "userMs": 4.069,
-          "sysMs": 7.174,
-          "maxRssKiB": 31328
+          "wallMs": 12.989,
+          "userMs": 8.982,
+          "sysMs": 3.987,
+          "maxRssKiB": 31640
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.764,
-          "userMs": 5.295,
-          "sysMs": 7.413,
-          "maxRssKiB": 31384
+          "wallMs": 12.287,
+          "userMs": 9.161,
+          "sysMs": 3.046,
+          "maxRssKiB": 31212
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.511,
-          "userMs": 8.653,
-          "sysMs": 4.811,
-          "maxRssKiB": 30972
+          "wallMs": 11.528,
+          "userMs": 6.285,
+          "sysMs": 5.237,
+          "maxRssKiB": 30960
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 11.504,
-          "userMs": 6.685,
-          "sysMs": 4.772,
-          "maxRssKiB": 31588
+          "wallMs": 10.368,
+          "userMs": 7.211,
+          "sysMs": 3.082,
+          "maxRssKiB": 31636
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.072,
-          "userMs": 6.019,
-          "sysMs": 7.015,
-          "maxRssKiB": 31224
+          "wallMs": 12.664,
+          "userMs": 7.336,
+          "sysMs": 5.182,
+          "maxRssKiB": 31256
         }
       ],
       "fidelity": {
@@ -2207,52 +2207,52 @@
       "stderr": null,
       "markdownBytes": 110,
       "sameOutputEveryRun": true,
-      "firstMs": 13.89,
-      "medianMs": 13.89,
-      "minMs": 11.16,
-      "maxMs": 15.21,
-      "peakRssKiB": 32048,
-      "medianRssKiB": 31736,
+      "firstMs": 12.19,
+      "medianMs": 12.19,
+      "minMs": 11.6,
+      "maxMs": 14.76,
+      "peakRssKiB": 31868,
+      "medianRssKiB": 31692,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.886,
-          "userMs": 9.482,
-          "sysMs": 4.239,
-          "maxRssKiB": 31700
+          "wallMs": 12.186,
+          "userMs": 7.042,
+          "sysMs": 5.031,
+          "maxRssKiB": 31636
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.93,
-          "userMs": 5.921,
-          "sysMs": 7.931,
+          "wallMs": 11.946,
+          "userMs": 5.879,
+          "sysMs": 5.905,
+          "maxRssKiB": 31660
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.762,
+          "userMs": 9.816,
+          "sysMs": 4.912,
           "maxRssKiB": 31868
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.709,
-          "userMs": 9.704,
-          "sysMs": 3.878,
-          "maxRssKiB": 31648
+          "wallMs": 13.206,
+          "userMs": 8.086,
+          "sysMs": 5.05,
+          "maxRssKiB": 31740
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.215,
-          "userMs": 11.101,
-          "sysMs": 4.029,
-          "maxRssKiB": 31736
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 11.164,
-          "userMs": 8.142,
-          "sysMs": 3.038,
-          "maxRssKiB": 32048
+          "wallMs": 11.597,
+          "userMs": 8.574,
+          "sysMs": 2.861,
+          "maxRssKiB": 31692
         }
       ],
       "fidelity": {
@@ -2278,52 +2278,52 @@
       "stderr": null,
       "markdownBytes": 110,
       "sameOutputEveryRun": true,
-      "firstMs": 12.61,
-      "medianMs": 12.97,
-      "minMs": 11.4,
-      "maxMs": 15.04,
-      "peakRssKiB": 31264,
-      "medianRssKiB": 31144,
+      "firstMs": 11.33,
+      "medianMs": 12.08,
+      "minMs": 11.07,
+      "maxMs": 12.82,
+      "peakRssKiB": 31332,
+      "medianRssKiB": 31148,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.605,
-          "userMs": 9.58,
-          "sysMs": 2.876,
-          "maxRssKiB": 31012
+          "wallMs": 11.331,
+          "userMs": 8.156,
+          "sysMs": 3.065,
+          "maxRssKiB": 31148
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 11.396,
-          "userMs": 9.243,
-          "sysMs": 2.053,
-          "maxRssKiB": 31144
+          "wallMs": 12.08,
+          "userMs": 7.654,
+          "sysMs": 4.374,
+          "maxRssKiB": 31332
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.642,
-          "userMs": 9.637,
-          "sysMs": 4.817,
-          "maxRssKiB": 31264
+          "wallMs": 12.345,
+          "userMs": 8.174,
+          "sysMs": 4.089,
+          "maxRssKiB": 31160
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.039,
-          "userMs": 9.33,
-          "sysMs": 5.602,
-          "maxRssKiB": 31068
+          "wallMs": 11.073,
+          "userMs": 5.99,
+          "sysMs": 5.02,
+          "maxRssKiB": 31148
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.966,
-          "userMs": 4.922,
-          "sysMs": 7.827,
-          "maxRssKiB": 31244
+          "wallMs": 12.824,
+          "userMs": 5.911,
+          "sysMs": 6.893,
+          "maxRssKiB": 30884
         }
       ],
       "fidelity": {
@@ -2349,52 +2349,52 @@
       "stderr": null,
       "markdownBytes": 542,
       "sameOutputEveryRun": true,
-      "firstMs": 16.22,
-      "medianMs": 17.87,
-      "minMs": 16.22,
-      "maxMs": 20.03,
-      "peakRssKiB": 41020,
-      "medianRssKiB": 40280,
+      "firstMs": 16.99,
+      "medianMs": 16.06,
+      "minMs": 14.76,
+      "maxMs": 16.99,
+      "peakRssKiB": 40700,
+      "medianRssKiB": 40516,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.223,
-          "userMs": 10.113,
-          "sysMs": 6.058,
-          "maxRssKiB": 41020
+          "wallMs": 16.993,
+          "userMs": 10.946,
+          "sysMs": 5.975,
+          "maxRssKiB": 40636
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.419,
-          "userMs": 13.537,
-          "sysMs": 4.828,
-          "maxRssKiB": 40668
+          "wallMs": 14.758,
+          "userMs": 10.74,
+          "sysMs": 3.91,
+          "maxRssKiB": 40516
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.868,
-          "userMs": 9.861,
-          "sysMs": 7.871,
-          "maxRssKiB": 40088
+          "wallMs": 15.526,
+          "userMs": 6.751,
+          "sysMs": 8.682,
+          "maxRssKiB": 40008
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.513,
-          "userMs": 12.27,
-          "sysMs": 5.115,
-          "maxRssKiB": 39860
+          "wallMs": 16.6,
+          "userMs": 11.349,
+          "sysMs": 5.138,
+          "maxRssKiB": 40700
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.028,
-          "userMs": 10.909,
-          "sysMs": 8.916,
-          "maxRssKiB": 40280
+          "wallMs": 16.056,
+          "userMs": 5.641,
+          "sysMs": 10.345,
+          "maxRssKiB": 40432
         }
       ],
       "fidelity": {
@@ -2435,52 +2435,52 @@
       "stderr": null,
       "markdownBytes": 471,
       "sameOutputEveryRun": true,
-      "firstMs": 14.93,
-      "medianMs": 16.14,
-      "minMs": 14.93,
-      "maxMs": 18.83,
-      "peakRssKiB": 39816,
-      "medianRssKiB": 39432,
+      "firstMs": 18.36,
+      "medianMs": 15.77,
+      "minMs": 14.76,
+      "maxMs": 18.36,
+      "peakRssKiB": 39836,
+      "medianRssKiB": 39420,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.934,
-          "userMs": 9.543,
-          "sysMs": 5.287,
-          "maxRssKiB": 39184
+          "wallMs": 18.361,
+          "userMs": 10.598,
+          "sysMs": 7.688,
+          "maxRssKiB": 39420
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.603,
-          "userMs": 10.645,
-          "sysMs": 6.788,
-          "maxRssKiB": 39220
+          "wallMs": 16.995,
+          "userMs": 11.891,
+          "sysMs": 4.971,
+          "maxRssKiB": 39340
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.473,
-          "userMs": 10.621,
-          "sysMs": 4.817,
-          "maxRssKiB": 39432
+          "wallMs": 14.764,
+          "userMs": 10.49,
+          "sysMs": 4.184,
+          "maxRssKiB": 39836
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.136,
-          "userMs": 9.998,
-          "sysMs": 6.024,
-          "maxRssKiB": 39816
+          "wallMs": 15.592,
+          "userMs": 9.727,
+          "sysMs": 5.837,
+          "maxRssKiB": 39364
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.832,
-          "userMs": 11.861,
-          "sysMs": 6.897,
-          "maxRssKiB": 39556
+          "wallMs": 15.767,
+          "userMs": 7.873,
+          "sysMs": 7.885,
+          "maxRssKiB": 39476
         }
       ],
       "fidelity": {
@@ -2511,52 +2511,52 @@
       "stderr": null,
       "markdownBytes": 257,
       "sameOutputEveryRun": true,
-      "firstMs": 16.48,
-      "medianMs": 13.1,
-      "minMs": 11.43,
-      "maxMs": 16.48,
-      "peakRssKiB": 32084,
-      "medianRssKiB": 31908,
+      "firstMs": 13.02,
+      "medianMs": 12.97,
+      "minMs": 12.06,
+      "maxMs": 14.91,
+      "peakRssKiB": 32124,
+      "medianRssKiB": 31656,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.48,
-          "userMs": 7.169,
-          "sysMs": 9.181,
-          "maxRssKiB": 31816
+          "wallMs": 13.022,
+          "userMs": 7.937,
+          "sysMs": 4.946,
+          "maxRssKiB": 32124
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.098,
-          "userMs": 7.031,
-          "sysMs": 6.023,
-          "maxRssKiB": 32084
+          "wallMs": 12.063,
+          "userMs": 8.002,
+          "sysMs": 4.003,
+          "maxRssKiB": 31904
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 11.428,
-          "userMs": 4.118,
-          "sysMs": 7.2,
-          "maxRssKiB": 31908
+          "wallMs": 12.888,
+          "userMs": 11.726,
+          "sysMs": 1.069,
+          "maxRssKiB": 31572
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.018,
-          "userMs": 5.592,
-          "sysMs": 8.407,
-          "maxRssKiB": 31728
+          "wallMs": 12.974,
+          "userMs": 9.634,
+          "sysMs": 3.21,
+          "maxRssKiB": 31560
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.616,
-          "userMs": 7.719,
-          "sysMs": 4.815,
-          "maxRssKiB": 32000
+          "wallMs": 14.905,
+          "userMs": 6.347,
+          "sysMs": 8.47,
+          "maxRssKiB": 31656
         }
       ],
       "fidelity": {
@@ -2582,52 +2582,52 @@
       "stderr": null,
       "markdownBytes": 343,
       "sameOutputEveryRun": true,
-      "firstMs": 11.77,
-      "medianMs": 12.8,
-      "minMs": 11.77,
-      "maxMs": 15.02,
-      "peakRssKiB": 31528,
-      "medianRssKiB": 31268,
+      "firstMs": 13.45,
+      "medianMs": 13.25,
+      "minMs": 10.82,
+      "maxMs": 13.77,
+      "peakRssKiB": 31200,
+      "medianRssKiB": 31080,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 11.769,
-          "userMs": 5.332,
-          "sysMs": 6.393,
-          "maxRssKiB": 31256
+          "wallMs": 13.454,
+          "userMs": 11.279,
+          "sysMs": 2.061,
+          "maxRssKiB": 30580
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.8,
-          "userMs": 3.912,
-          "sysMs": 8.794,
-          "maxRssKiB": 31248
+          "wallMs": 13.254,
+          "userMs": 4.073,
+          "sysMs": 9.14,
+          "maxRssKiB": 31120
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.477,
-          "userMs": 3.539,
-          "sysMs": 8.805,
-          "maxRssKiB": 31528
+          "wallMs": 11.445,
+          "userMs": 8.54,
+          "sysMs": 2.851,
+          "maxRssKiB": 31080
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.016,
-          "userMs": 10.977,
-          "sysMs": 3.985,
-          "maxRssKiB": 31492
+          "wallMs": 10.815,
+          "userMs": 4.279,
+          "sysMs": 6.435,
+          "maxRssKiB": 30900
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.442,
-          "userMs": 8.276,
-          "sysMs": 5.16,
-          "maxRssKiB": 31268
+          "wallMs": 13.767,
+          "userMs": 8.806,
+          "sysMs": 4.895,
+          "maxRssKiB": 31200
         }
       ],
       "fidelity": {
@@ -2653,52 +2653,52 @@
       "stderr": null,
       "markdownBytes": 325,
       "sameOutputEveryRun": true,
-      "firstMs": 13.48,
-      "medianMs": 12.94,
-      "minMs": 11.13,
-      "maxMs": 14.65,
-      "peakRssKiB": 32228,
-      "medianRssKiB": 31836,
+      "firstMs": 11.35,
+      "medianMs": 13.35,
+      "minMs": 11.35,
+      "maxMs": 14.55,
+      "peakRssKiB": 32052,
+      "medianRssKiB": 31844,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.477,
-          "userMs": 8.608,
-          "sysMs": 4.794,
-          "maxRssKiB": 31860
+          "wallMs": 11.346,
+          "userMs": 7.19,
+          "sysMs": 4.094,
+          "maxRssKiB": 31916
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.94,
-          "userMs": 6.941,
-          "sysMs": 5.946,
-          "maxRssKiB": 31836
+          "wallMs": 11.602,
+          "userMs": 3.878,
+          "sysMs": 7.736,
+          "maxRssKiB": 31768
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 11.135,
-          "userMs": 6.058,
-          "sysMs": 5.041,
-          "maxRssKiB": 32228
+          "wallMs": 13.349,
+          "userMs": 7.142,
+          "sysMs": 6.128,
+          "maxRssKiB": 32052
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.645,
-          "userMs": 5.188,
-          "sysMs": 9.329,
-          "maxRssKiB": 31732
+          "wallMs": 14.353,
+          "userMs": 10.19,
+          "sysMs": 4.085,
+          "maxRssKiB": 31844
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 11.455,
-          "userMs": 7.272,
-          "sysMs": 4.141,
-          "maxRssKiB": 31620
+          "wallMs": 14.548,
+          "userMs": 8.158,
+          "sysMs": 6.352,
+          "maxRssKiB": 31808
         }
       ],
       "fidelity": {
@@ -2724,52 +2724,52 @@
       "stderr": null,
       "markdownBytes": 325,
       "sameOutputEveryRun": true,
-      "firstMs": 10.54,
-      "medianMs": 14.11,
-      "minMs": 10.54,
-      "maxMs": 16.2,
-      "peakRssKiB": 31328,
-      "medianRssKiB": 31120,
+      "firstMs": 13.41,
+      "medianMs": 12.87,
+      "minMs": 10.93,
+      "maxMs": 13.67,
+      "peakRssKiB": 31344,
+      "medianRssKiB": 31128,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 10.539,
-          "userMs": 3.156,
-          "sysMs": 7.36,
-          "maxRssKiB": 31004
+          "wallMs": 13.407,
+          "userMs": 12.27,
+          "sysMs": 0.945,
+          "maxRssKiB": 31248
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.872,
-          "userMs": 7.804,
-          "sysMs": 4.924,
-          "maxRssKiB": 30820
+          "wallMs": 11.136,
+          "userMs": 8.062,
+          "sysMs": 3.016,
+          "maxRssKiB": 30844
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.568,
-          "userMs": 11.336,
-          "sysMs": 4.12,
-          "maxRssKiB": 31328
+          "wallMs": 13.665,
+          "userMs": 8.377,
+          "sysMs": 5.237,
+          "maxRssKiB": 31024
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.199,
-          "userMs": 7.063,
-          "sysMs": 9.087,
-          "maxRssKiB": 31120
+          "wallMs": 12.866,
+          "userMs": 8.267,
+          "sysMs": 4.575,
+          "maxRssKiB": 31128
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.109,
-          "userMs": 6.018,
-          "sysMs": 8.014,
-          "maxRssKiB": 31160
+          "wallMs": 10.934,
+          "userMs": 3.949,
+          "sysMs": 6.901,
+          "maxRssKiB": 31344
         }
       ],
       "fidelity": {
@@ -2795,52 +2795,52 @@
       "stderr": null,
       "markdownBytes": 341,
       "sameOutputEveryRun": true,
-      "firstMs": 13.85,
-      "medianMs": 13.85,
-      "minMs": 12.7,
-      "maxMs": 16.8,
-      "peakRssKiB": 32444,
-      "medianRssKiB": 32120,
+      "firstMs": 15.44,
+      "medianMs": 14.43,
+      "minMs": 11.67,
+      "maxMs": 15.49,
+      "peakRssKiB": 32364,
+      "medianRssKiB": 31940,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.846,
-          "userMs": 5.303,
-          "sysMs": 8.489,
-          "maxRssKiB": 32128
+          "wallMs": 15.444,
+          "userMs": 9.218,
+          "sysMs": 6.139,
+          "maxRssKiB": 31624
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.804,
-          "userMs": 12.567,
-          "sysMs": 4.165,
-          "maxRssKiB": 32444
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 14.264,
-          "userMs": 8.109,
-          "sysMs": 6.083,
-          "maxRssKiB": 31920
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 12.695,
-          "userMs": 6.754,
-          "sysMs": 5.793,
-          "maxRssKiB": 32120
-        },
-        {
-          "status": "exited",
-          "code": 0,
-          "wallMs": 12.955,
-          "userMs": 6.9,
-          "sysMs": 5.919,
+          "wallMs": 15.492,
+          "userMs": 8.251,
+          "sysMs": 7.207,
           "maxRssKiB": 31940
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.675,
+          "userMs": 6.785,
+          "sysMs": 4.85,
+          "maxRssKiB": 32364
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.426,
+          "userMs": 9.252,
+          "sysMs": 5.151,
+          "maxRssKiB": 32100
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.987,
+          "userMs": 6.944,
+          "sysMs": 4.962,
+          "maxRssKiB": 31916
         }
       ],
       "fidelity": {
@@ -2866,52 +2866,52 @@
       "stderr": null,
       "markdownBytes": 341,
       "sameOutputEveryRun": true,
-      "firstMs": 14.16,
-      "medianMs": 13.2,
-      "minMs": 12.48,
-      "maxMs": 14.52,
-      "peakRssKiB": 31264,
-      "medianRssKiB": 31192,
+      "firstMs": 12.64,
+      "medianMs": 12.73,
+      "minMs": 9.91,
+      "maxMs": 13.38,
+      "peakRssKiB": 31316,
+      "medianRssKiB": 31168,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.159,
-          "userMs": 6.061,
-          "sysMs": 8.056,
-          "maxRssKiB": 31264
+          "wallMs": 12.643,
+          "userMs": 6.313,
+          "sysMs": 6.286,
+          "maxRssKiB": 31060
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.563,
-          "userMs": 5.776,
-          "sysMs": 6.712,
-          "maxRssKiB": 31180
+          "wallMs": 13.376,
+          "userMs": 6.645,
+          "sysMs": 6.649,
+          "maxRssKiB": 31208
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.519,
-          "userMs": 8.259,
-          "sysMs": 6.208,
-          "maxRssKiB": 31192
+          "wallMs": 13.114,
+          "userMs": 7.02,
+          "sysMs": 6.008,
+          "maxRssKiB": 31316
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.199,
-          "userMs": 9.389,
-          "sysMs": 3.766,
-          "maxRssKiB": 31224
+          "wallMs": 9.914,
+          "userMs": 5.929,
+          "sysMs": 3.945,
+          "maxRssKiB": 31040
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.479,
-          "userMs": 10.358,
-          "sysMs": 2.076,
-          "maxRssKiB": 31136
+          "wallMs": 12.734,
+          "userMs": 9.749,
+          "sysMs": 2.922,
+          "maxRssKiB": 31168
         }
       ],
       "fidelity": {
@@ -2937,52 +2937,52 @@
       "stderr": null,
       "markdownBytes": 349,
       "sameOutputEveryRun": true,
-      "firstMs": 15.67,
-      "medianMs": 15.67,
-      "minMs": 13.72,
-      "maxMs": 19.16,
-      "peakRssKiB": 32868,
-      "medianRssKiB": 32744,
+      "firstMs": 15.15,
+      "medianMs": 15.15,
+      "minMs": 12.51,
+      "maxMs": 16.63,
+      "peakRssKiB": 33036,
+      "medianRssKiB": 32788,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.673,
-          "userMs": 10.33,
-          "sysMs": 5.182,
-          "maxRssKiB": 32780
+          "wallMs": 15.149,
+          "userMs": 12.246,
+          "sysMs": 2.83,
+          "maxRssKiB": 32788
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 19.157,
-          "userMs": 16.08,
-          "sysMs": 3.017,
-          "maxRssKiB": 32420
+          "wallMs": 16.629,
+          "userMs": 10.71,
+          "sysMs": 5.85,
+          "maxRssKiB": 32928
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.919,
-          "userMs": 11.828,
-          "sysMs": 4.937,
-          "maxRssKiB": 32744
+          "wallMs": 12.509,
+          "userMs": 9.372,
+          "sysMs": 3.121,
+          "maxRssKiB": 32696
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.94,
-          "userMs": 10.883,
-          "sysMs": 2.972,
-          "maxRssKiB": 32868
+          "wallMs": 14.368,
+          "userMs": 8.023,
+          "sysMs": 6.211,
+          "maxRssKiB": 33036
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.719,
-          "userMs": 5.806,
-          "sysMs": 7.783,
-          "maxRssKiB": 32608
+          "wallMs": 16.184,
+          "userMs": 12.12,
+          "sysMs": 4.004,
+          "maxRssKiB": 32340
         }
       ],
       "fidelity": {
@@ -3018,52 +3018,52 @@
       "stderr": null,
       "markdownBytes": 349,
       "sameOutputEveryRun": true,
-      "firstMs": 13.83,
-      "medianMs": 13.83,
-      "minMs": 13.68,
-      "maxMs": 14.97,
-      "peakRssKiB": 32960,
-      "medianRssKiB": 32568,
+      "firstMs": 14.63,
+      "medianMs": 14.71,
+      "minMs": 12.24,
+      "maxMs": 16.89,
+      "peakRssKiB": 33100,
+      "medianRssKiB": 32676,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.834,
-          "userMs": 9.802,
-          "sysMs": 3.925,
-          "maxRssKiB": 32960
+          "wallMs": 14.63,
+          "userMs": 8.713,
+          "sysMs": 5.798,
+          "maxRssKiB": 32652
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.884,
-          "userMs": 6.899,
-          "sysMs": 6.903,
-          "maxRssKiB": 32492
+          "wallMs": 16.421,
+          "userMs": 9.599,
+          "sysMs": 6.712,
+          "maxRssKiB": 32676
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.68,
-          "userMs": 9.069,
-          "sysMs": 4.533,
-          "maxRssKiB": 32268
+          "wallMs": 12.241,
+          "userMs": 10.132,
+          "sysMs": 2.025,
+          "maxRssKiB": 32584
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.803,
-          "userMs": 5.168,
-          "sysMs": 8.599,
-          "maxRssKiB": 32568
+          "wallMs": 14.712,
+          "userMs": 8.232,
+          "sysMs": 6.406,
+          "maxRssKiB": 33100
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.968,
-          "userMs": 7.978,
-          "sysMs": 6.976,
-          "maxRssKiB": 32948
+          "wallMs": 16.885,
+          "userMs": 10.826,
+          "sysMs": 5.902,
+          "maxRssKiB": 32936
         }
       ],
       "fidelity": {
@@ -3099,52 +3099,52 @@
       "stderr": null,
       "markdownBytes": 212,
       "sameOutputEveryRun": true,
-      "firstMs": 16.39,
-      "medianMs": 16.39,
-      "minMs": 14.54,
-      "maxMs": 17.1,
-      "peakRssKiB": 36612,
-      "medianRssKiB": 36084,
+      "firstMs": 13.23,
+      "medianMs": 14.97,
+      "minMs": 13.23,
+      "maxMs": 15.86,
+      "peakRssKiB": 36436,
+      "medianRssKiB": 36156,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.389,
-          "userMs": 11.498,
-          "sysMs": 4.808,
-          "maxRssKiB": 36012
+          "wallMs": 13.229,
+          "userMs": 5.627,
+          "sysMs": 7.461,
+          "maxRssKiB": 36436
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.105,
-          "userMs": 10.016,
-          "sysMs": 7.029,
-          "maxRssKiB": 36188
+          "wallMs": 14.76,
+          "userMs": 9.424,
+          "sysMs": 5.236,
+          "maxRssKiB": 36372
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.307,
-          "userMs": 13.186,
-          "sysMs": 3.045,
-          "maxRssKiB": 36612
+          "wallMs": 15.693,
+          "userMs": 9.756,
+          "sysMs": 5.862,
+          "maxRssKiB": 36156
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.541,
-          "userMs": 8.126,
-          "sysMs": 6.329,
-          "maxRssKiB": 36084
+          "wallMs": 14.973,
+          "userMs": 11.979,
+          "sysMs": 2.957,
+          "maxRssKiB": 36048
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.411,
-          "userMs": 7.117,
-          "sysMs": 9.157,
-          "maxRssKiB": 36040
+          "wallMs": 15.861,
+          "userMs": 4.892,
+          "sysMs": 10.777,
+          "maxRssKiB": 35852
         }
       ],
       "fidelity": {
@@ -3175,52 +3175,52 @@
       "stderr": null,
       "markdownBytes": 212,
       "sameOutputEveryRun": true,
-      "firstMs": 16.91,
-      "medianMs": 16.28,
-      "minMs": 15.27,
-      "maxMs": 16.91,
-      "peakRssKiB": 36904,
-      "medianRssKiB": 36752,
+      "firstMs": 17.32,
+      "medianMs": 15.41,
+      "minMs": 14.26,
+      "maxMs": 17.32,
+      "peakRssKiB": 36732,
+      "medianRssKiB": 36648,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.908,
-          "userMs": 9.883,
-          "sysMs": 6.926,
-          "maxRssKiB": 36752
+          "wallMs": 17.32,
+          "userMs": 11.173,
+          "sysMs": 6.076,
+          "maxRssKiB": 36456
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.269,
-          "userMs": 10.161,
-          "sysMs": 5.071,
-          "maxRssKiB": 36796
+          "wallMs": 14.261,
+          "userMs": 8.094,
+          "sysMs": 6.078,
+          "maxRssKiB": 36664
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.277,
-          "userMs": 6.019,
-          "sysMs": 10.104,
-          "maxRssKiB": 36528
+          "wallMs": 14.643,
+          "userMs": 4.838,
+          "sysMs": 9.642,
+          "maxRssKiB": 36580
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.362,
-          "userMs": 7.11,
-          "sysMs": 9.13,
+          "wallMs": 15.406,
+          "userMs": 8.152,
+          "sysMs": 7.124,
           "maxRssKiB": 36732
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.157,
-          "userMs": 9.424,
-          "sysMs": 6.609,
-          "maxRssKiB": 36904
+          "wallMs": 15.704,
+          "userMs": 7.303,
+          "sysMs": 8.332,
+          "maxRssKiB": 36648
         }
       ],
       "fidelity": {
@@ -3251,52 +3251,52 @@
       "stderr": null,
       "markdownBytes": 599,
       "sameOutputEveryRun": true,
-      "firstMs": 19.2,
-      "medianMs": 20.97,
-      "minMs": 17.23,
-      "maxMs": 22.12,
-      "peakRssKiB": 40332,
-      "medianRssKiB": 40252,
+      "firstMs": 18.65,
+      "medianMs": 18.55,
+      "minMs": 18,
+      "maxMs": 19.39,
+      "peakRssKiB": 40928,
+      "medianRssKiB": 40300,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 19.197,
-          "userMs": 9.046,
-          "sysMs": 10.008,
-          "maxRssKiB": 39860
+          "wallMs": 18.648,
+          "userMs": 10.307,
+          "sysMs": 8.225,
+          "maxRssKiB": 40300
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.122,
-          "userMs": 12.946,
-          "sysMs": 8.982,
-          "maxRssKiB": 40112
+          "wallMs": 18.047,
+          "userMs": 7.982,
+          "sysMs": 10.007,
+          "maxRssKiB": 40144
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.892,
-          "userMs": 12.849,
-          "sysMs": 8.87,
-          "maxRssKiB": 40332
+          "wallMs": 17.997,
+          "userMs": 12.92,
+          "sysMs": 4.961,
+          "maxRssKiB": 39920
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.228,
-          "userMs": 13.078,
-          "sysMs": 4.036,
-          "maxRssKiB": 40252
+          "wallMs": 18.549,
+          "userMs": 10.227,
+          "sysMs": 8.189,
+          "maxRssKiB": 40928
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.969,
-          "userMs": 13.94,
-          "sysMs": 6.966,
-          "maxRssKiB": 40260
+          "wallMs": 19.394,
+          "userMs": 9.616,
+          "sysMs": 9.64,
+          "maxRssKiB": 40400
         }
       ],
       "fidelity": {
@@ -3347,52 +3347,52 @@
       "stderr": null,
       "markdownBytes": 599,
       "sameOutputEveryRun": true,
-      "firstMs": 17.86,
-      "medianMs": 17.89,
-      "minMs": 17.3,
-      "maxMs": 24.18,
-      "peakRssKiB": 40888,
-      "medianRssKiB": 40788,
+      "firstMs": 18.83,
+      "medianMs": 18.01,
+      "minMs": 16.89,
+      "maxMs": 20.87,
+      "peakRssKiB": 41124,
+      "medianRssKiB": 40844,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.864,
-          "userMs": 14.773,
-          "sysMs": 2.959,
-          "maxRssKiB": 40888
+          "wallMs": 18.826,
+          "userMs": 10.724,
+          "sysMs": 7.887,
+          "maxRssKiB": 40424
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.304,
-          "userMs": 8.09,
-          "sysMs": 9.096,
-          "maxRssKiB": 40452
+          "wallMs": 17.442,
+          "userMs": 13.137,
+          "sysMs": 4.058,
+          "maxRssKiB": 40896
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.89,
-          "userMs": 12.55,
-          "sysMs": 5.228,
-          "maxRssKiB": 40800
+          "wallMs": 18.008,
+          "userMs": 10.924,
+          "sysMs": 6.964,
+          "maxRssKiB": 40492
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.185,
-          "userMs": 18.027,
-          "sysMs": 6.027,
-          "maxRssKiB": 40788
+          "wallMs": 16.887,
+          "userMs": 7.917,
+          "sysMs": 8.92,
+          "maxRssKiB": 40844
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.811,
-          "userMs": 11.774,
-          "sysMs": 6.873,
-          "maxRssKiB": 40448
+          "wallMs": 20.866,
+          "userMs": 15.559,
+          "sysMs": 5.194,
+          "maxRssKiB": 41124
         }
       ],
       "fidelity": {
@@ -3443,52 +3443,52 @@
       "stderr": null,
       "markdownBytes": 392,
       "sameOutputEveryRun": true,
-      "firstMs": 17.22,
-      "medianMs": 17.22,
-      "minMs": 15.55,
-      "maxMs": 22.97,
-      "peakRssKiB": 34012,
-      "medianRssKiB": 33888,
+      "firstMs": 15.92,
+      "medianMs": 16.53,
+      "minMs": 15.92,
+      "maxMs": 19.86,
+      "peakRssKiB": 33912,
+      "medianRssKiB": 33800,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.221,
-          "userMs": 12.118,
-          "sysMs": 5.037,
-          "maxRssKiB": 34008
+          "wallMs": 15.918,
+          "userMs": 10.894,
+          "sysMs": 4.96,
+          "maxRssKiB": 33860
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.969,
-          "userMs": 14.885,
-          "sysMs": 7.943,
-          "maxRssKiB": 33848
+          "wallMs": 16.443,
+          "userMs": 8.183,
+          "sysMs": 8.172,
+          "maxRssKiB": 33772
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.78,
-          "userMs": 9.795,
-          "sysMs": 5.863,
-          "maxRssKiB": 34012
+          "wallMs": 16.526,
+          "userMs": 9.244,
+          "sysMs": 7.168,
+          "maxRssKiB": 33912
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.991,
-          "userMs": 10.92,
-          "sysMs": 6.941,
-          "maxRssKiB": 33888
+          "wallMs": 16.587,
+          "userMs": 9.274,
+          "sysMs": 7.213,
+          "maxRssKiB": 33800
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.545,
-          "userMs": 13.392,
-          "sysMs": 2.051,
-          "maxRssKiB": 33744
+          "wallMs": 19.855,
+          "userMs": 10.899,
+          "sysMs": 8.121,
+          "maxRssKiB": 33740
         }
       ],
       "fidelity": {
@@ -3529,52 +3529,52 @@
       "stderr": null,
       "markdownBytes": 392,
       "sameOutputEveryRun": true,
-      "firstMs": 15.45,
-      "medianMs": 20.12,
-      "minMs": 15.45,
-      "maxMs": 21.61,
-      "peakRssKiB": 33936,
-      "medianRssKiB": 33688,
+      "firstMs": 16.24,
+      "medianMs": 16.24,
+      "minMs": 14.68,
+      "maxMs": 17.46,
+      "peakRssKiB": 33948,
+      "medianRssKiB": 33632,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.453,
-          "userMs": 10.206,
-          "sysMs": 5.095,
-          "maxRssKiB": 33648
+          "wallMs": 16.244,
+          "userMs": 8.061,
+          "sysMs": 8.049,
+          "maxRssKiB": 33592
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.607,
-          "userMs": 16.354,
-          "sysMs": 5.12,
-          "maxRssKiB": 33688
+          "wallMs": 14.682,
+          "userMs": 12.458,
+          "sysMs": 2.07,
+          "maxRssKiB": 33632
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.125,
-          "userMs": 13.604,
-          "sysMs": 5.84,
-          "maxRssKiB": 33344
+          "wallMs": 17.46,
+          "userMs": 8.672,
+          "sysMs": 8.672,
+          "maxRssKiB": 33320
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.291,
-          "userMs": 15.55,
-          "sysMs": 4.589,
-          "maxRssKiB": 33904
+          "wallMs": 16.635,
+          "userMs": 6.827,
+          "sysMs": 9.738,
+          "maxRssKiB": 33948
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.431,
-          "userMs": 9.209,
-          "sysMs": 7.177,
-          "maxRssKiB": 33936
+          "wallMs": 15.601,
+          "userMs": 10.318,
+          "sysMs": 5.16,
+          "maxRssKiB": 33808
         }
       ],
       "fidelity": {
@@ -3615,52 +3615,52 @@
       "stderr": null,
       "markdownBytes": 155,
       "sameOutputEveryRun": true,
-      "firstMs": 14.35,
-      "medianMs": 14.57,
-      "minMs": 13.54,
-      "maxMs": 16.57,
-      "peakRssKiB": 35444,
-      "medianRssKiB": 35056,
+      "firstMs": 13.64,
+      "medianMs": 13.64,
+      "minMs": 11.7,
+      "maxMs": 16.1,
+      "peakRssKiB": 35428,
+      "medianRssKiB": 35072,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.354,
-          "userMs": 8.154,
-          "sysMs": 6.112,
-          "maxRssKiB": 35264
+          "wallMs": 13.636,
+          "userMs": 11.44,
+          "sysMs": 2.087,
+          "maxRssKiB": 35160
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.535,
-          "userMs": 7.726,
-          "sysMs": 5.801,
-          "maxRssKiB": 34928
+          "wallMs": 16.102,
+          "userMs": 8.015,
+          "sysMs": 8.03,
+          "maxRssKiB": 35072
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.574,
-          "userMs": 7.186,
-          "sysMs": 9.331,
-          "maxRssKiB": 35056
+          "wallMs": 12.838,
+          "userMs": 8.849,
+          "sysMs": 3.917,
+          "maxRssKiB": 34944
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.172,
-          "userMs": 7.024,
-          "sysMs": 8.036,
-          "maxRssKiB": 34908
+          "wallMs": 11.7,
+          "userMs": 5.282,
+          "sysMs": 6.347,
+          "maxRssKiB": 35428
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.57,
-          "userMs": 9.255,
-          "sysMs": 5.152,
-          "maxRssKiB": 35444
+          "wallMs": 14.161,
+          "userMs": 9.67,
+          "sysMs": 4.397,
+          "maxRssKiB": 34784
         }
       ],
       "fidelity": {
@@ -3691,52 +3691,52 @@
       "stderr": null,
       "markdownBytes": 133,
       "sameOutputEveryRun": true,
-      "firstMs": 15.23,
-      "medianMs": 16.01,
-      "minMs": 15.23,
-      "maxMs": 16.93,
-      "peakRssKiB": 36188,
-      "medianRssKiB": 36100,
+      "firstMs": 14.82,
+      "medianMs": 14.4,
+      "minMs": 13.94,
+      "maxMs": 16.02,
+      "peakRssKiB": 36432,
+      "medianRssKiB": 36108,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.232,
-          "userMs": 5.063,
-          "sysMs": 10.121,
-          "maxRssKiB": 36124
+          "wallMs": 14.818,
+          "userMs": 7.844,
+          "sysMs": 6.851,
+          "maxRssKiB": 36108
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.771,
-          "userMs": 9.802,
-          "sysMs": 5.885,
-          "maxRssKiB": 35952
+          "wallMs": 14.402,
+          "userMs": 7.2,
+          "sysMs": 7.139,
+          "maxRssKiB": 35872
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.929,
-          "userMs": 10.894,
-          "sysMs": 5.947,
-          "maxRssKiB": 35948
+          "wallMs": 13.938,
+          "userMs": 7.937,
+          "sysMs": 5.952,
+          "maxRssKiB": 36244
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.007,
-          "userMs": 7.962,
-          "sysMs": 7.957,
-          "maxRssKiB": 36188
+          "wallMs": 16.017,
+          "userMs": 9.966,
+          "sysMs": 5.974,
+          "maxRssKiB": 35820
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.029,
-          "userMs": 10.887,
-          "sysMs": 4.966,
-          "maxRssKiB": 36100
+          "wallMs": 14.304,
+          "userMs": 10.184,
+          "sysMs": 4.07,
+          "maxRssKiB": 36432
         }
       ],
       "fidelity": {
@@ -3767,52 +3767,52 @@
       "stderr": null,
       "markdownBytes": 133,
       "sameOutputEveryRun": true,
-      "firstMs": 15,
-      "medianMs": 16.12,
-      "minMs": 13.98,
-      "maxMs": 16.83,
-      "peakRssKiB": 36148,
-      "medianRssKiB": 36040,
+      "firstMs": 15.02,
+      "medianMs": 14.89,
+      "minMs": 12.17,
+      "maxMs": 16.31,
+      "peakRssKiB": 36052,
+      "medianRssKiB": 35860,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.999,
-          "userMs": 7.952,
-          "sysMs": 6.966,
-          "maxRssKiB": 36088
+          "wallMs": 15.016,
+          "userMs": 9.943,
+          "sysMs": 4.97,
+          "maxRssKiB": 35792
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.831,
-          "userMs": 7.967,
-          "sysMs": 8.94,
-          "maxRssKiB": 35908
+          "wallMs": 14.895,
+          "userMs": 7.872,
+          "sysMs": 6.912,
+          "maxRssKiB": 36052
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.982,
-          "userMs": 10.895,
-          "sysMs": 2.962,
-          "maxRssKiB": 35924
+          "wallMs": 12.168,
+          "userMs": 9.044,
+          "sysMs": 3.007,
+          "maxRssKiB": 36044
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.447,
-          "userMs": 8.648,
-          "sysMs": 7.699,
-          "maxRssKiB": 36040
+          "wallMs": 16.31,
+          "userMs": 12.194,
+          "sysMs": 4.072,
+          "maxRssKiB": 35860
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.118,
-          "userMs": 11.035,
-          "sysMs": 5.022,
-          "maxRssKiB": 36148
+          "wallMs": 14.661,
+          "userMs": 9.441,
+          "sysMs": 5.205,
+          "maxRssKiB": 35748
         }
       ],
       "fidelity": {
@@ -3843,52 +3843,52 @@
       "stderr": null,
       "markdownBytes": 1931,
       "sameOutputEveryRun": true,
-      "firstMs": 20.27,
-      "medianMs": 20.13,
-      "minMs": 17.85,
-      "maxMs": 20.33,
-      "peakRssKiB": 38156,
-      "medianRssKiB": 38084,
+      "firstMs": 17.56,
+      "medianMs": 17.56,
+      "minMs": 15.85,
+      "maxMs": 18.64,
+      "peakRssKiB": 38244,
+      "medianRssKiB": 38032,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.267,
-          "userMs": 13.437,
-          "sysMs": 6.72,
-          "maxRssKiB": 37912
+          "wallMs": 17.564,
+          "userMs": 9.174,
+          "sysMs": 8.172,
+          "maxRssKiB": 38032
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.331,
-          "userMs": 15.37,
-          "sysMs": 4.762,
-          "maxRssKiB": 38084
+          "wallMs": 18.644,
+          "userMs": 14.548,
+          "sysMs": 3.873,
+          "maxRssKiB": 37924
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.128,
-          "userMs": 13.008,
-          "sysMs": 7.008,
-          "maxRssKiB": 38124
+          "wallMs": 17.413,
+          "userMs": 14.287,
+          "sysMs": 3.072,
+          "maxRssKiB": 38092
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 19.253,
-          "userMs": 11.107,
-          "sysMs": 8.077,
-          "maxRssKiB": 38016
+          "wallMs": 18.119,
+          "userMs": 11.042,
+          "sysMs": 7.032,
+          "maxRssKiB": 37884
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.851,
-          "userMs": 10.83,
-          "sysMs": 6.892,
-          "maxRssKiB": 38156
+          "wallMs": 15.848,
+          "userMs": 9.671,
+          "sysMs": 6.141,
+          "maxRssKiB": 38244
         }
       ],
       "fidelity": {
@@ -3919,52 +3919,52 @@
       "stderr": null,
       "markdownBytes": 304,
       "sameOutputEveryRun": true,
-      "firstMs": 17.08,
-      "medianMs": 17.08,
-      "minMs": 15.62,
-      "maxMs": 19.1,
-      "peakRssKiB": 33236,
-      "medianRssKiB": 33188,
+      "firstMs": 15.74,
+      "medianMs": 14.68,
+      "minMs": 13.45,
+      "maxMs": 15.74,
+      "peakRssKiB": 33112,
+      "medianRssKiB": 32936,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.079,
-          "userMs": 5.005,
-          "sysMs": 12.004,
+          "wallMs": 15.74,
+          "userMs": 9.805,
+          "sysMs": 5.883,
           "maxRssKiB": 32936
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.62,
-          "userMs": 9.71,
-          "sysMs": 5.873,
-          "maxRssKiB": 32992
+          "wallMs": 14.682,
+          "userMs": 10.451,
+          "sysMs": 4.188,
+          "maxRssKiB": 32904
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.319,
-          "userMs": 10.121,
-          "sysMs": 6.081,
-          "maxRssKiB": 33220
+          "wallMs": 13.454,
+          "userMs": 7.64,
+          "sysMs": 5.738,
+          "maxRssKiB": 33112
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 19.097,
-          "userMs": 12.685,
-          "sysMs": 6.352,
-          "maxRssKiB": 33236
+          "wallMs": 14.587,
+          "userMs": 10.321,
+          "sysMs": 4.134,
+          "maxRssKiB": 32740
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.871,
-          "userMs": 9.395,
-          "sysMs": 8.473,
-          "maxRssKiB": 33188
+          "wallMs": 15.217,
+          "userMs": 12.133,
+          "sysMs": 3.003,
+          "maxRssKiB": 32956
         }
       ],
       "fidelity": {
@@ -3990,52 +3990,52 @@
       "stderr": null,
       "markdownBytes": 97,
       "sameOutputEveryRun": true,
-      "firstMs": 14.04,
-      "medianMs": 15.22,
-      "minMs": 14.04,
-      "maxMs": 17.14,
-      "peakRssKiB": 34140,
-      "medianRssKiB": 33820,
+      "firstMs": 20.3,
+      "medianMs": 15.21,
+      "minMs": 13.28,
+      "maxMs": 20.3,
+      "peakRssKiB": 34368,
+      "medianRssKiB": 33936,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.042,
-          "userMs": 9,
-          "sysMs": 4.994,
-          "maxRssKiB": 33820
+          "wallMs": 20.304,
+          "userMs": 11,
+          "sysMs": 9.006,
+          "maxRssKiB": 34228
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.222,
-          "userMs": 8.088,
-          "sysMs": 7.058,
-          "maxRssKiB": 34140
+          "wallMs": 19.459,
+          "userMs": 11.591,
+          "sysMs": 7.717,
+          "maxRssKiB": 33844
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.145,
-          "userMs": 10.445,
-          "sysMs": 6.653,
-          "maxRssKiB": 33744
+          "wallMs": 15.21,
+          "userMs": 8.592,
+          "sysMs": 6.431,
+          "maxRssKiB": 33936
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.016,
-          "userMs": 7.939,
-          "sysMs": 6.955,
-          "maxRssKiB": 34020
+          "wallMs": 15.055,
+          "userMs": 11.995,
+          "sysMs": 2.994,
+          "maxRssKiB": 34368
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.009,
-          "userMs": 8.926,
-          "sysMs": 6.942,
-          "maxRssKiB": 33696
+          "wallMs": 13.277,
+          "userMs": 11.175,
+          "sysMs": 2.035,
+          "maxRssKiB": 33528
         }
       ],
       "fidelity": {
@@ -4061,52 +4061,52 @@
       "stderr": null,
       "markdownBytes": 1363,
       "sameOutputEveryRun": true,
-      "firstMs": 17.17,
-      "medianMs": 19.07,
-      "minMs": 17.17,
-      "maxMs": 22.26,
-      "peakRssKiB": 34508,
-      "medianRssKiB": 34356,
+      "firstMs": 16.06,
+      "medianMs": 17.02,
+      "minMs": 15.11,
+      "maxMs": 17.61,
+      "peakRssKiB": 34192,
+      "medianRssKiB": 34028,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.173,
-          "userMs": 9.434,
-          "sysMs": 7.686,
-          "maxRssKiB": 34508
+          "wallMs": 16.062,
+          "userMs": 9.876,
+          "sysMs": 5.952,
+          "maxRssKiB": 34028
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.265,
-          "userMs": 13.113,
-          "sysMs": 9.093,
-          "maxRssKiB": 34136
+          "wallMs": 15.107,
+          "userMs": 11.986,
+          "sysMs": 2.948,
+          "maxRssKiB": 33896
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.938,
-          "userMs": 12.85,
-          "sysMs": 4.933,
-          "maxRssKiB": 34356
+          "wallMs": 17.086,
+          "userMs": 9.996,
+          "sysMs": 6.982,
+          "maxRssKiB": 34084
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.689,
-          "userMs": 15.086,
-          "sysMs": 6.608,
-          "maxRssKiB": 33848
+          "wallMs": 17.614,
+          "userMs": 11.289,
+          "sysMs": 6.144,
+          "maxRssKiB": 34192
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 19.069,
-          "userMs": 12.012,
-          "sysMs": 7.002,
-          "maxRssKiB": 34420
+          "wallMs": 17.019,
+          "userMs": 9.907,
+          "sysMs": 6.945,
+          "maxRssKiB": 33916
         }
       ],
       "fidelity": {
@@ -4132,52 +4132,52 @@
       "stderr": null,
       "markdownBytes": 962,
       "sameOutputEveryRun": true,
-      "firstMs": 14.5,
-      "medianMs": 14.51,
-      "minMs": 14.15,
-      "maxMs": 17.9,
-      "peakRssKiB": 33040,
-      "medianRssKiB": 32840,
+      "firstMs": 13.97,
+      "medianMs": 13.97,
+      "minMs": 12.03,
+      "maxMs": 15.24,
+      "peakRssKiB": 33004,
+      "medianRssKiB": 32812,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.5,
-          "userMs": 8.231,
-          "sysMs": 6.152,
-          "maxRssKiB": 32840
+          "wallMs": 13.966,
+          "userMs": 6.858,
+          "sysMs": 6.86,
+          "maxRssKiB": 33004
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.261,
-          "userMs": 11.159,
-          "sysMs": 4.056,
-          "maxRssKiB": 32848
+          "wallMs": 13.366,
+          "userMs": 10.393,
+          "sysMs": 2.846,
+          "maxRssKiB": 32876
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.153,
-          "userMs": 10.02,
-          "sysMs": 4.02,
-          "maxRssKiB": 32836
+          "wallMs": 12.032,
+          "userMs": 2.996,
+          "sysMs": 8.988,
+          "maxRssKiB": 32812
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.51,
-          "userMs": 5.721,
-          "sysMs": 8.698,
-          "maxRssKiB": 33040
+          "wallMs": 15.244,
+          "userMs": 11.032,
+          "sysMs": 4.013,
+          "maxRssKiB": 32652
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.903,
-          "userMs": 11.931,
-          "sysMs": 5.969,
-          "maxRssKiB": 32696
+          "wallMs": 14.292,
+          "userMs": 7.584,
+          "sysMs": 6.634,
+          "maxRssKiB": 32656
         }
       ],
       "fidelity": {
@@ -4203,52 +4203,52 @@
       "stderr": null,
       "markdownBytes": 580,
       "sameOutputEveryRun": true,
-      "firstMs": 13.67,
-      "medianMs": 14.18,
-      "minMs": 13.6,
-      "maxMs": 16.55,
-      "peakRssKiB": 32992,
-      "medianRssKiB": 32700,
+      "firstMs": 12.82,
+      "medianMs": 13.56,
+      "minMs": 12.21,
+      "maxMs": 14.98,
+      "peakRssKiB": 32880,
+      "medianRssKiB": 32780,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.666,
-          "userMs": 9.139,
-          "sysMs": 4.562,
-          "maxRssKiB": 32700
+          "wallMs": 12.82,
+          "userMs": 8.827,
+          "sysMs": 3.919,
+          "maxRssKiB": 32840
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.185,
-          "userMs": 11.119,
-          "sysMs": 3.028,
-          "maxRssKiB": 32992
+          "wallMs": 12.205,
+          "userMs": 9.094,
+          "sysMs": 3.022,
+          "maxRssKiB": 32780
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.602,
-          "userMs": 9.591,
-          "sysMs": 3.821,
-          "maxRssKiB": 32544
+          "wallMs": 13.558,
+          "userMs": 9.618,
+          "sysMs": 3.856,
+          "maxRssKiB": 32724
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.548,
-          "userMs": 10.24,
-          "sysMs": 6.165,
-          "maxRssKiB": 32768
+          "wallMs": 14.984,
+          "userMs": 11.895,
+          "sysMs": 2.995,
+          "maxRssKiB": 32880
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.481,
-          "userMs": 9.143,
-          "sysMs": 7.323,
-          "maxRssKiB": 32680
+          "wallMs": 13.871,
+          "userMs": 7.904,
+          "sysMs": 5.929,
+          "maxRssKiB": 32740
         }
       ],
       "fidelity": {
@@ -4274,52 +4274,52 @@
       "stderr": null,
       "markdownBytes": 6729,
       "sameOutputEveryRun": true,
-      "firstMs": 24.33,
-      "medianMs": 24.84,
-      "minMs": 23.8,
-      "maxMs": 28.76,
-      "peakRssKiB": 45260,
-      "medianRssKiB": 45188,
+      "firstMs": 22.27,
+      "medianMs": 22.6,
+      "minMs": 22.08,
+      "maxMs": 26.8,
+      "peakRssKiB": 44888,
+      "medianRssKiB": 44816,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.334,
-          "userMs": 18.154,
-          "sysMs": 6.061,
-          "maxRssKiB": 45000
+          "wallMs": 22.272,
+          "userMs": 14.113,
+          "sysMs": 8.069,
+          "maxRssKiB": 44816
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 28.76,
-          "userMs": 15.744,
-          "sysMs": 12.806,
-          "maxRssKiB": 44848
+          "wallMs": 26.801,
+          "userMs": 18.74,
+          "sysMs": 7.86,
+          "maxRssKiB": 44424
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.844,
-          "userMs": 19.855,
-          "sysMs": 4.957,
-          "maxRssKiB": 45260
+          "wallMs": 22.075,
+          "userMs": 12.995,
+          "sysMs": 8.958,
+          "maxRssKiB": 44888
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 23.796,
-          "userMs": 18.773,
-          "sysMs": 4.917,
-          "maxRssKiB": 45188
+          "wallMs": 22.599,
+          "userMs": 16.871,
+          "sysMs": 5.627,
+          "maxRssKiB": 44876
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.981,
-          "userMs": 15.985,
-          "sysMs": 8.988,
-          "maxRssKiB": 45208
+          "wallMs": 24.351,
+          "userMs": 18.209,
+          "sysMs": 6.07,
+          "maxRssKiB": 44808
         }
       ],
       "fidelity": {
@@ -4360,52 +4360,52 @@
       "stderr": null,
       "markdownBytes": 7,
       "sameOutputEveryRun": true,
-      "firstMs": 14.84,
-      "medianMs": 13.52,
-      "minMs": 12.27,
-      "maxMs": 16.05,
-      "peakRssKiB": 33036,
-      "medianRssKiB": 32772,
+      "firstMs": 12.73,
+      "medianMs": 12.73,
+      "minMs": 11.79,
+      "maxMs": 13.93,
+      "peakRssKiB": 33068,
+      "medianRssKiB": 32996,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.842,
-          "userMs": 8.377,
-          "sysMs": 6.272,
-          "maxRssKiB": 32772
+          "wallMs": 12.727,
+          "userMs": 5.792,
+          "sysMs": 6.723,
+          "maxRssKiB": 32564
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.272,
-          "userMs": 6.121,
-          "sysMs": 6.125,
-          "maxRssKiB": 32948
+          "wallMs": 11.794,
+          "userMs": 6.842,
+          "sysMs": 4.866,
+          "maxRssKiB": 32996
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.052,
-          "userMs": 11.997,
-          "sysMs": 4,
-          "maxRssKiB": 32616
+          "wallMs": 13.926,
+          "userMs": 6.92,
+          "sysMs": 6.902,
+          "maxRssKiB": 33068
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.75,
-          "userMs": 8.81,
-          "sysMs": 3.912,
-          "maxRssKiB": 33036
+          "wallMs": 13.069,
+          "userMs": 6.956,
+          "sysMs": 5.98,
+          "maxRssKiB": 32924
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.515,
-          "userMs": 7.193,
-          "sysMs": 6.235,
-          "maxRssKiB": 32672
+          "wallMs": 12.682,
+          "userMs": 7.768,
+          "sysMs": 4.858,
+          "maxRssKiB": 33012
         }
       ],
       "fidelity": {
@@ -4426,52 +4426,52 @@
       "stderr": null,
       "markdownBytes": 566,
       "sameOutputEveryRun": true,
-      "firstMs": 15.58,
-      "medianMs": 14.71,
-      "minMs": 14.13,
-      "maxMs": 15.76,
-      "peakRssKiB": 35688,
-      "medianRssKiB": 35456,
+      "firstMs": 12.52,
+      "medianMs": 13.35,
+      "minMs": 12.4,
+      "maxMs": 15.36,
+      "peakRssKiB": 35900,
+      "medianRssKiB": 35460,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.58,
-          "userMs": 10.287,
-          "sysMs": 5.185,
-          "maxRssKiB": 35368
+          "wallMs": 12.521,
+          "userMs": 7.276,
+          "sysMs": 5.197,
+          "maxRssKiB": 35460
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.762,
-          "userMs": 11.74,
-          "sysMs": 3.914,
-          "maxRssKiB": 35456
+          "wallMs": 13.348,
+          "userMs": 9.176,
+          "sysMs": 4.085,
+          "maxRssKiB": 35384
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.133,
-          "userMs": 9.073,
-          "sysMs": 5.038,
-          "maxRssKiB": 35316
+          "wallMs": 15.358,
+          "userMs": 12.158,
+          "sysMs": 3.037,
+          "maxRssKiB": 35900
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.248,
-          "userMs": 10.125,
-          "sysMs": 4.061,
-          "maxRssKiB": 35604
+          "wallMs": 12.399,
+          "userMs": 7.204,
+          "sysMs": 5.153,
+          "maxRssKiB": 35536
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.714,
-          "userMs": 7.771,
-          "sysMs": 6.784,
-          "maxRssKiB": 35688
+          "wallMs": 14.981,
+          "userMs": 9.92,
+          "sysMs": 4.957,
+          "maxRssKiB": 35228
         }
       ],
       "fidelity": {
@@ -4497,52 +4497,52 @@
       "stderr": null,
       "markdownBytes": 173,
       "sameOutputEveryRun": true,
-      "firstMs": 16.94,
-      "medianMs": 16.94,
-      "minMs": 15.4,
-      "maxMs": 21.48,
-      "peakRssKiB": 40844,
-      "medianRssKiB": 40788,
+      "firstMs": 18.6,
+      "medianMs": 16.49,
+      "minMs": 15.63,
+      "maxMs": 18.6,
+      "peakRssKiB": 40756,
+      "medianRssKiB": 40440,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.939,
-          "userMs": 10.9,
-          "sysMs": 5.964,
-          "maxRssKiB": 40804
+          "wallMs": 18.603,
+          "userMs": 11.13,
+          "sysMs": 7.423,
+          "maxRssKiB": 40440
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.476,
-          "userMs": 11.624,
-          "sysMs": 9.69,
-          "maxRssKiB": 40844
+          "wallMs": 16.493,
+          "userMs": 12.36,
+          "sysMs": 4.123,
+          "maxRssKiB": 40604
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.814,
-          "userMs": 8.381,
-          "sysMs": 7.347,
-          "maxRssKiB": 40768
+          "wallMs": 15.633,
+          "userMs": 7.769,
+          "sysMs": 7.773,
+          "maxRssKiB": 40372
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.399,
-          "userMs": 7.671,
-          "sysMs": 7.679,
-          "maxRssKiB": 40616
+          "wallMs": 17.44,
+          "userMs": 11.236,
+          "sysMs": 6.118,
+          "maxRssKiB": 40756
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.766,
-          "userMs": 10.329,
-          "sysMs": 8.324,
-          "maxRssKiB": 40788
+          "wallMs": 16.378,
+          "userMs": 10.12,
+          "sysMs": 6.075,
+          "maxRssKiB": 40404
         }
       ],
       "fidelity": {
@@ -4573,52 +4573,52 @@
       "stderr": null,
       "markdownBytes": 671,
       "sameOutputEveryRun": true,
-      "firstMs": 20.74,
-      "medianMs": 20.74,
-      "minMs": 18.18,
-      "maxMs": 22.39,
-      "peakRssKiB": 42196,
-      "medianRssKiB": 41832,
+      "firstMs": 21.07,
+      "medianMs": 19.55,
+      "minMs": 17.66,
+      "maxMs": 24.31,
+      "peakRssKiB": 41952,
+      "medianRssKiB": 41916,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.744,
-          "userMs": 13.795,
-          "sysMs": 6.914,
-          "maxRssKiB": 42196
+          "wallMs": 21.068,
+          "userMs": 10.971,
+          "sysMs": 10.036,
+          "maxRssKiB": 41916
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.824,
-          "userMs": 10.388,
-          "sysMs": 8.315,
-          "maxRssKiB": 41664
+          "wallMs": 24.308,
+          "userMs": 14.522,
+          "sysMs": 9.687,
+          "maxRssKiB": 41648
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.181,
-          "userMs": 11.407,
-          "sysMs": 6.656,
-          "maxRssKiB": 41988
+          "wallMs": 19.551,
+          "userMs": 12.253,
+          "sysMs": 7.19,
+          "maxRssKiB": 41952
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.394,
-          "userMs": 17.22,
-          "sysMs": 5.069,
-          "maxRssKiB": 41744
+          "wallMs": 17.656,
+          "userMs": 7.227,
+          "sysMs": 10.338,
+          "maxRssKiB": 41720
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.556,
-          "userMs": 14.315,
-          "sysMs": 7.163,
-          "maxRssKiB": 41832
+          "wallMs": 18.598,
+          "userMs": 15.37,
+          "sysMs": 3.08,
+          "maxRssKiB": 41940
         }
       ],
       "fidelity": {
@@ -4654,52 +4654,52 @@
       "stderr": null,
       "markdownBytes": 1497,
       "sameOutputEveryRun": true,
-      "firstMs": 15.91,
-      "medianMs": 17.21,
-      "minMs": 15.91,
-      "maxMs": 17.84,
-      "peakRssKiB": 34312,
-      "medianRssKiB": 33940,
+      "firstMs": 14.78,
+      "medianMs": 16.82,
+      "minMs": 14.78,
+      "maxMs": 19.55,
+      "peakRssKiB": 34172,
+      "medianRssKiB": 33960,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.907,
-          "userMs": 8.36,
-          "sysMs": 7.454,
-          "maxRssKiB": 33888
+          "wallMs": 14.779,
+          "userMs": 8.743,
+          "sysMs": 5.828,
+          "maxRssKiB": 34144
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.741,
-          "userMs": 9.778,
-          "sysMs": 6.85,
-          "maxRssKiB": 34312
+          "wallMs": 16.818,
+          "userMs": 4.624,
+          "sysMs": 12.09,
+          "maxRssKiB": 33696
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.206,
-          "userMs": 10.054,
-          "sysMs": 7.051,
-          "maxRssKiB": 33868
+          "wallMs": 14.918,
+          "userMs": 10.857,
+          "sysMs": 3.946,
+          "maxRssKiB": 33828
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.558,
-          "userMs": 11.647,
-          "sysMs": 5.827,
-          "maxRssKiB": 34232
+          "wallMs": 17.062,
+          "userMs": 10.956,
+          "sysMs": 5.961,
+          "maxRssKiB": 34172
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.841,
-          "userMs": 4.936,
-          "sysMs": 12.818,
-          "maxRssKiB": 33940
+          "wallMs": 19.548,
+          "userMs": 11.607,
+          "sysMs": 7.739,
+          "maxRssKiB": 33960
         }
       ],
       "fidelity": {
@@ -4730,52 +4730,52 @@
       "stderr": null,
       "markdownBytes": 2423,
       "sameOutputEveryRun": true,
-      "firstMs": 19.2,
-      "medianMs": 21.9,
-      "minMs": 19.2,
-      "maxMs": 25.16,
-      "peakRssKiB": 41140,
-      "medianRssKiB": 40864,
+      "firstMs": 18.22,
+      "medianMs": 18.71,
+      "minMs": 18.22,
+      "maxMs": 21.38,
+      "peakRssKiB": 41028,
+      "medianRssKiB": 40984,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 19.198,
-          "userMs": 15.086,
-          "sysMs": 4.023,
-          "maxRssKiB": 40864
+          "wallMs": 18.221,
+          "userMs": 9.063,
+          "sysMs": 9.063,
+          "maxRssKiB": 40984
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.502,
-          "userMs": 14.582,
-          "sysMs": 5.835,
-          "maxRssKiB": 41140
+          "wallMs": 18.867,
+          "userMs": 13.118,
+          "sysMs": 5.619,
+          "maxRssKiB": 41000
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.164,
-          "userMs": 13.022,
-          "sysMs": 11.99,
-          "maxRssKiB": 40992
+          "wallMs": 18.713,
+          "userMs": 7.976,
+          "sysMs": 10.643,
+          "maxRssKiB": 40948
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.896,
-          "userMs": 12.892,
-          "sysMs": 8.926,
-          "maxRssKiB": 40860
+          "wallMs": 18.505,
+          "userMs": 13.318,
+          "sysMs": 5.115,
+          "maxRssKiB": 40884
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.526,
-          "userMs": 14.951,
-          "sysMs": 7.483,
-          "maxRssKiB": 40756
+          "wallMs": 21.378,
+          "userMs": 14.777,
+          "sysMs": 6.481,
+          "maxRssKiB": 41028
         }
       ],
       "fidelity": {
@@ -4816,52 +4816,52 @@
       "stderr": null,
       "markdownBytes": 259,
       "sameOutputEveryRun": true,
-      "firstMs": 15.11,
-      "medianMs": 14.57,
-      "minMs": 13.4,
-      "maxMs": 17.4,
-      "peakRssKiB": 34884,
-      "medianRssKiB": 34788,
+      "firstMs": 12.89,
+      "medianMs": 12.89,
+      "minMs": 12.21,
+      "maxMs": 13.71,
+      "peakRssKiB": 34920,
+      "medianRssKiB": 34772,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.111,
-          "userMs": 11.024,
-          "sysMs": 4.023,
-          "maxRssKiB": 34468
+          "wallMs": 12.893,
+          "userMs": 6.923,
+          "sysMs": 5.914,
+          "maxRssKiB": 34568
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.732,
-          "userMs": 10.052,
-          "sysMs": 3.652,
-          "maxRssKiB": 34836
+          "wallMs": 12.646,
+          "userMs": 4.825,
+          "sysMs": 7.729,
+          "maxRssKiB": 34800
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.575,
-          "userMs": 8.252,
-          "sysMs": 6.194,
-          "maxRssKiB": 34884
+          "wallMs": 13.714,
+          "userMs": 7.281,
+          "sysMs": 6.354,
+          "maxRssKiB": 34772
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.397,
-          "userMs": 7.171,
-          "sysMs": 6.157,
-          "maxRssKiB": 34644
+          "wallMs": 12.207,
+          "userMs": 9.1,
+          "sysMs": 3.04,
+          "maxRssKiB": 34920
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.396,
-          "userMs": 9.185,
-          "sysMs": 8.172,
-          "maxRssKiB": 34788
+          "wallMs": 13.011,
+          "userMs": 6.982,
+          "sysMs": 5.992,
+          "maxRssKiB": 34652
         }
       ],
       "fidelity": {
@@ -4897,52 +4897,52 @@
       "stderr": null,
       "markdownBytes": 1923,
       "sameOutputEveryRun": true,
-      "firstMs": 17.97,
-      "medianMs": 14.61,
-      "minMs": 12.86,
-      "maxMs": 17.97,
-      "peakRssKiB": 32360,
-      "medianRssKiB": 32228,
+      "firstMs": 13.72,
+      "medianMs": 13.23,
+      "minMs": 12.43,
+      "maxMs": 14.5,
+      "peakRssKiB": 32624,
+      "medianRssKiB": 32376,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.969,
-          "userMs": 10.897,
-          "sysMs": 6.932,
-          "maxRssKiB": 31964
+          "wallMs": 13.725,
+          "userMs": 6.818,
+          "sysMs": 6.815,
+          "maxRssKiB": 32376
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.859,
-          "userMs": 6.903,
-          "sysMs": 5.921,
-          "maxRssKiB": 32228
+          "wallMs": 13.233,
+          "userMs": 10.14,
+          "sysMs": 3.049,
+          "maxRssKiB": 32332
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.875,
-          "userMs": 7.36,
-          "sysMs": 6.448,
-          "maxRssKiB": 32192
+          "wallMs": 14.499,
+          "userMs": 9.269,
+          "sysMs": 5.17,
+          "maxRssKiB": 32588
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.615,
-          "userMs": 4.853,
-          "sysMs": 9.714,
-          "maxRssKiB": 32312
+          "wallMs": 12.426,
+          "userMs": 9.489,
+          "sysMs": 2.85,
+          "maxRssKiB": 32624
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.789,
-          "userMs": 9.816,
-          "sysMs": 4.906,
-          "maxRssKiB": 32360
+          "wallMs": 12.645,
+          "userMs": 5.815,
+          "sysMs": 6.771,
+          "maxRssKiB": 32308
         }
       ],
       "fidelity": {
@@ -4968,52 +4968,52 @@
       "stderr": null,
       "markdownBytes": 3447,
       "sameOutputEveryRun": true,
-      "firstMs": 14.97,
-      "medianMs": 14.78,
-      "minMs": 13.63,
-      "maxMs": 15.22,
-      "peakRssKiB": 33288,
-      "medianRssKiB": 32840,
+      "firstMs": 13.61,
+      "medianMs": 14.03,
+      "minMs": 11.74,
+      "maxMs": 16.07,
+      "peakRssKiB": 32980,
+      "medianRssKiB": 32868,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.975,
-          "userMs": 11.945,
-          "sysMs": 2.99,
-          "maxRssKiB": 32840
+          "wallMs": 13.613,
+          "userMs": 8.346,
+          "sysMs": 5.217,
+          "maxRssKiB": 32980
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.783,
-          "userMs": 7.35,
-          "sysMs": 7.347,
-          "maxRssKiB": 32840
+          "wallMs": 11.743,
+          "userMs": 5.817,
+          "sysMs": 5.818,
+          "maxRssKiB": 32932
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.793,
-          "userMs": 8.753,
-          "sysMs": 4.893,
-          "maxRssKiB": 32996
+          "wallMs": 14.027,
+          "userMs": 9.317,
+          "sysMs": 4.657,
+          "maxRssKiB": 32604
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.217,
-          "userMs": 12.096,
-          "sysMs": 3.033,
-          "maxRssKiB": 32720
+          "wallMs": 16.068,
+          "userMs": 10.954,
+          "sysMs": 4.974,
+          "maxRssKiB": 32868
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.634,
-          "userMs": 9.371,
-          "sysMs": 4.174,
-          "maxRssKiB": 33288
+          "wallMs": 14.677,
+          "userMs": 9.743,
+          "sysMs": 4.877,
+          "maxRssKiB": 32660
         }
       ],
       "fidelity": {
@@ -5039,52 +5039,52 @@
       "stderr": null,
       "markdownBytes": 91,
       "sameOutputEveryRun": true,
-      "firstMs": 14.12,
-      "medianMs": 14.12,
-      "minMs": 12.87,
-      "maxMs": 15.08,
-      "peakRssKiB": 32272,
-      "medianRssKiB": 32016,
+      "firstMs": 11.52,
+      "medianMs": 12.84,
+      "minMs": 11.52,
+      "maxMs": 14,
+      "peakRssKiB": 32192,
+      "medianRssKiB": 31896,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.125,
-          "userMs": 7.419,
-          "sysMs": 6.628,
-          "maxRssKiB": 32016
+          "wallMs": 11.521,
+          "userMs": 4.176,
+          "sysMs": 7.27,
+          "maxRssKiB": 31624
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.924,
-          "userMs": 7.875,
-          "sysMs": 4.958,
-          "maxRssKiB": 31980
+          "wallMs": 12.549,
+          "userMs": 7.65,
+          "sysMs": 4.788,
+          "maxRssKiB": 31896
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.874,
-          "userMs": 6.378,
-          "sysMs": 6.378,
-          "maxRssKiB": 32272
+          "wallMs": 12.838,
+          "userMs": 7.456,
+          "sysMs": 5.316,
+          "maxRssKiB": 31784
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.385,
-          "userMs": 10.277,
-          "sysMs": 4.108,
-          "maxRssKiB": 31852
+          "wallMs": 13.293,
+          "userMs": 6.078,
+          "sysMs": 7.085,
+          "maxRssKiB": 32192
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.079,
-          "userMs": 8.033,
-          "sysMs": 7.026,
-          "maxRssKiB": 32028
+          "wallMs": 14.003,
+          "userMs": 9.938,
+          "sysMs": 3.989,
+          "maxRssKiB": 32064
         }
       ],
       "fidelity": {
@@ -5110,52 +5110,52 @@
       "stderr": null,
       "markdownBytes": 1183,
       "sameOutputEveryRun": true,
-      "firstMs": 19.28,
-      "medianMs": 17.5,
-      "minMs": 16.7,
-      "maxMs": 20.13,
-      "peakRssKiB": 37768,
-      "medianRssKiB": 37688,
+      "firstMs": 16.01,
+      "medianMs": 16.8,
+      "minMs": 14.28,
+      "maxMs": 17.97,
+      "peakRssKiB": 38344,
+      "medianRssKiB": 37840,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 19.275,
-          "userMs": 12.138,
-          "sysMs": 7.085,
-          "maxRssKiB": 37768
+          "wallMs": 16.014,
+          "userMs": 12.196,
+          "sysMs": 3.74,
+          "maxRssKiB": 37888
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.702,
-          "userMs": 9.376,
-          "sysMs": 7.299,
-          "maxRssKiB": 37752
+          "wallMs": 17.972,
+          "userMs": 10.858,
+          "sysMs": 6.977,
+          "maxRssKiB": 37840
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.207,
-          "userMs": 12.36,
-          "sysMs": 4.755,
-          "maxRssKiB": 37688
+          "wallMs": 14.28,
+          "userMs": 9.127,
+          "sysMs": 5.065,
+          "maxRssKiB": 38344
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.497,
-          "userMs": 10.663,
-          "sysMs": 6.763,
-          "maxRssKiB": 37520
+          "wallMs": 17.426,
+          "userMs": 9.162,
+          "sysMs": 8.114,
+          "maxRssKiB": 37428
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.129,
-          "userMs": 12.974,
-          "sysMs": 6.994,
-          "maxRssKiB": 37672
+          "wallMs": 16.805,
+          "userMs": 9.409,
+          "sysMs": 7.295,
+          "maxRssKiB": 37536
         }
       ],
       "fidelity": {
@@ -5191,52 +5191,52 @@
       "stderr": null,
       "markdownBytes": 382,
       "sameOutputEveryRun": true,
-      "firstMs": 15.08,
-      "medianMs": 13.32,
-      "minMs": 12.31,
-      "maxMs": 15.51,
-      "peakRssKiB": 32204,
-      "medianRssKiB": 31948,
+      "firstMs": 13.46,
+      "medianMs": 12.77,
+      "minMs": 11.53,
+      "maxMs": 14.21,
+      "peakRssKiB": 32276,
+      "medianRssKiB": 31884,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.081,
-          "userMs": 9.38,
-          "sysMs": 5.619,
-          "maxRssKiB": 31668
+          "wallMs": 13.46,
+          "userMs": 11.161,
+          "sysMs": 2.238,
+          "maxRssKiB": 31624
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.602,
-          "userMs": 6.284,
-          "sysMs": 6.283,
-          "maxRssKiB": 31968
+          "wallMs": 11.533,
+          "userMs": 6.16,
+          "sysMs": 5.288,
+          "maxRssKiB": 31884
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.311,
-          "userMs": 8.131,
-          "sysMs": 4.055,
-          "maxRssKiB": 31600
+          "wallMs": 12.418,
+          "userMs": 8.237,
+          "sysMs": 4.125,
+          "maxRssKiB": 32276
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.514,
-          "userMs": 8.121,
-          "sysMs": 7.248,
-          "maxRssKiB": 32204
+          "wallMs": 12.771,
+          "userMs": 5.857,
+          "sysMs": 6.841,
+          "maxRssKiB": 31752
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.318,
-          "userMs": 9.16,
-          "sysMs": 4.063,
-          "maxRssKiB": 31948
+          "wallMs": 14.207,
+          "userMs": 8.138,
+          "sysMs": 6.075,
+          "maxRssKiB": 32112
         }
       ],
       "fidelity": {
@@ -5262,52 +5262,52 @@
       "stderr": null,
       "markdownBytes": 451,
       "sameOutputEveryRun": true,
-      "firstMs": 16.75,
-      "medianMs": 16.75,
-      "minMs": 15.25,
-      "maxMs": 17.48,
-      "peakRssKiB": 37748,
-      "medianRssKiB": 37516,
+      "firstMs": 17.63,
+      "medianMs": 16.11,
+      "minMs": 15.39,
+      "maxMs": 17.63,
+      "peakRssKiB": 37392,
+      "medianRssKiB": 37276,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.752,
-          "userMs": 11.35,
-          "sysMs": 5.178,
-          "maxRssKiB": 37456
+          "wallMs": 17.635,
+          "userMs": 9.697,
+          "sysMs": 7.75,
+          "maxRssKiB": 37040
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.749,
-          "userMs": 10.709,
-          "sysMs": 4.886,
-          "maxRssKiB": 37748
+          "wallMs": 15.386,
+          "userMs": 9.193,
+          "sysMs": 6.096,
+          "maxRssKiB": 37336
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.33,
-          "userMs": 11.49,
-          "sysMs": 5.719,
-          "maxRssKiB": 37516
+          "wallMs": 16.242,
+          "userMs": 8.533,
+          "sysMs": 7.472,
+          "maxRssKiB": 37152
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.254,
-          "userMs": 8.13,
-          "sysMs": 7.089,
-          "maxRssKiB": 37724
+          "wallMs": 16.108,
+          "userMs": 11.916,
+          "sysMs": 4.009,
+          "maxRssKiB": 37392
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.477,
-          "userMs": 7.562,
-          "sysMs": 9.491,
-          "maxRssKiB": 37272
+          "wallMs": 15.399,
+          "userMs": 9.191,
+          "sysMs": 6.128,
+          "maxRssKiB": 37276
         }
       ],
       "fidelity": {
@@ -5333,52 +5333,52 @@
       "stderr": null,
       "markdownBytes": 500,
       "sameOutputEveryRun": true,
-      "firstMs": 15.08,
-      "medianMs": 13.89,
-      "minMs": 12.69,
-      "maxMs": 15.08,
-      "peakRssKiB": 35300,
-      "medianRssKiB": 34728,
+      "firstMs": 12.73,
+      "medianMs": 12.97,
+      "minMs": 12.73,
+      "maxMs": 14.24,
+      "peakRssKiB": 34908,
+      "medianRssKiB": 34840,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.075,
-          "userMs": 12.983,
-          "sysMs": 1.999,
-          "maxRssKiB": 34808
+          "wallMs": 12.732,
+          "userMs": 7.778,
+          "sysMs": 4.86,
+          "maxRssKiB": 34748
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.686,
-          "userMs": 9.48,
-          "sysMs": 3.117,
-          "maxRssKiB": 35300
+          "wallMs": 12.97,
+          "userMs": 3.953,
+          "sysMs": 8.909,
+          "maxRssKiB": 34908
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 12.975,
-          "userMs": 5.33,
-          "sysMs": 7.491,
-          "maxRssKiB": 34632
+          "wallMs": 14.241,
+          "userMs": 12.111,
+          "sysMs": 2.032,
+          "maxRssKiB": 34392
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 13.889,
-          "userMs": 8.454,
-          "sysMs": 5.289,
-          "maxRssKiB": 34596
+          "wallMs": 12.784,
+          "userMs": 7.841,
+          "sysMs": 4.892,
+          "maxRssKiB": 34840
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.553,
-          "userMs": 11.339,
-          "sysMs": 3.107,
-          "maxRssKiB": 34728
+          "wallMs": 13.519,
+          "userMs": 9.345,
+          "sysMs": 4.171,
+          "maxRssKiB": 34856
         }
       ],
       "fidelity": {
@@ -5414,52 +5414,52 @@
       "stderr": null,
       "markdownBytes": 263,
       "sameOutputEveryRun": true,
-      "firstMs": 17.58,
-      "medianMs": 15.67,
-      "minMs": 14.07,
-      "maxMs": 17.58,
-      "peakRssKiB": 35852,
-      "medianRssKiB": 35700,
+      "firstMs": 15.4,
+      "medianMs": 15.4,
+      "minMs": 14.96,
+      "maxMs": 16.71,
+      "peakRssKiB": 35892,
+      "medianRssKiB": 35596,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.582,
-          "userMs": 10.292,
-          "sysMs": 7.247,
-          "maxRssKiB": 35484
+          "wallMs": 15.402,
+          "userMs": 8.595,
+          "sysMs": 6.688,
+          "maxRssKiB": 35596
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.069,
-          "userMs": 9.939,
-          "sysMs": 3.99,
-          "maxRssKiB": 35852
+          "wallMs": 16.709,
+          "userMs": 11.454,
+          "sysMs": 5.168,
+          "maxRssKiB": 35892
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.669,
-          "userMs": 8.269,
-          "sysMs": 7.246,
-          "maxRssKiB": 35624
+          "wallMs": 15.7,
+          "userMs": 12.71,
+          "sysMs": 2.932,
+          "maxRssKiB": 35832
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.737,
-          "userMs": 9.781,
-          "sysMs": 6.851,
-          "maxRssKiB": 35756
+          "wallMs": 15.373,
+          "userMs": 12.205,
+          "sysMs": 3.046,
+          "maxRssKiB": 35584
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.797,
-          "userMs": 5.894,
-          "sysMs": 8.829,
-          "maxRssKiB": 35700
+          "wallMs": 14.964,
+          "userMs": 8.745,
+          "sysMs": 5.814,
+          "maxRssKiB": 35380
         }
       ],
       "fidelity": {
@@ -5500,52 +5500,52 @@
       "stderr": null,
       "markdownBytes": 747,
       "sameOutputEveryRun": true,
-      "firstMs": 16.77,
-      "medianMs": 16.77,
-      "minMs": 14.95,
-      "maxMs": 20.48,
-      "peakRssKiB": 35652,
-      "medianRssKiB": 35432,
+      "firstMs": 15.94,
+      "medianMs": 15.93,
+      "minMs": 13.79,
+      "maxMs": 20.05,
+      "peakRssKiB": 35500,
+      "medianRssKiB": 35148,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.774,
-          "userMs": 11.762,
-          "sysMs": 4.903,
-          "maxRssKiB": 35652
+          "wallMs": 15.939,
+          "userMs": 7.892,
+          "sysMs": 7.933,
+          "maxRssKiB": 35224
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.538,
-          "userMs": 10.212,
-          "sysMs": 7.166,
-          "maxRssKiB": 35208
+          "wallMs": 15.929,
+          "userMs": 11.861,
+          "sysMs": 3.939,
+          "maxRssKiB": 35500
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 14.945,
-          "userMs": 9.839,
-          "sysMs": 4.924,
-          "maxRssKiB": 35476
+          "wallMs": 15.022,
+          "userMs": 7.887,
+          "sysMs": 6.958,
+          "maxRssKiB": 35148
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 15.869,
-          "userMs": 8.46,
-          "sysMs": 6.588,
-          "maxRssKiB": 35432
+          "wallMs": 20.05,
+          "userMs": 9.45,
+          "sysMs": 10.393,
+          "maxRssKiB": 35128
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.477,
-          "userMs": 12.178,
-          "sysMs": 8.14,
-          "maxRssKiB": 35204
+          "wallMs": 13.79,
+          "userMs": 10.733,
+          "sysMs": 2.935,
+          "maxRssKiB": 35092
         }
       ],
       "fidelity": {
@@ -5571,52 +5571,52 @@
       "stderr": null,
       "markdownBytes": 1131,
       "sameOutputEveryRun": true,
-      "firstMs": 21.92,
-      "medianMs": 21.92,
-      "minMs": 19.9,
-      "maxMs": 29.11,
-      "peakRssKiB": 40084,
-      "medianRssKiB": 39508,
+      "firstMs": 20.29,
+      "medianMs": 20.29,
+      "minMs": 18.36,
+      "maxMs": 27.99,
+      "peakRssKiB": 40164,
+      "medianRssKiB": 39920,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.917,
-          "userMs": 12.81,
-          "sysMs": 8.889,
-          "maxRssKiB": 39500
+          "wallMs": 20.289,
+          "userMs": 12.115,
+          "sysMs": 8.076,
+          "maxRssKiB": 39548
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 29.115,
-          "userMs": 18.996,
-          "sysMs": 9.983,
-          "maxRssKiB": 39508
+          "wallMs": 27.99,
+          "userMs": 18.867,
+          "sysMs": 8.937,
+          "maxRssKiB": 39920
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 21.5,
-          "userMs": 11.196,
-          "sysMs": 10.188,
-          "maxRssKiB": 39508
+          "wallMs": 19.51,
+          "userMs": 12.236,
+          "sysMs": 7.138,
+          "maxRssKiB": 40164
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 19.897,
-          "userMs": 12.847,
-          "sysMs": 6.904,
-          "maxRssKiB": 40084
+          "wallMs": 23.207,
+          "userMs": 15.06,
+          "sysMs": 8.039,
+          "maxRssKiB": 39304
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 25.879,
-          "userMs": 18.798,
-          "sysMs": 6.939,
-          "maxRssKiB": 39736
+          "wallMs": 18.356,
+          "userMs": 12.166,
+          "sysMs": 6.064,
+          "maxRssKiB": 39984
         }
       ],
       "fidelity": {
@@ -5657,52 +5657,52 @@
       "stderr": null,
       "markdownBytes": 424,
       "sameOutputEveryRun": true,
-      "firstMs": 16.18,
-      "medianMs": 16.62,
-      "minMs": 16.18,
-      "maxMs": 18.44,
-      "peakRssKiB": 37088,
-      "medianRssKiB": 37004,
+      "firstMs": 15.83,
+      "medianMs": 15.55,
+      "minMs": 14.53,
+      "maxMs": 17.99,
+      "peakRssKiB": 37204,
+      "medianRssKiB": 37076,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.184,
-          "userMs": 10.645,
-          "sysMs": 4.822,
-          "maxRssKiB": 36936
+          "wallMs": 15.83,
+          "userMs": 9.38,
+          "sysMs": 6.21,
+          "maxRssKiB": 36852
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.619,
-          "userMs": 12.372,
-          "sysMs": 4.127,
-          "maxRssKiB": 37080
+          "wallMs": 15.55,
+          "userMs": 7.714,
+          "sysMs": 7.745,
+          "maxRssKiB": 37076
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.374,
-          "userMs": 11.539,
-          "sysMs": 5.759,
-          "maxRssKiB": 37000
+          "wallMs": 17.988,
+          "userMs": 10.901,
+          "sysMs": 6.916,
+          "maxRssKiB": 37204
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.442,
-          "userMs": 12.194,
-          "sysMs": 6.103,
-          "maxRssKiB": 37004
+          "wallMs": 15.215,
+          "userMs": 8.489,
+          "sysMs": 6.601,
+          "maxRssKiB": 37056
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.496,
-          "userMs": 10.051,
-          "sysMs": 6.384,
-          "maxRssKiB": 37088
+          "wallMs": 14.526,
+          "userMs": 9.266,
+          "sysMs": 5.121,
+          "maxRssKiB": 37136
         }
       ],
       "fidelity": {
@@ -5733,52 +5733,52 @@
       "stderr": null,
       "markdownBytes": 854,
       "sameOutputEveryRun": true,
-      "firstMs": 18.89,
-      "medianMs": 18.04,
-      "minMs": 16.3,
-      "maxMs": 18.93,
-      "peakRssKiB": 36884,
-      "medianRssKiB": 36704,
+      "firstMs": 17.14,
+      "medianMs": 17.49,
+      "minMs": 16.99,
+      "maxMs": 18.68,
+      "peakRssKiB": 36908,
+      "medianRssKiB": 36548,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.894,
-          "userMs": 9.875,
-          "sysMs": 8.884,
-          "maxRssKiB": 36460
+          "wallMs": 17.142,
+          "userMs": 11.002,
+          "sysMs": 6.007,
+          "maxRssKiB": 36284
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.929,
-          "userMs": 10.827,
-          "sysMs": 7.869,
-          "maxRssKiB": 36304
+          "wallMs": 16.986,
+          "userMs": 10.895,
+          "sysMs": 5.967,
+          "maxRssKiB": 36724
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 16.296,
-          "userMs": 11.131,
-          "sysMs": 5.078,
-          "maxRssKiB": 36884
+          "wallMs": 18.684,
+          "userMs": 14.399,
+          "sysMs": 4.102,
+          "maxRssKiB": 36548
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.038,
-          "userMs": 4.984,
-          "sysMs": 12.959,
-          "maxRssKiB": 36704
+          "wallMs": 17.924,
+          "userMs": 10.834,
+          "sysMs": 6.92,
+          "maxRssKiB": 36908
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 17.664,
-          "userMs": 14.5,
-          "sysMs": 3.085,
-          "maxRssKiB": 36740
+          "wallMs": 17.491,
+          "userMs": 8.177,
+          "sysMs": 9.213,
+          "maxRssKiB": 36148
         }
       ],
       "fidelity": {
@@ -5824,52 +5824,52 @@
       "stderr": null,
       "markdownBytes": 637,
       "sameOutputEveryRun": true,
-      "firstMs": 18.19,
-      "medianMs": 20.84,
-      "minMs": 18.19,
-      "maxMs": 24.93,
-      "peakRssKiB": 41452,
-      "medianRssKiB": 41212,
+      "firstMs": 19.73,
+      "medianMs": 18.33,
+      "minMs": 17.5,
+      "maxMs": 19.73,
+      "peakRssKiB": 41500,
+      "medianRssKiB": 41084,
       "runs": [
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 18.19,
-          "userMs": 10.065,
-          "sysMs": 8.029,
-          "maxRssKiB": 41164
+          "wallMs": 19.733,
+          "userMs": 13.718,
+          "sysMs": 5.879,
+          "maxRssKiB": 41068
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.841,
-          "userMs": 13.502,
-          "sysMs": 7.248,
-          "maxRssKiB": 41452
+          "wallMs": 18.327,
+          "userMs": 10.041,
+          "sysMs": 8.013,
+          "maxRssKiB": 41228
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 24.933,
-          "userMs": 16.875,
-          "sysMs": 7.938,
-          "maxRssKiB": 41120
+          "wallMs": 18.368,
+          "userMs": 13.21,
+          "sysMs": 5.082,
+          "maxRssKiB": 41068
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 22.712,
-          "userMs": 13.36,
-          "sysMs": 9.255,
-          "maxRssKiB": 41212
+          "wallMs": 17.497,
+          "userMs": 10.288,
+          "sysMs": 7.136,
+          "maxRssKiB": 41500
         },
         {
           "status": "exited",
           "code": 0,
-          "wallMs": 20.209,
-          "userMs": 15.124,
-          "sysMs": 5.02,
-          "maxRssKiB": 41280
+          "wallMs": 18.201,
+          "userMs": 13.946,
+          "sysMs": 4.027,
+          "maxRssKiB": 41084
         }
       ],
       "fidelity": {

@@ -8,12 +8,14 @@ using SpikeAiPipeline.Office.Baseline;
 
 // The baseline tier: office over the committed pool, nothing else, its Markdown scored against the
 // ground truth and each run measured. `mise run baseline` (scripts/baseline.sh) builds and runs it
-// on the laptop, never in CI, and the results go to a new directory of
-// docs/findings/office-cli/runs/. office calls no model. The runs before schema 3 also ran
-// markitdown and xberg; that comparison is closed, its bench in the history at 1f209b5.
+// on the laptop, never in CI. A plain run keeps nothing: its results.json goes to --out,
+// overwritten each run, under .state/. A recorded run (`-- --record [name]`) goes to --record, a
+// new directory of docs/findings/office-cli/runs/ that the bench refuses to overwrite. office calls
+// no model. The runs before schema 3 also ran markitdown and xberg; that comparison is closed, its
+// bench in the history at 1f209b5.
 //
 // Usage: SpikeAiPipeline.Office.Baseline --root <repo> --office <binary> --rusage <wrapper>
-//   --out <runs-dir> [--runs 5] [--timeout 60]
+//   (--out <results.json> | --record <run-dir>) [--runs 5] [--timeout 60]
 // or, to see the texts the scoring reads in one Markdown file: SpikeAiPipeline.Office.Baseline
 //   --dump <file.md>
 // or, to score one Markdown file against a truth: SpikeAiPipeline.Office.Baseline --score
@@ -45,7 +47,24 @@ var runs = int.Parse(options.GetValueOrDefault("runs", "5"), CultureInfo.Invaria
 var timeout = int.Parse(options.GetValueOrDefault("timeout", "60"), CultureInfo.InvariantCulture);
 var office = Path.GetFullPath(Option("office"));
 var rusage = Path.GetFullPath(Option("rusage"));
-var outRoot = Path.GetFullPath(Option("out"));
+// Exactly one of --out, a results file a plain run overwrites, and --record, a run directory the
+// bench creates and never overwrites; a recorded run is refused before it starts, and again when it
+// writes, should the directory have appeared in between.
+var record = options.TryGetValue("record", out var recordValue) ? Path.GetFullPath(recordValue) : null;
+var outFile = options.TryGetValue("out", out var outValue) ? Path.GetFullPath(outValue) : null;
+if ((record is null) == (outFile is null))
+{
+    throw new ArgumentException("exactly one of --out and --record is required");
+}
+void RefuseAnExistingRun()
+{
+    if (record is not null && Path.Exists(record))
+    {
+        Console.Error.WriteLine($"baseline: {Path.GetRelativePath(root, record)} exists; a recorded run is never overwritten");
+        Environment.Exit(1);
+    }
+}
+RefuseAnExistingRun();
 
 var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 string Tilde(string path) => path.StartsWith(home + "/", StringComparison.Ordinal) ? "~" + path[home.Length..] : path;
@@ -202,8 +221,8 @@ var finished = DateTimeOffset.Now;
 var results = new JsonObject
 {
     // Schema 3: office alone, so its tool, performance, and footprint are one object each, and
-    // each file's results are on the file. Schemas 1 and 2 (runs 2026-10-31-1 and -2) held each
-    // of three tools'.
+    // each file's results are on the file. Schema 2 (run `comparison`) and schema 1 (the first
+    // scoring, in the history) held each of three tools'.
     ["schema"] = 3,
     ["started"] = started.ToString("o", CultureInfo.InvariantCulture),
     ["finished"] = finished.ToString("o", CultureInfo.InvariantCulture),
@@ -238,16 +257,12 @@ var results = new JsonObject
     ["files"] = fileResults,
 };
 
-var day = Footprint.Day(started);
-var n = 1;
-while (Directory.Exists(Path.Combine(outRoot, $"{day}-{n}")))
-{
-    n++;
-}
-var dir = Directory.CreateDirectory(Path.Combine(outRoot, $"{day}-{n}"));
-var output = Path.Combine(dir.FullName, "results.json");
+RefuseAnExistingRun();
+var output = record is null ? outFile! : Path.Combine(record, "results.json");
+Directory.CreateDirectory(Path.GetDirectoryName(output)!);
 File.WriteAllText(output, results.ToJsonString(new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }) + "\n");
-Console.Error.WriteLine($"baseline: wrote {Path.GetRelativePath(root, output)}");
+Console.Error.WriteLine($"baseline: wrote {Path.GetRelativePath(root, output)}{(record is null ? ", not recorded" : "")}");
+Console.Error.WriteLine($"baseline: {performance["ok"]} of {performance["files"]} files ok, median file {performance["medianOfMediansMs"]} ms, whole pool {performance["sumOfMediansMs"]} ms, peak memory of the median file {performance["medianPeakRssMiB"]} MiB");
 foreach (var subset in new[] { "pooled", "realworld" })
 {
     Console.Error.WriteLine($"baseline: {subset}");

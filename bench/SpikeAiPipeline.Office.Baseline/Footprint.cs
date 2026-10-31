@@ -70,7 +70,4 @@ internal static class Footprint
 
     /// <summary>A byte count in MiB, to two places, for the summary.</summary>
     public static double MiB(long bytes) => Math.Round(bytes / 1048576.0, 2, MidpointRounding.AwayFromZero);
-
-    /// <summary>A date as the run's directory names it.</summary>
-    public static string Day(DateTimeOffset time) => time.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 }
