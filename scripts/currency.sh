@@ -36,9 +36,8 @@ while read -r line; do
 	[ -n "$line" ] && report "$line"
 done <<<"$packages"
 
-# mise tools, the .NET SDK among them, pinned below their latest version: mise.toml's, and
-# with MISE_ENV=baseline, mise.baseline.toml's too, the baseline tier's markitdown and xberg.
-outdated=$(MISE_ENV=baseline mise outdated --bump --local --json |
+# mise tools, the .NET SDK among them, pinned below their latest version.
+outdated=$(mise outdated --bump --local --json |
 	jq -r 'to_entries[] | "\(.value.source.path | split("/") | last): \(.key) \(.value.requested) -> \(.value.bump)"')
 while read -r line; do
 	[ -n "$line" ] && report "$line"

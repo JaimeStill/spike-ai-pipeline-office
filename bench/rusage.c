@@ -1,9 +1,9 @@
 /*
  * rusage runs one program and reports what the kernel measured of it: its peak resident memory
  * (ru_maxrss), its user and system CPU time, and its wall time, with a timeout. The baseline
- * runs every tool through it, because a child's ru_maxrss carries its parent's resident memory
- * across the fork and exec that start it: started from the .NET bench, a tool would never report
- * less than the bench's own peak. Started from this small process, a tool's peak is its own,
+ * runs office through it, because a child's ru_maxrss carries its parent's resident memory
+ * across the fork and exec that start it: started from the .NET bench, office would never report
+ * less than the bench's own peak. Started from this small process, office's peak is its own,
  * above a floor of this program's resident memory, which the baseline measures by running
  * /bin/true through it.
  *

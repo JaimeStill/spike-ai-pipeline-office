@@ -3,11 +3,7 @@ using System.Globalization;
 
 namespace SpikeAiPipeline.Office.Baseline;
 
-/// <summary>A tool the baseline runs: its name, its version as it reports it, and its command for
-/// a document, the program first.</summary>
-internal sealed record Tool(string Name, string Version, string Program, Func<string, string[]> Arguments);
-
-/// <summary>One run of a tool, as the rusage wrapper reports it: how it ended (<c>exited</c>,
+/// <summary>One run of office, as the rusage wrapper reports it: how it ended (<c>exited</c>,
 /// <c>signaled</c>, or <c>timeout</c>) with its exit code or signal, its peak resident memory, and
 /// its wall, user, and system time.</summary>
 internal sealed record Run(string Status, int Code, long MaxRssKiB, double WallMs, double UserMs, double SysMs);

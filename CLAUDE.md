@@ -11,10 +11,9 @@ start from `context/README.md`.
 - **Check:** `mise run check`: shellcheck, `dotnet format --verify-no-changes`, a build and a
   NativeAOT publish for this machine into `.state/aot/` with warnings as errors, then the tests,
   whose CLI tests run that published binary.
-- **Baseline:** `mise run baseline`, on the laptop, never in CI or the check: office, markitdown,
-  and xberg (`mise.baseline.toml`, loaded with `MISE_ENV=baseline`) over the pool, scored by
-  `bench/SpikeAiPipeline.Office.Baseline`, which the check only builds; it writes a new
-  `docs/findings/office-cli/runs/<date>-<n>/`, and `docs/findings/office-cli.md` reads it.
+- **Baseline:** `mise run baseline`, on the laptop, never in CI or the check: office alone over
+  the pool, scored by `bench/SpikeAiPipeline.Office.Baseline`, which the check only builds; it
+  writes a new `docs/findings/office-cli/runs/<date>-<n>/`, and `docs/findings/office-cli.md` reads it.
 - **CI:** `.github/workflows/ci.yml` runs `mise run check` on pull requests into main and pushes
   to main, on x64 and arm64; marathon's merge (`.claude/marathon.toml`) waits on the pull
   request's checks. main's ruleset is `.github/rulesets/main.json`, applied with `gh api

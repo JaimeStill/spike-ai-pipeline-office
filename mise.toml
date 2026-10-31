@@ -37,5 +37,5 @@ description = "Regenerate the generated fixtures and their ground truth; needs L
 run = "uv run --script fixtures/generate.py"
 
 [tasks.baseline]
-description = "Run office, markitdown, and xberg over the committed pool, score each one's Markdown against the ground truth, and measure each run; on the laptop, never in CI; writes .state/baseline/ and a new docs/findings/office-cli/runs/<date>-<n>/"
+description = "Run office over the committed pool, score its Markdown against the ground truth, and measure each run; on the laptop, never in CI; writes .state/baseline/ and a new docs/findings/office-cli/runs/<date>-<n>/"
 run = "scripts/baseline.sh"
