@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The baseline tier's harness, which `mise run baseline` builds and runs on the laptop, never
+       in CI: it runs office, markitdown, and xberg over the committed pool and scores each one's
+       Markdown against the ground truth. It references no project of the CLI's, so Markdig, its
+       Markdown parser, never reaches the shipped binary. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="1.5.1" />
+  </ItemGroup>
+
+</Project>

@@ -105,6 +105,13 @@ commit). The GitHub release, its notes the tag's CHANGELOG section, carries
 `spike-ai-pipeline-office-vX.Y.Z-linux-x64.tar.gz` and `-linux-arm64.tar.gz`, each holding the
 binary and LICENSE, and `SHA256SUMS` covering both.
 
+The baseline tier, `mise run baseline`, runs on a laptop and never in CI: office's NativeAOT
+binary, markitdown, and xberg over the committed pool, each one's Markdown scored element by
+element against the ground truth (`bench/SpikeAiPipeline.Office.Baseline`, with Markdig, never in
+office's binary), each run measured for time and peak memory. Its findings are
+[`docs/findings/office-cli.md`](docs/findings/office-cli.md), each run's results in
+`docs/findings/office-cli/runs/`.
+
 The spike's question, evidence, and answer are in the root repository's README.
 
 Apache-2.0.

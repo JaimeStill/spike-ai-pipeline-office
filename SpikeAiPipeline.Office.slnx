@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/bench/">
+    <Project Path="bench/SpikeAiPipeline.Office.Baseline/SpikeAiPipeline.Office.Baseline.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/SpikeAiPipeline.Office/SpikeAiPipeline.Office.csproj" />
   </Folder>
