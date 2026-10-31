@@ -23,12 +23,12 @@ version included, is office's output contract: a change to it is a change here.
   `schema`, `format`, and `blocks`, each block a `heading`, `paragraph`, `list`, `table`,
   `chart`, `media`, `sheet`, or `slide`. An optional property with no value is left out, never
   written as `null`, so an absent property means null or none: a formula cell with no cached
-  value has no `value` and no `valueType`. Only an array keeps a `null` in place, a chart point
-  the cache lacks. A docx document also holds its `sections`, each with the
-  headers and footers its pages show (`default`, `first`, `even`), its `footnotes` and
-  `endnotes`, and its `comments`, each with its author, anchor text, resolved state, and replies,
-  referred to from the text by `footnote`, `endnote`, and `comment` inlines. Its tracked changes
-  are read accepted.
+  value has no `value` and no `valueType`. Only an array keeps a `null` in place, for a chart
+  point the cache lacks. A docx document also holds its `sections`, each with the headers and
+  footers its pages show (`default`, `first`, `even`), its `footnotes` and `endnotes`, and its
+  `comments`, each with its author, anchor text, resolved state, and replies, referred to from
+  the text by `footnote`, `endnote`, and `comment` inlines. Its tracked changes are read
+  accepted.
 - Sheets: in workbook order, hidden ones marked, each a sparse table of the cells that have a
   value or a formula, by row number and reference, then its charts and pictures. A cell's
   `value` is typed by its `valueType` (`number`, `text`, `boolean`, `error`, `date`), a number in

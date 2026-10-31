@@ -13,24 +13,25 @@ formulas, and 1904 dates, PowerPoint's bullets inherited from a real master, Off
 chartEx charts. They are copied byte for byte from the test data of four permissively licensed
 repositories, each pinned to a commit: dotnet/Open-XML-SDK (MIT), apache/poi (Apache-2.0),
 docling-project/docling (MIT), and LilLeapo/rsWordParser (MIT or Apache-2.0).
-A few were changed by a tool after their application wrote them, which `SOURCES.md` says:
-`docx/word-tables.docx` is Word's file with tables added to its XML by hand and re-zipped,
-`docx/strict-column-charts.docx` Word's file re-saved by the Open XML SDK, and the chartEx parts
-of `docx/chartex.docx` a tool's XML. The chartEx parts of `pptx/chartex-slide.pptx`,
-`docx/chartex-waterfall-word.docx`, and `docx/chartex-funnel-word.docx` are the application's
-own, and `SOURCES.md` says how the two are told apart. Several are the regression files of a
-reading fault, each named in `SOURCES.md`, so the fault's return fails the check.
+
+Three were changed by a tool after their application wrote them: `docx/word-tables.docx` is
+Word's file with tables added to its XML by hand and re-zipped, `docx/strict-column-charts.docx`
+Word's file re-saved by the Open XML SDK, and the chartEx parts of `docx/chartex.docx` a tool's
+XML. The chartEx parts of `pptx/chartex-slide.pptx`, `docx/chartex-waterfall-word.docx`, and
+`docx/chartex-funnel-word.docx` are the application's own. `SOURCES.md` gives the evidence for
+each and says how a tool's chartEx part is told from Office's. Several files are the regression
+files of a reading fault, each named in `SOURCES.md`, so the fault's return fails the check.
 `realworld/SOURCES.md` lists each file's repository, commit, path, license, writer, size, and
 SHA-256, what it covers, and what its truth covers; the repositories' licenses and notices are
 in `realworld/licenses/`.
 
 Each file is `realworld/<format>/<name>.<format>`, with its ground truth beside it in the
-generated set's format, `<name>.truth.json`, written by hand from the file's XML rather than
-from office's output, or for the larger files drafted from the XML by a throwaway script that
-knows nothing of office and checked by hand. Every truth is whole. The tests compare the model against it as they do a
-generated fixture's, and run each file through the published binary; they keep no exact JSON or
-Markdown of these files, whose truth is the check. Nothing regenerates the set: a file is added
-by hand, with its row in `SOURCES.md` and its truth.
+generated set's format, `<name>.truth.json`. The truth is written by hand from the file's XML
+rather than from office's output, or for the larger files drafted from the XML by a throwaway
+script that knows nothing of office and checked by hand. Every truth is whole. The tests compare
+the model against it as they do a generated fixture's, and run each file through the published
+binary; they keep no exact JSON or Markdown of these files, whose truth is the check. Nothing
+regenerates the set: a file is added by hand, with its row in `SOURCES.md` and its truth.
 
 ## Generated set
 
@@ -47,24 +48,29 @@ re-saves it through LibreOffice headless. The docx fixtures are in `generated/do
   carries a real application's XML. Both are kept: the first is the XML the script means to
   write, the second what an editor makes of it, and office must read both the same way.
 - `<name>.truth.json`: the ground truth both files share, written by the script from the same
-  definitions: the accepted-state text of each element in document order (`heading` with its
-  level, `paragraph`, `listItem` with its nesting level, whether its level is ordered, and
-  whether it starts a list rather than continuing the one before it, and on a list's first item
-  its first number, `startAt`, when the list is ordered and doesn't start at 1, `table` with each
-  cell's `elements`, in this same shape whatever the cell holds (paragraphs, headings, list
-  items, pictures, charts, tables), its spans, and the grid columns a row that starts late skips
-  before it, `skipBefore` (no generated fixture has one, so the script writes none; real-world
-  truths do), covered cells left out, `media` with its file name (the SHA-256 of its bytes and its extension) and content type
-  or its linked `target`, its `alt` and `title`, and its `section`, and `chart` with its type,
-  title, and series), the strings that must appear nowhere in office's
-  output (`absent`: deleted text), and the strings that must appear exactly once (`once`: moved
-  text). A paragraph's or list item's note and comment references are its `marks`: each one's
-  offset in the text, its kind, and its note's or comment's place, from 1, in the truth's list
-  of them. Beside the elements, `sections` holds each section's headers and footers as its
-  pages show them (kind and elements), `footnotes` and `endnotes` the notes in the order the text
-  first references them, and `comments` each thread's author, anchored text, resolved state,
-  elements, and replies. Its shape is its own, not office's model, so the tests compare the model
-  against it element by element.
+  definitions. Its shape is its own, not office's model, so the tests compare the model against
+  it element by element. It holds:
+  - `elements`: the accepted-state text of each element in document order:
+    - `heading`, with its level.
+    - `paragraph`.
+    - `listItem`, with its nesting level, whether its level is ordered, and whether it starts a
+      list rather than continuing the one before it; on an ordered list's first item, its first
+      number, `startAt`, when that isn't 1.
+    - `table`, with each cell's `elements`, in this same shape whatever the cell holds
+      (paragraphs, headings, list items, pictures, charts, tables), its spans, and `skipBefore`,
+      the grid columns a row that starts late skips before it. Covered cells are left out. No
+      generated fixture has a late row, so the script writes no `skipBefore`; real-world truths
+      do.
+    - `media`, with its file name (the SHA-256 of its bytes and its extension) and content type,
+      or its linked `target`, and its `alt`, `title`, and `section`.
+    - `chart`, with its type, title, and series.
+  - `marks` on a paragraph or list item: each note or comment reference's offset in the text,
+    its kind, and its note's or comment's place, from 1, in the truth's list of them.
+  - `absent`: the strings that must appear nowhere in office's output (deleted text).
+  - `once`: the strings that must appear exactly once (moved text).
+  - `sections`: each section's headers and footers as its pages show them, kind and elements.
+  - `footnotes` and `endnotes`: the notes, in the order the text first references them.
+  - `comments`: each thread's author, anchored text, resolved state, elements, and replies.
 - `<name>.libreoffice.truth.json`: the re-save's own ground truth, where LibreOffice changes what
   the document holds; the script writes it from the same definitions, with the change it knows
   LibreOffice makes.
@@ -184,9 +190,10 @@ mise run fixtures
 ```
 
 That runs `uv run --script fixtures/generate.py`; the script's inline metadata pins python-docx,
-openpyxl, and python-pptx, and `generate.py.lock` pins the rest. It rewrites every file of `generated/`, or with fixture
-names as arguments (`uv run --script fixtures/generate.py notes media`) only those fixtures'
-files, and the section below, which lists every fixture's files as they are on disk. Both
+openpyxl, and python-pptx, and `generate.py.lock` pins the rest. It rewrites every file of
+`generated/`, or with fixture names as arguments (`uv run --script fixtures/generate.py notes
+media`) only those fixtures' files, and the section below, which lists every fixture's files as
+they are on disk. Both
 writers stamp the time into the package, so a rerun changes a package's bytes and checksum
 even when nothing else changed; regenerate only the fixtures a change needs.
 

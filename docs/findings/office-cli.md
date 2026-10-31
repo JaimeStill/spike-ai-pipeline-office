@@ -4,8 +4,8 @@ This page records the baseline tier of task `office-cli` (the root's goal record
 `context/goals/experiment.ai.spike-ai-pipeline.md`): office, markitdown, and xberg each converted
 every document of the committed pool to Markdown, each Markdown was scored element by element
 against the pool's ground truth, and each run was measured for time and peak memory. It also
-records each tool's footprint on disk and its licenses. Every number below, every table's,
-comes from the latest run,
+records each tool's footprint on disk and its licenses. Every number on this page but office's
+linux-arm64 binary size ("Footprint") comes from the latest run,
 [`office-cli/runs/2026-10-31-2/results.json`](office-cli/runs/2026-10-31-2/results.json), on the
 laptop on 2026-10-31 from 17:48:49 to 17:53:21 (UTC-4); that file has every file's detail. The
 earlier run, [`office-cli/runs/2026-10-31-1/results.json`](office-cli/runs/2026-10-31-1/results.json)
@@ -38,8 +38,9 @@ cache.
 The pool is `fixtures/` and nothing else (`fixtures/README.md`): 72 documents, 42 of the
 generated set (python-docx, openpyxl, and python-pptx files and their LibreOffice re-saves) and
 30 of the real-world set (files Word, Excel, and PowerPoint wrote, `fixtures/realworld/SOURCES.md`);
-38 docx, 20 xlsx, and 14 pptx. Each has its ground truth, `*.truth.json`, the file office's own
-tests check its JSON against exactly. Here office is scored on its Markdown, like the others.
+38 docx, 20 xlsx, and 14 pptx. Each has its ground truth, `*.truth.json`, which office's own
+tests compare its JSON model against element by element. Here office is scored on its Markdown,
+like the others.
 
 | Tool | Version | Command |
 |---|---|---|
@@ -156,8 +157,7 @@ not that it renders it wrong:
 - **Comments.** markitdown writes none. xberg writes each comment as a footnote definition
   (`[^cmt0]:`), but marks its anchor with plain text (`[cmt:0]`) rather than a footnote
   reference, so the definitions are unreferenced, and Markdig drops a footnote definition
-  nothing references. The texts are in xberg's output; a Markdown reader
-  never shows them.
+  nothing references. The texts are in xberg's output; a Markdown reader never shows them.
 - **Slide notes.** xberg writes no notes.
 - **Chart values in docx and xlsx files.** Neither writes a docx chart's data or an xlsx chart's
   at all; under the table-only rule, the sheet's own cells stood in for an xlsx chart's (above).
@@ -274,11 +274,11 @@ runs.
 "Cold" here is weak, and the table should be read so. The first run of the whole baseline is each
 tool's first process in this run, on the pool's first file; every tool had run the whole pool in
 the earlier run that day and been run again by hand before this one, and the run dropped no page
-cache (that needs root), so
-each tool's files were very likely already in memory. The first run of a file is that tool's first
-of its 5 on that file, with the file itself already read by the tool before it. A first run differs
-from the rest by less than the runs' own spread, except each tool's first process of all, which
-took 1.5 times (office), 1.4 times (markitdown), and 1.4 times (xberg) its median file's time.
+cache (that needs root), so each tool's files were very likely already in memory. The first run
+of a file is that tool's first of its 5 on that file, with the file itself already read by the
+tool before it. A first run differs from the rest by less than the runs' own spread, except each
+tool's first process of all, which took 1.5 times (office), 1.4 times (markitdown), and 1.4 times
+(xberg) its median file's time.
 
 ## Footprint
 
@@ -386,11 +386,11 @@ It installs `mise.baseline.toml`'s tools (markitdown and xberg, loaded only with
 machine into `.state/baseline/office/`, builds the bench and the wrapper (`cc`) into
 `.state/baseline/`, runs every pool file, and writes a new
 `docs/findings/office-cli/runs/<date>-<n>/results.json`, about 4.5 minutes on this laptop (this
-run's tools took 4 minutes 32 seconds).
-`BASELINE_RUNS` (5) sets the runs per file and tool, `BASELINE_TIMEOUT` (60) the seconds a run may
-take, and `BASELINE_OUT` another runs directory. To see the texts the scoring reads in one
-Markdown file: `.state/baseline/bench/SpikeAiPipeline.Office.Baseline --dump <file.md>`; to score
-one against a truth, each kind's found and expected and its misses:
+run's tools took 4 minutes 32 seconds). `BASELINE_RUNS` (5) sets the runs per file and tool,
+`BASELINE_TIMEOUT` (60) the seconds a run may take, and `BASELINE_OUT` another runs directory.
+To see the texts the scoring reads in one Markdown file:
+`.state/baseline/bench/SpikeAiPipeline.Office.Baseline --dump <file.md>`; to score one against a
+truth, each kind's found and expected and its misses:
 `.state/baseline/bench/SpikeAiPipeline.Office.Baseline --score <truth.json> <docx|xlsx|pptx> <file.md>`.
 `mise run currency` reports markitdown and xberg when a newer release exists.
 

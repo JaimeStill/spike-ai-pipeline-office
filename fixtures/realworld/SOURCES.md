@@ -89,22 +89,27 @@ SHA-256 matches its source's.
 ## What each covers, and what its truth covers
 
 Each file's ground truth is `<name>.truth.json` beside it, in the generated set's format
-(`../README.md`). It was written from the file's own XML, unzipped and read part by part, never
-from office's output; an xlsx truth's cells were read from the sheet XML by a throwaway script
-that knows nothing of office, with which styles are dates decided by hand from each number
-format, and the truths of `docx/form-footnotes.docx`, `docx/word-tables.docx`, and
-`docx/word-with-attachments.docx` were drafted the same way, by a throwaway script reading
-WordprocessingML as the specification describes it, then checked by hand against the XML (all of
-the second and third; the first at its smart tags, form fields, picture cell, footnote, and
-headings). The charts' truths were read from the chart parts by a throwaway script too, a
-Strict chart's namespaces read as Transitional. The two rsWordParser files' truths, a chart and two paragraphs each, were written by hand
-from their `word/document.xml` and `word/charts/chartEx1.xml`. When the truth format came to score a table
-cell's every element, not only its paragraphs' text, each truth's cells were re-derived from the
-document's XML, every cell's paragraphs surveyed for numbering, heading styles and outline
-levels, line breaks, and nested tables: only `docx/form-footnotes.docx` has any (headings, list
-items, and the footnote reference in cells), and its cells were rebuilt from that survey; the
-rest hold plain paragraphs. Every truth is whole: it holds every element of each kind the truth format scores, so
-the tests compare all of the model, not a subset.
+(`../README.md`). Every truth is whole: it holds every element of each kind the truth format
+scores, so the tests compare all of the model, not a subset. Each was written from the file's own
+XML, unzipped and read part by part, never from office's output:
+
+- An xlsx truth's cells were read from the sheet XML by a throwaway script that knows nothing of
+  office, with which styles are dates decided by hand from each number format.
+- The truths of `docx/form-footnotes.docx`, `docx/word-tables.docx`, and
+  `docx/word-with-attachments.docx` were drafted the same way, by a throwaway script reading
+  WordprocessingML as the specification describes it, then checked by hand against the XML (all
+  of the second and third; the first at its smart tags, form fields, picture cell, footnote, and
+  headings).
+- The charts' truths were read from the chart parts by a throwaway script too, a Strict chart's
+  namespaces read as Transitional.
+- The two rsWordParser files' truths, a chart and two paragraphs each, were written by hand from
+  their `word/document.xml` and `word/charts/chartEx1.xml`.
+
+Each truth's table cells hold every element, not only their paragraphs' text. They were
+re-derived from the document's XML, every cell's paragraphs surveyed for numbering, heading
+styles and outline levels, line breaks, and nested tables. Only `docx/form-footnotes.docx` has
+any (headings, list items, and the footnote reference in cells), and its cells were rebuilt from
+that survey; the rest hold plain paragraphs.
 
 | File | Covers | Truth covers |
 | --- | --- | --- |
