@@ -11,60 +11,75 @@
       "rows": [
         [
           {
-            "text": "Note",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Note"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "Details",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Details"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "",
+            "elements": [],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "Here is just a sample",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Here is just a sample"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "",
+            "elements": [],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "",
+            "elements": [],
             "colSpan": 1,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "",
+            "elements": [],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "",
+            "elements": [],
             "colSpan": 1,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "",
+            "elements": [],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "",
+            "elements": [],
             "colSpan": 1,
             "rowSpan": 1
           }

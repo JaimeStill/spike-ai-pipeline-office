@@ -12,8 +12,10 @@ set can't have: Word's own chart and tracked changes, Excel's cached formula res
 formulas, and 1904 dates, PowerPoint's bullets inherited from a real master. They are copied
 byte for byte from the test data of three permissively licensed repositories, each pinned to a
 commit: dotnet/Open-XML-SDK (MIT), apache/poi (Apache-2.0), and docling-project/docling (MIT).
-One, `docx/word-tables.docx`, is Word's file with tables added to its XML by hand and re-zipped
-by a tool, which `SOURCES.md` says. Several are the regression files of a reading fault, each
+A few were changed by a tool after their application wrote them, which `SOURCES.md` says:
+`docx/word-tables.docx` is Word's file with tables added to its XML by hand and re-zipped,
+`docx/strict-column-charts.docx` Word's file re-saved by the Open XML SDK, and the chartEx parts
+of `docx/chartex.docx` and `pptx/chartex-slide.pptx` a tool's XML. Several are the regression files of a reading fault, each
 named in `SOURCES.md`, so the fault's return fails the check.
 `realworld/SOURCES.md` lists each file's repository, commit, path, license, writer, size, and
 SHA-256, what it covers, and what its truth covers; the repositories' licenses and notices are
@@ -46,10 +48,10 @@ re-saves it through LibreOffice headless. The docx fixtures are in `generated/do
   level, `paragraph`, `listItem` with its nesting level, whether its level is ordered, and
   whether it starts a list rather than continuing the one before it, and on a list's first item
   its first number, `startAt`, when the list is ordered and doesn't start at 1, `table` with each
-  cell's text, its paragraphs joined by a newline, its spans, its pictures and charts as `media`,
-  and the grid columns a row that starts late skips before it, `skipBefore` (no generated
-  fixture has either, so the script writes neither; real-world truths do), covered cells left
-  out, `media` with its file name (the SHA-256 of its bytes and its extension) and content type
+  cell's `elements`, in this same shape whatever the cell holds (paragraphs, headings, list
+  items, pictures, charts, tables), its spans, and the grid columns a row that starts late skips
+  before it, `skipBefore` (no generated fixture has one, so the script writes none; real-world
+  truths do), covered cells left out, `media` with its file name (the SHA-256 of its bytes and its extension) and content type
   or its linked `target`, its `alt` and `title`, and its `section`, and `chart` with its type,
   title, and series), the strings that must appear nowhere in office's
   output (`absent`: deleted text), and the strings that must appear exactly once (`once`: moved
@@ -198,14 +200,14 @@ LibreOffice: `LibreOffice 26.8.1.1 680(Build:1)`
 | `generated/docx/lists.truth.json` | `9906d980e45f375953b730d772a325d3e3ec0b3ac7e2643915c6d795f19ead4c` |
 | `generated/docx/tables.python-docx.docx` | `4bcc3b658b559c2d5c58a8a518ad5d6578056412218569b000f26aec9e5860b1` |
 | `generated/docx/tables.libreoffice.docx` | `01116cf56ffbb4ad1f360272e2fabd8cd6e60d25e8081202f4b2d0aad91b7d2c` |
-| `generated/docx/tables.truth.json` | `81d60edfcb56b9764ce093db5bce5ff148c61374e9b4cd674e33ae0d104feac6` |
+| `generated/docx/tables.truth.json` | `450b9f593887ff45a3eab9b6e5fe5d5b16f4aaa665cce1a03d1efb2b1a64df04` |
 | `generated/docx/tracked-changes.python-docx.docx` | `d0e21769efbb2f8a83db3171e0443e8550023b415464459b9e0ab58672f63084` |
 | `generated/docx/tracked-changes.libreoffice.docx` | `9378482803e88c832f61848c56f53b935ef336f3c443977c78800ddfb3bb73a3` |
-| `generated/docx/tracked-changes.truth.json` | `6ca7dfda1125c6339783f162cae12eac42e0975d0fca841cf1cd71dee66b4353` |
+| `generated/docx/tracked-changes.truth.json` | `92afe9096a8a90c0f3427bffeb2c2ad26889155b896b8b9b0ad003065f14e531` |
 | `generated/docx/sections.python-docx.docx` | `ce66fb89cc609a7be34e066d038ded68a2c366242963c6f3d1e49f110b31f4aa` |
 | `generated/docx/sections.libreoffice.docx` | `dbe71997cd80eec4639a4974a9694d4c658f2f11d5165f93ca9ce4c6b909df5b` |
-| `generated/docx/sections.truth.json` | `b1b87eca268df2c2b2017e47e8ab7421b280c8bcd809a84de06c82bf6b42a09e` |
-| `generated/docx/sections.libreoffice.truth.json` | `1e1835e27cc0e27640ef58fc004464717b54f358c18b8e9bd0f2d7e4082b9407` |
+| `generated/docx/sections.truth.json` | `4352fac9a72512e6bf9404df76ef5849dfb3724119e1ceabcc75986977be1546` |
+| `generated/docx/sections.libreoffice.truth.json` | `0d0c48dc17ca489351161e2a2198dc918541804afdf649b55f9d1882d29714e4` |
 | `generated/docx/headers-even-off.python-docx.docx` | `b1fb197b0b18968bec8b386c6c6c29b29446d7ed952e36a21314c6947ab3fb0c` |
 | `generated/docx/headers-even-off.libreoffice.docx` | `2650103f4ce06530fd1b0e305d3c1ba1a7071633a3019ba0d442a959db5a2c3c` |
 | `generated/docx/headers-even-off.truth.json` | `89f9f6313cbbec642faab90969fca2f9e2a474f97453c00a518f4c9ac9215712` |
@@ -221,8 +223,8 @@ LibreOffice: `LibreOffice 26.8.1.1 680(Build:1)`
 | `generated/docx/comments-plain.truth.json` | `b93eaf88d0ee175238b88aa1a75afc5df74f04d5784dcd0b6f313ba869a7f9cb` |
 | `generated/docx/media.python-docx.docx` | `6cee5bc1fa49db7dbcf277282e3748c55f2f76828bcd846afb4c25eb0765d552` |
 | `generated/docx/media.libreoffice.docx` | `07f3a8c5d58d9345fcbbf42b725ee32c92ed722bc9de31d5fad5f84169159af7` |
-| `generated/docx/media.truth.json` | `cf7b087fecd6278fcce545d4503dbe80c967e2385b4359b3de22d5d23e2d292c` |
-| `generated/docx/media.libreoffice.truth.json` | `d45096bc7b166f7ea84fd852176a0263cae77a63cf9eda35d5614ebd18f49b69` |
+| `generated/docx/media.truth.json` | `5b7503aa78643dfc7e819fc3a8714ec6f9ee9b51d16f029c9d55d692391e8061` |
+| `generated/docx/media.libreoffice.truth.json` | `7057fc6d2b01cb4778141b94321e5b46762f6aae805b16e0151c36e0a70015d6` |
 | `generated/docx/charts.python-docx.docx` | `adda58a2b466af5c31018928b3e89517575244296f16df9b201d91b549312118` |
 | `generated/docx/charts.libreoffice.docx` | `c49582d00fc63052e4c2a0bb04a64d8fd45933c39539a82434f9bbc7e24c0f0d` |
 | `generated/docx/charts.truth.json` | `8c3df2d8aa2f02bfde11bdbbbf82a9642662d025119aaf40a45f282048af3ca1` |
@@ -258,6 +260,6 @@ LibreOffice: `LibreOffice 26.8.1.1 680(Build:1)`
 | `generated/pptx/groups.truth.json` | `9d1fd65bf64bbe477837e058956471fb92c6411ad5409e7f41bf9c190d0b9515` |
 | `generated/pptx/slide-objects.python-pptx.pptx` | `32514146bd061049ebdbe813375913454a131ad6c6fc714adc60020fabc39717` |
 | `generated/pptx/slide-objects.libreoffice.pptx` | `7c0b5e40f22001166b9e4ee6f3b8e68a5c21fc6ea73e8ed77e15caffd4918995` |
-| `generated/pptx/slide-objects.truth.json` | `0e73928c821d142f0ecf57d86fac74ad0d38cd27572baf926eac968a386232f4` |
-| `generated/pptx/slide-objects.libreoffice.truth.json` | `efb18854ec9704698f7d250f747f85b3acc4a21d6654096004f80fe1258376e8` |
+| `generated/pptx/slide-objects.truth.json` | `e01a1d4068f68da865feefd2bc1f0acd25faa9eaee5164ed37102a3408a52cac` |
+| `generated/pptx/slide-objects.libreoffice.truth.json` | `aca5bab816c442c3e83e98033bf66aea784d1fac2a8012db2241fe36f05f3952` |
 <!-- generated: end -->

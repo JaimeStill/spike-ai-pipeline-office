@@ -80,6 +80,15 @@ image or slide number. In Markdown each slide is a heading, `# Slide 3`, with `(
 hidden one's, its title a level-2 heading below it, then its content, then its notes after a
 bold `**Notes**` label.
 
+In every format a chart is the data its chart part caches, never an image of it: its type (the
+first plot's kind: `bar`, `line`, `pie`), its title, and its series, each with its name,
+categories, and values, in a Transitional or an ISO 29500 Strict document alike. An Office 2016
+chart (waterfall, histogram, pareto, box and whisker, sunburst, treemap, funnel, region map),
+which a file holds in `mc:AlternateContent` beside a picture for applications that can't draw
+it, is read the same way, its type its layout (`boxWhisker`, `sunburst`) and each point of a
+hierarchy labeled with its innermost level that names it; one that caches no data is that
+picture instead, a media block, and never both.
+
 It is released by tag, `vX.Y.Z`, with a CHANGELOG. The spike's question, evidence, and answer are
 in the root repository's README.
 

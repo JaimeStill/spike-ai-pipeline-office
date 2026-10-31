@@ -15,7 +15,8 @@ namespace SpikeAiPipeline.Office.Reading;
 /// z-order, back to front; nothing is re-sorted by position. A group is read in place, its own
 /// shapes in its tree's order. A placeholder holds only the slide's own text, so one left empty
 /// is left out, and the prompt text its layout shows is never read. Content inside
-/// mc:AlternateContent is not read.</remarks>
+/// mc:AlternateContent is not read, but for a chartEx chart's: its cached data, or with none
+/// its fallback's picture.</remarks>
 internal static class PptxReader
 {
     public static Conversion Read(PresentationDocument package)
@@ -84,6 +85,16 @@ internal static class PptxReader
                             blocks.Add(graphic);
                         }
                         break;
+                    case AlternateContent content when ChartReader.ChartEx(content, part) is { } chartEx:
+                        if (chartEx.Chart is { } chart)
+                        {
+                            blocks.Add(chart);
+                        }
+                        else if (chartEx.Fallback is { } fallback)
+                        {
+                            blocks.AddRange(ReadShapes(fallback));
+                        }
+                        break;
                     case P.Picture picture:
                         var properties = picture.NonVisualPictureProperties?.NonVisualDrawingProperties;
                         var blip = picture.BlipFill?.Blip;
@@ -147,12 +158,10 @@ internal static class PptxReader
             {
                 return ReadTable(table);
             }
-            if (data?.GetFirstChild<C.ChartReference>()?.Id?.Value is { } chartId
-                && part.TryGetPartById(chartId, out var chartPart) && chartPart is ChartPart chart)
-            {
-                return ChartReader.Read(chart);
-            }
-            return null;
+            return data?.GetFirstChild<C.ChartReference>()?.Id?.Value is { } chartId
+                && part.TryGetPartById(chartId, out var chartPart) && chartPart is ChartPart chart
+                ? ChartReader.Read(chart)
+                : null;
         }
 
         // A table's rows of cells. A cell that a merge covers, from the left (hMerge) or from

@@ -219,7 +219,7 @@ class Fixture:
                 cell.paragraphs[0].text = paragraphs[0]
                 for extra in paragraphs[1:]:
                     cell.add_paragraph(extra)
-                truth_row.append({"text": text, "colSpan": col_span, "rowSpan": row_span})
+                truth_row.append({"elements": cell_paragraphs(text), "colSpan": col_span, "rowSpan": row_span})
             truth_rows.append(truth_row)
         self.elements.append({"kind": "table", "rows": truth_rows})
 
@@ -354,17 +354,18 @@ class Fixture:
             self.elements[-1]["marks"] = marks
 
     def tracked_table(self, cells: list[list[tuple[str, object]]]) -> None:
-        """A one-row table, a paragraph of segments in each cell. A cell's pictures and charts
-        are listed as its media."""
+        """A one-row table, a paragraph of segments in each cell. A cell's elements are its
+        paragraph, unless it holds no text and no reference, then its pictures and charts."""
         table = self._add_table(1, len(cells))
         table.style = "Table Grid"
         row = []
         for c, segments in enumerate(cells):
-            _, after = self._fill(table.cell(0, c).paragraphs[0], segments)
-            cell = {"text": self.accepted(segments), "colSpan": 1, "rowSpan": 1}
-            if after:
-                cell["media"] = after
-            row.append(cell)
+            marks, after = self._fill(table.cell(0, c).paragraphs[0], segments)
+            text = self.accepted(segments)
+            elements = []
+            if text.strip() or marks:
+                elements.append({"kind": "paragraph", "text": text, **({"marks": marks} if marks else {})})
+            row.append({"elements": elements + after, "colSpan": 1, "rowSpan": 1})
         self.elements.append({"kind": "table", "rows": [row]})
 
     def _add_table(self, rows: int, cols: int):
@@ -818,6 +819,11 @@ def libreoffice_alt(truth: dict) -> None:
                 walk(value)
 
     walk(truth)
+
+
+def cell_paragraphs(text: str) -> list[dict]:
+    """A table cell's elements: its paragraphs, a newline between them, the empty ones spacing."""
+    return [{"kind": "paragraph", "text": p} for p in text.split("\n") if p.strip()]
 
 
 def resection(elements: list[dict], section: int) -> list[dict]:
@@ -1616,7 +1622,7 @@ class DeckSlide:
                 "kind": "table",
                 "rows": [
                     [
-                        {"text": text, "colSpan": spans.get((r, c), (1, 1))[1], "rowSpan": spans.get((r, c), (1, 1))[0]}
+                        {"elements": cell_paragraphs(text), "colSpan": spans.get((r, c), (1, 1))[1], "rowSpan": spans.get((r, c), (1, 1))[0]}
                         for c, text in enumerate(row)
                         if text is not None
                     ]

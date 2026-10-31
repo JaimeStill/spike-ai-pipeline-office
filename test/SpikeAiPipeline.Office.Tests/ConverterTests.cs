@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using SpikeAiPipeline.Office.Model;
 using SpikeAiPipeline.Office.Reading;
 using SpikeAiPipeline.Office.Rendering;
@@ -199,6 +200,120 @@ public sealed class ConverterTests : IDisposable
             .Select(slide => slide.Blocks.OfType<ListBlock>().First(list => list.Ordered))
             .ToList();
         Assert.Equal([3, null], lists.Select(list => list.Start));
+    }
+
+    // A chartEx chart that caches no data is its mc:Fallback's picture, which goes to vision in
+    // its place; one that caches data is the chart alone, never the picture too (the real-world
+    // truths of chartex and chartex-slide hold that case). Each file's chartEx part loses its
+    // cached points; the other charts stay charts.
+    [Fact]
+    public void AChartExChartWithNoCacheIsItsFallbackPictureInADocx()
+    {
+        var path = Uncached("chartex", "word/charts/chart4.xml");
+
+        var blocks = OfficeReader.Read(path).Blocks;
+        Assert.Equal(
+            ["ListBlock", "Paragraph", "Chart", "Chart", "Media", "Chart", "Chart"],
+            blocks.Select(b => b.GetType().Name));
+        var media = Assert.IsType<Media>(blocks[4]);
+        Assert.Equal(Named(path, "word/media/image1.png"), media.Name);
+        Assert.Equal(0, media.Section);
+        Assert.Equal("sunburst", Assert.IsType<Chart>(blocks[^1]).ChartType);
+    }
+
+    [Fact]
+    public void AChartExChartWithNoCacheIsItsFallbackPictureInAPptx()
+    {
+        var path = Uncached("chartex-slide", "ppt/charts/chartEx1.xml");
+
+        var slide = Assert.IsType<Slide>(Assert.Single(OfficeReader.Read(path).Blocks));
+        var media = Assert.IsType<Media>(Assert.Single(slide.Blocks));
+        Assert.Equal(Named(path, "ppt/media/image1.png"), media.Name);
+        Assert.Equal(0, media.Slide);
+    }
+
+    // No real-world xlsx has a chartEx chart, so with-drawing's drawing is given one as Excel
+    // anchors it, after the first picture: chartex-slide's chartEx part, related from the
+    // drawing, in an mc:AlternateContent whose fallback shows the drawing's JPEG.
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void AnXlsxChartExChartIsItsCacheOrElseItsFallbackPicture(bool cached)
+    {
+        var path = Path.Combine(scratch.FullName, "with-chartex.xlsx");
+        File.Copy(Fixtures.DocumentPath("with-drawing", Fixtures.RealWorld), path);
+        string chartEx;
+        using (var source = ZipFile.OpenRead(Fixtures.DocumentPath("chartex-slide", Fixtures.RealWorld)))
+        {
+            chartEx = Read(source, "ppt/charts/chartEx1.xml");
+        }
+        using (var zip = ZipFile.Open(path, ZipArchiveMode.Update))
+        {
+            Write(zip, "xl/charts/chartEx1.xml", cached ? chartEx : WithoutPoints(chartEx));
+            Write(zip, "[Content_Types].xml", Read(zip, "[Content_Types].xml").Replace(
+                "</Types>",
+                "<Override PartName=\"/xl/charts/chartEx1.xml\" ContentType=\"application/vnd.ms-office.chartex+xml\"/></Types>",
+                StringComparison.Ordinal));
+            Write(zip, "xl/drawings/_rels/drawing1.xml.rels", Read(zip, "xl/drawings/_rels/drawing1.xml.rels").Replace(
+                "</Relationships>",
+                "<Relationship Id=\"rIdCx\" Type=\"http://schemas.microsoft.com/office/2014/relationships/chartEx\" Target=\"../charts/chartEx1.xml\"/></Relationships>",
+                StringComparison.Ordinal));
+            var drawing = Read(zip, "xl/drawings/drawing1.xml");
+            var at = drawing.IndexOf("</xdr:twoCellAnchor>", StringComparison.Ordinal) + "</xdr:twoCellAnchor>".Length;
+            Write(zip, "xl/drawings/drawing1.xml", drawing[..at] + ChartExAnchor + drawing[at..]);
+        }
+
+        var blocks = Assert.IsType<Sheet>(OfficeReader.Read(path).Blocks[0]).Blocks;
+        var original = Assert.IsType<Sheet>(OfficeReader.Read(Fixtures.DocumentPath("with-drawing", Fixtures.RealWorld)).Blocks[0]).Blocks;
+        Assert.Equal([original[0], .. original.Skip(1)], [blocks[0], .. blocks.Skip(2)]);
+        if (cached)
+        {
+            var chart = Assert.IsType<Chart>(blocks[1]);
+            Assert.Equal("boxWhisker", chart.ChartType);
+            Assert.Equal(["Series1", "Series2", "Series3"], chart.Series.Select(s => s.Name));
+        }
+        else
+        {
+            var media = Assert.IsType<Media>(blocks[1]);
+            Assert.Equal(Assert.IsType<Media>(original[0]).Name, media.Name);
+            Assert.Equal("the chart's picture", media.Alt);
+            Assert.Equal(0, media.Sheet);
+        }
+    }
+
+    private const string ChartExAnchor =
+        "<xdr:twoCellAnchor xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">"
+        + "<xdr:from><xdr:col>0</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>0</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>"
+        + "<xdr:to><xdr:col>4</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>8</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>"
+        + "<mc:AlternateContent><mc:Choice xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" Requires=\"cx1\">"
+        + "<xdr:graphicFrame macro=\"\"><xdr:nvGraphicFramePr><xdr:cNvPr id=\"20\" name=\"Chart 19\"/><xdr:cNvGraphicFramePr/></xdr:nvGraphicFramePr>"
+        + "<xdr:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"0\" cy=\"0\"/></xdr:xfrm><a:graphic><a:graphicData uri=\"http://schemas.microsoft.com/office/drawing/2014/chartex\">"
+        + "<cx:chart xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" r:id=\"rIdCx\"/></a:graphicData></a:graphic></xdr:graphicFrame></mc:Choice>"
+        + "<mc:Fallback><xdr:pic><xdr:nvPicPr><xdr:cNvPr id=\"20\" name=\"Chart 19\" descr=\"the chart's picture\"/><xdr:cNvPicPr/></xdr:nvPicPr>"
+        + "<xdr:blipFill><a:blip r:embed=\"rId1\"/></xdr:blipFill><xdr:spPr/></xdr:pic></mc:Fallback></mc:AlternateContent><xdr:clientData/></xdr:twoCellAnchor>";
+
+    // A copy of a real-world file whose given chartEx part caches no points.
+    private string Uncached(string name, string part)
+    {
+        var source = Fixtures.DocumentPath(name, Fixtures.RealWorld);
+        var path = Path.Combine(scratch.FullName, Path.GetFileName(source));
+        File.Copy(source, path);
+        using var zip = ZipFile.Open(path, ZipArchiveMode.Update);
+        var xml = Read(zip, part);
+        Assert.Contains("<cx:pt ", xml, StringComparison.Ordinal);
+        Write(zip, part, WithoutPoints(xml));
+        return path;
+    }
+
+    private static string WithoutPoints(string chartEx) =>
+        Regex.Replace(chartEx, "<cx:pt [^>]*>[^<]*</cx:pt>", "");
+
+    // The media file name of a package entry's bytes.
+    private static string Named(string package, string entry)
+    {
+        using var zip = ZipFile.OpenRead(package);
+        using var stream = zip.GetEntry(entry)!.Open();
+        return Convert.ToHexStringLower(SHA256.HashData(stream)) + Path.GetExtension(entry);
     }
 
     private static string Read(ZipArchive zip, string entry)

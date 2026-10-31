@@ -74,12 +74,22 @@
               "rows": [
                 [
                   {
-                    "text": "Footer cell A",
+                    "elements": [
+                      {
+                        "kind": "paragraph",
+                        "text": "Footer cell A"
+                      }
+                    ],
                     "colSpan": 1,
                     "rowSpan": 1
                   },
                   {
-                    "text": "Footer cell B",
+                    "elements": [
+                      {
+                        "kind": "paragraph",
+                        "text": "Footer cell B"
+                      }
+                    ],
                     "colSpan": 1,
                     "rowSpan": 1
                   }
@@ -148,12 +158,22 @@
               "rows": [
                 [
                   {
-                    "text": "Footer cell A",
+                    "elements": [
+                      {
+                        "kind": "paragraph",
+                        "text": "Footer cell A"
+                      }
+                    ],
                     "colSpan": 1,
                     "rowSpan": 1
                   },
                   {
-                    "text": "Footer cell B",
+                    "elements": [
+                      {
+                        "kind": "paragraph",
+                        "text": "Footer cell B"
+                      }
+                    ],
                     "colSpan": 1,
                     "rowSpan": 1
                   }
@@ -229,12 +249,22 @@
               "rows": [
                 [
                   {
-                    "text": "Footer cell A",
+                    "elements": [
+                      {
+                        "kind": "paragraph",
+                        "text": "Footer cell A"
+                      }
+                    ],
                     "colSpan": 1,
                     "rowSpan": 1
                   },
                   {
-                    "text": "Footer cell B",
+                    "elements": [
+                      {
+                        "kind": "paragraph",
+                        "text": "Footer cell B"
+                      }
+                    ],
                     "colSpan": 1,
                     "rowSpan": 1
                   }
@@ -251,12 +281,22 @@
               "rows": [
                 [
                   {
-                    "text": "Footer cell A",
+                    "elements": [
+                      {
+                        "kind": "paragraph",
+                        "text": "Footer cell A"
+                      }
+                    ],
                     "colSpan": 1,
                     "rowSpan": 1
                   },
                   {
-                    "text": "Footer cell B",
+                    "elements": [
+                      {
+                        "kind": "paragraph",
+                        "text": "Footer cell B"
+                      }
+                    ],
                     "colSpan": 1,
                     "rowSpan": 1
                   }

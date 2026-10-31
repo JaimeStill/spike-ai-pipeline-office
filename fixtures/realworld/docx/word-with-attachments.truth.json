@@ -29,81 +29,156 @@
       "rows": [
         [
           {
-            "text": "Таблица",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Таблица"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "Сначала ",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Сначала "
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "Все ",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Все "
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "На ",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "На "
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "русском",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "русском"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "Table",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Table"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "…",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "…"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "123",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "123"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "456",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "456"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "789",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "789"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "жадвўал",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "жадвўал"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": ",,,",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": ",,,"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "***",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "***"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "(0)",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "(0)"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "###",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "###"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }

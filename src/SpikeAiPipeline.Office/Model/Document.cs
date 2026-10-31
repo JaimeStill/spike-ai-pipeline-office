@@ -180,7 +180,8 @@ public sealed record TableCell(IReadOnlyList<Block>? Blocks)
 }
 
 /// <summary>A chart, from the data its chart part caches, never an image of it: its type (the
-/// plot's kind, such as bar, line, or pie; the first plot's when it has several), its title, and
+/// plot's kind, such as bar, line, or pie; the first plot's when it has several; for an Office
+/// 2016 chartEx chart its first series' layout, such as boxWhisker or sunburst), its title, and
 /// its series.</summary>
 public sealed record Chart(string ChartType, string? Title, IReadOnlyList<ChartSeries> Series) : Block;
 

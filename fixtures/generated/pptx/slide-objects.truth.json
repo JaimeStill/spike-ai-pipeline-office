@@ -17,41 +17,80 @@
           "rows": [
             [
               {
-                "text": "Region",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Region"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "Sales",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Sales"
+                  }
+                ],
                 "colSpan": 2,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "North",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "North"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 2
               },
               {
-                "text": "Q1\nfirst quarter",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Q1"
+                  },
+                  {
+                    "kind": "paragraph",
+                    "text": "first quarter"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "12 | 5",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "12 | 5"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "Q2",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Q2"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "14",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "14"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }

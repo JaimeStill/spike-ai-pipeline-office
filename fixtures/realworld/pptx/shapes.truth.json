@@ -26,34 +26,64 @@
           "rows": [
             [
               {
-                "text": "Column1",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Column1"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "Column2",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Column2"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "Column3",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Column3"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "data1",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "data1"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "data2",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "data2"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "data3",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "data3"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
@@ -98,87 +128,142 @@
           "rows": [
             [
               {
-                "text": "header1",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "header1"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "header2",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "header2"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "header3",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "header3"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "A1",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "A1"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "B1",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "B1"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "C1",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "C1"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "A2",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "A2"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "A3",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "A3"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "B3 and C3 are merged",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "B3 and C3 are merged"
+                  }
+                ],
                 "colSpan": 2,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "A4",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "A4"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 2,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "A5",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "A5"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 2,
                 "rowSpan": 1
               }
@@ -197,60 +282,100 @@
           "rows": [
             [
               {
-                "text": "Link Type",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Link Type"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "Target URI",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Target URI"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "Web Page",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Web Page"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "http://poi.apache.org/",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "http://poi.apache.org/"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "Place in this document",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Place in this document"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "/ppt/slides/slide2.xml",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "/ppt/slides/slide2.xml"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "Email",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Email"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "mailto:dev@poi.apache.org?subject=Hi%20There",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "mailto:dev@poi.apache.org?subject=Hi%20There"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               }

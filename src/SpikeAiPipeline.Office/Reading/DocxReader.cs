@@ -459,8 +459,10 @@ internal static partial class DocxReader
         // A run's text, references, pictures, and charts. Field codes are instructions, not text;
         // a field's result is ordinary runs. A ruby's base text is the text; its annotation, a
         // reading aid above it, is left out. An embedded OLE object is never extracted, but the
-        // picture Word shows in its place is a picture of the document.
-        private void ReadRun(W.Run run, InlineBuilder inlines)
+        // picture Word shows in its place is a picture of the document. A chartEx chart, in an
+        // mc:AlternateContent, is its cached data, or with none its fallback's picture; any
+        // other alternate content is not read.
+        private void ReadRun(OpenXmlElement run, InlineBuilder inlines)
         {
             foreach (var child in run.ChildElements)
             {
@@ -506,6 +508,16 @@ internal static partial class DocxReader
                     case W.Ruby { RubyBase: { } rubyBase }:
                         ReadInlines(rubyBase, inlines);
                         break;
+                    case AlternateContent content when ChartReader.ChartEx(content, part) is { } chartEx:
+                        if (chartEx.Chart is { } chart)
+                        {
+                            inlines.Blocks.Add(chart);
+                        }
+                        else if (chartEx.Fallback is { } fallback)
+                        {
+                            ReadRun(fallback, inlines);
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -539,9 +551,9 @@ internal static partial class DocxReader
                         }
                         break;
                     case C.ChartReference chart when chart.Id?.Value is { } id:
-                        if (part.TryGetPartById(id, out var chartPart) && chartPart is ChartPart charts)
+                        if (part.TryGetPartById(id, out var chartPart) && chartPart is ChartPart charts && ChartReader.Read(charts) is { } read)
                         {
-                            inlines.Blocks.Add(ChartReader.Read(charts));
+                            inlines.Blocks.Add(read);
                         }
                         break;
                     default:

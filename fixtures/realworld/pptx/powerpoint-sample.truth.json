@@ -21,293 +21,463 @@
           "rows": [
             [
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "Class1",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Class1"
+                  }
+                ],
                 "colSpan": 3,
                 "rowSpan": 1
               },
               {
-                "text": "Class2",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "Class2"
+                  }
+                ],
                 "colSpan": 3,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "A merged with B",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "A merged with B"
+                  }
+                ],
                 "colSpan": 2,
                 "rowSpan": 1
               },
               {
-                "text": "C",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "C"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "A",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "A"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "B",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "B"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "C",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "C"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "R1",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "R1"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "R2",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "R2"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "R3",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "R3"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 2
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "R4",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "R4"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 3
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "",
+                "elements": [],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }
             ],
             [
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "True",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "True"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               },
               {
-                "text": "False",
+                "elements": [
+                  {
+                    "kind": "paragraph",
+                    "text": "False"
+                  }
+                ],
                 "colSpan": 1,
                 "rowSpan": 1
               }

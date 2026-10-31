@@ -35,15 +35,19 @@ internal static class Fixtures
     /// <summary>The real-world docx files, by name; no name is a generated fixture's too.</summary>
     public static readonly string[] RealWorldDocx =
     [
-        "chart-column", "complex-numbered-lists", "content-control-rows", "delins", "endnotes", "footnote", "form-footnotes",
-        "ruby", "test-comment", "unit-test-formatting", "word-tables", "word-with-attachments",
+        "chart-column", "chartex", "complex-numbered-lists", "content-control-rows", "delins", "endnotes", "footnote", "form-footnotes",
+        "ruby", "strict-column-charts", "test-comment", "unit-test-formatting", "word-tables", "word-with-attachments",
     ];
 
     /// <summary>The real-world xlsx files, by name.</summary>
-    public static readonly string[] RealWorldXlsx = ["chart-sheet", "date-format-tests", "excel-online-index-space", "simple-monthly-budget", "with-two-charts"];
+    public static readonly string[] RealWorldXlsx =
+    [
+        "chart-sheet", "copy-rows", "date-format-tests", "excel-online-index-space", "simple-monthly-budget", "simple-strict",
+        "with-drawing", "with-two-charts",
+    ];
 
     /// <summary>The real-world pptx files, by name.</summary>
-    public static readonly string[] RealWorldPptx = ["chart-2d", "layouts", "powerpoint-sample", "shapes"];
+    public static readonly string[] RealWorldPptx = ["chart-2d", "chartex-slide", "layouts", "linked-pictures", "powerpoint-sample", "shapes"];
 
     /// <summary>Every generated fixture, docx, xlsx, then pptx, in each of its variants.</summary>
     public static TheoryData<string, string> Variants

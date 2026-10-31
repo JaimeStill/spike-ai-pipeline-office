@@ -7,8 +7,9 @@ namespace SpikeAiPipeline.Office.Tests;
 /// <summary>A model in the ground truth's shape, element by element, so the two compare
 /// directly: headings, paragraphs, list items with their nesting level and whether each starts its
 /// list (and the first number of an ordered list that doesn't start at 1, on its first item),
-/// tables with each cell's paragraphs joined by a newline (and its pictures and charts as its
-/// media, and the grid columns a row that starts late skips before it), pictures, and charts. A paragraph's or list item's references are its marks: each
+/// tables with each cell's elements, in this same shape, whatever blocks it holds (and the grid
+/// columns a row that starts late skips before it), pictures, and charts. A paragraph's or list
+/// item's references are its marks: each
 /// one's offset in the text, its kind, and its note's or comment's place, from 1, in the
 /// document's list of them, so ids, which writers renumber, never enter the comparison. The
 /// document's sections, notes, and comments are compared in the same shape. A sheet is its name,
@@ -163,19 +164,13 @@ internal static class GroundTruth
             {
                 var json = new JsonObject
                 {
-                    ["text"] = string.Join("\n", (cell.Blocks ?? []).OfType<Paragraph>().Select(p => InlineText.Of(p.Inlines))),
+                    ["elements"] = Array(document, cell.Blocks ?? []),
                     ["colSpan"] = cell.ColSpan ?? 1,
                     ["rowSpan"] = cell.RowSpan ?? 1,
                 };
                 if (cell.SkipBefore is int skipBefore)
                 {
                     json["skipBefore"] = skipBefore;
-                }
-                var media = new List<JsonObject>();
-                AddBlocks(document, [.. (cell.Blocks ?? []).Where(b => b is Media or Chart)], media);
-                if (media.Count > 0)
-                {
-                    json["media"] = new JsonArray([.. media]);
                 }
                 cells.Add(json);
             }

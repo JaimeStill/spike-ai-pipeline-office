@@ -12,58 +12,112 @@
       "rows": [
         [
           {
-            "text": "Region",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Region"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "Q3",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Q3"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "Q4",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Q4"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "North\n(provisional)",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "North"
+              },
+              {
+                "kind": "paragraph",
+                "text": "(provisional)"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "Pending audit",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Pending audit"
+              }
+            ],
             "colSpan": 2,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "West",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "West"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 2
           },
           {
-            "text": "12",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "12"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "14",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "14"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }
         ],
         [
           {
-            "text": "9",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "9"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "11 | revised",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "11 | revised"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }

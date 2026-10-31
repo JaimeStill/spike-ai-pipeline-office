@@ -54,12 +54,22 @@
       "rows": [
         [
           {
-            "text": "Cell fresh value",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Cell fresh value"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           },
           {
-            "text": "Plain cell",
+            "elements": [
+              {
+                "kind": "paragraph",
+                "text": "Plain cell"
+              }
+            ],
             "colSpan": 1,
             "rowSpan": 1
           }

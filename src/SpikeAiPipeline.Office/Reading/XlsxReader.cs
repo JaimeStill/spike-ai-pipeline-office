@@ -248,10 +248,15 @@ internal static class XlsxReader
         [.. (table?.Elements<S.SharedStringItem>() ?? []).Select(Text)];
 
     // A drawing's pictures and charts in the order it anchors them, through groups. A picture's
-    // alternative text and title are its own drawing properties'.
-    private static void ReadDrawing(XlsxContext context, DrawingsPart drawings, int sheet, List<Block> blocks)
+    // alternative text and title are its own drawing properties'. A chartEx chart, in an
+    // mc:AlternateContent, is its cached data, or with none its fallback's picture, never both;
+    // any other alternate content is read through, as the rest of the drawing is.
+    private static void ReadDrawing(XlsxContext context, DrawingsPart drawings, int sheet, List<Block> blocks) =>
+        ReadDrawing(context, drawings, drawings.WorksheetDrawing, sheet, blocks);
+
+    private static void ReadDrawing(XlsxContext context, DrawingsPart drawings, OpenXmlElement? container, int sheet, List<Block> blocks)
     {
-        foreach (var element in drawings.WorksheetDrawing?.Descendants() ?? [])
+        foreach (var element in container?.ChildElements ?? [])
         {
             switch (element)
             {
@@ -265,12 +270,23 @@ internal static class XlsxReader
                     }
                     break;
                 case C.ChartReference chart when chart.Id?.Value is { } chartId:
-                    if (drawings.TryGetPartById(chartId, out var part) && part is ChartPart charts)
+                    if (drawings.TryGetPartById(chartId, out var part) && part is ChartPart charts && ChartReader.Read(charts) is { } read)
                     {
-                        blocks.Add(ChartReader.Read(charts));
+                        blocks.Add(read);
+                    }
+                    break;
+                case AlternateContent content when ChartReader.ChartEx(content, drawings) is { } chartEx:
+                    if (chartEx.Chart is { } chartExChart)
+                    {
+                        blocks.Add(chartExChart);
+                    }
+                    else
+                    {
+                        ReadDrawing(context, drawings, chartEx.Fallback, sheet, blocks);
                     }
                     break;
                 default:
+                    ReadDrawing(context, drawings, element, sheet, blocks);
                     break;
             }
         }
