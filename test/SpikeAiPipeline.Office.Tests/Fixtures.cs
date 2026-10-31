@@ -35,8 +35,9 @@ internal static class Fixtures
     /// <summary>The real-world docx files, by name; no name is a generated fixture's too.</summary>
     public static readonly string[] RealWorldDocx =
     [
-        "chart-column", "chartex", "complex-numbered-lists", "content-control-rows", "delins", "endnotes", "footnote", "form-footnotes",
-        "ruby", "strict-column-charts", "test-comment", "unit-test-formatting", "word-tables", "word-with-attachments",
+        "chart-column", "chartex", "chartex-funnel-word", "chartex-waterfall-word", "complex-numbered-lists", "content-control-rows",
+        "delins", "endnotes", "footnote", "form-footnotes", "ruby", "strict-column-charts", "test-comment", "unit-test-formatting",
+        "word-tables", "word-with-attachments",
     ];
 
     /// <summary>The real-world xlsx files, by name.</summary>

@@ -9,14 +9,17 @@ CI; no test reads a document from anywhere else, and none is fetched.
 
 `realworld/` holds documents Word, Excel, and PowerPoint wrote themselves, which the generated
 set can't have: Word's own chart and tracked changes, Excel's cached formula results, shared
-formulas, and 1904 dates, PowerPoint's bullets inherited from a real master. They are copied
-byte for byte from the test data of three permissively licensed repositories, each pinned to a
-commit: dotnet/Open-XML-SDK (MIT), apache/poi (Apache-2.0), and docling-project/docling (MIT).
+formulas, and 1904 dates, PowerPoint's bullets inherited from a real master, Office 2016's
+chartEx charts. They are copied byte for byte from the test data of four permissively licensed
+repositories, each pinned to a commit: dotnet/Open-XML-SDK (MIT), apache/poi (Apache-2.0),
+docling-project/docling (MIT), and LilLeapo/rsWordParser (MIT or Apache-2.0).
 A few were changed by a tool after their application wrote them, which `SOURCES.md` says:
 `docx/word-tables.docx` is Word's file with tables added to its XML by hand and re-zipped,
 `docx/strict-column-charts.docx` Word's file re-saved by the Open XML SDK, and the chartEx parts
-of `docx/chartex.docx` and `pptx/chartex-slide.pptx` a tool's XML. Several are the regression files of a reading fault, each
-named in `SOURCES.md`, so the fault's return fails the check.
+of `docx/chartex.docx` a tool's XML. The chartEx parts of `pptx/chartex-slide.pptx`,
+`docx/chartex-waterfall-word.docx`, and `docx/chartex-funnel-word.docx` are the application's
+own, and `SOURCES.md` says how the two are told apart. Several are the regression files of a
+reading fault, each named in `SOURCES.md`, so the fault's return fails the check.
 `realworld/SOURCES.md` lists each file's repository, commit, path, license, writer, size, and
 SHA-256, what it covers, and what its truth covers; the repositories' licenses and notices are
 in `realworld/licenses/`.

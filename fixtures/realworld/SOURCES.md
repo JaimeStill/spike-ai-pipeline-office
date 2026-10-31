@@ -12,13 +12,22 @@ when it re-serializes one. Three were then changed outside the application:
 - `docx/strict-column-charts.docx` is Word's file re-saved by the Open XML SDK, as the SDK's
   test data for ISO 29500 Strict: every XML part but `[Content_Types].xml` carries the SDK's
   byte-order mark. Its chart parts' Strict XML is what it is here for.
-- `docx/chartex.docx`'s two chartEx parts, and `pptx/chartex-slide.pptx`'s one, are laid out as
-  .NET's XML writer lays them out, unlike every other part of their files: no line break after
-  the declaration and a space before each `/>`. The box and whisker part of each file is the
-  same chart, with a title in one and none in the other. In `docx/chartex.docx` they are related
-  and typed as ordinary charts (the `chart` relationship and content type, not `chartEx`'s) and
-  the drawings refer to them with a `c:chart`, where Word writes a `cx:chart`. So their XML was
-  written by a tool and placed in an application's file; it is the chartEx schema all the same.
+- `docx/chartex.docx`'s two chartEx parts are related and typed as ordinary charts (the `chart`
+  relationship and content type, not `chartEx`'s), the drawings refer to them with a `c:chart`
+  where Word writes a `cx:chart`, and their `mc:Choice` requires `cx`, where Word's own files
+  here require `cx1` or `cx2`. So their XML was placed in Word's file by a tool; it is the
+  chartEx schema all the same.
+
+Office writes a chartEx part with no line break after its XML declaration and a space before
+each `/>`, and its chart style and colors parts with no declaration at all, unlike the rest of
+its parts; that layout is no sign of a tool. A tool shows instead in a UTF-8 byte-order mark
+with a lowercase `utf-8` declaration, a chartEx part typed as an ordinary chart, or a `c:chart`
+in the drawing. By those, `pptx/chartex-slide.pptx`'s chartEx part is PowerPoint's own: typed
+`application/vnd.ms-office.chartex+xml`, referred to by a `cx:chart` under `Requires="cx1"`,
+with its chart style and colors parts and its embedded workbook, in a package of entries all
+dated 1980-01-01 (as Office zips them) and no byte-order mark. (Its box and whisker chart is
+`docx/chartex.docx`'s, with a title there and none here.) The two `rsWordParser` files are
+Word's by the same evidence (below).
 
 Each source repository's license, and its NOTICE where it has one, is in `licenses/`.
 
@@ -27,10 +36,20 @@ Each source repository's license, and its NOTICE where it has one, is in `licens
 | [dotnet/Open-XML-SDK](https://github.com/dotnet/Open-XML-SDK) | `431ab05cf160248cc3885a4a766026d4f8243792` | MIT, © .NET Foundation and Contributors | `licenses/Open-XML-SDK.LICENSE`, `licenses/Open-XML-SDK.NOTICE` |
 | [apache/poi](https://github.com/apache/poi) | `6327f056ba3cfdae326a0261a236460592b80f5c` | Apache-2.0, © The Apache Software Foundation | `licenses/poi.LICENSE`, `licenses/poi.NOTICE` (its `legal/`) |
 | [docling-project/docling](https://github.com/docling-project/docling) | `7b12671e1d324710e70784c18844d1d97522414f` | MIT, © The Docling Contributors | `licenses/docling.LICENSE` |
+| [LilLeapo/rsWordParser](https://github.com/LilLeapo/rsWordParser) | `b1e64fd646a05aec877ced6b05374f536e4b9d96` | MIT or Apache-2.0 (dual), © 2026 rsWordParser contributors | `licenses/rsWordParser.LICENSE-MIT`, `licenses/rsWordParser.LICENSE-APACHE` |
 
 One poi file here is listed in its `test-data/poi-integration-exceptions.csv`:
 `xlsx/simple-strict.xlsx` (`SimpleStrict.xlsx`), as "Strict OOXML isn't currently supported,
 please see bug #57699", a limit of poi's, not a fault of the file's.
+
+The two rsWordParser files' provenance is self-reported by a young repository: its README's
+许可 (license) section says the corpus documents are the project's own work under its two
+licenses, and its notes name the writer as Word LTSC 2021. The files bear that out as Word's:
+each chartEx part is typed `application/vnd.ms-office.chartex+xml` and referred to by a
+`cx:chart` in the drawing, with its chart style and colors parts and its embedded workbook, the
+package's entries are all dated 1980-01-01, and no part carries a byte-order mark. Each file's
+`docProps/core.xml` names a person as its last editor; it is left as it is, so the file's
+SHA-256 matches its source's.
 
 ## Files
 
@@ -38,6 +57,8 @@ please see bug #57699", a limit of poi's, not a fault of the file's.
 | --- | --- | --- | --- | --- | --- |
 | `docx/chart-column.docx` | Open-XML-SDK | `test/DocumentFormat.OpenXml.Tests.Assets/assets/TestDataStorage/v2FxTestFiles/wordprocessing/chart/chart-Column.docx` | Microsoft Office Word 12.0000 | 18619 | `9402cb32b06d08f5a41b60ed2dcbe9dcc279a85a61059869fafa6d4d9540ff15` |
 | `docx/chartex.docx` | poi | `test-data/document/chartex.docx` | Microsoft Office Word 16.0000, its chartEx parts a tool's (above) | 133304 | `5d7f0ca9aa26d0244eedbc8ff862f08910689ec3848a036c622b17d56a290b57` |
+| `docx/chartex-funnel-word.docx` | rsWordParser | `corpus/real/chart/chartex-funnel-2.docx` | Microsoft Office Word 16.0000 (Word LTSC 2021 per the source repository's notes) | 28371 | `a44ad9f5a4b1e29564465864fd786a0906e48e180c866e97daf068e86456f199` |
+| `docx/chartex-waterfall-word.docx` | rsWordParser | `corpus/real/chart/chartex-waterfall-2.docx` | Microsoft Office Word 16.0000 (Word LTSC 2021 per the source repository's notes) | 28811 | `0a7b7cc6b8d5a07a12f35afcc0cdb651046d52efacf0a5c27a01d38e5b4e11f6` |
 | `docx/complex-numbered-lists.docx` | poi | `test-data/document/ComplexNumberedLists.docx` | Microsoft Office Word 14.0000 | 14458 | `297a085a7d433af2eeee7661e8db21539452cb585096484774a1e9f5f258b0b6` |
 | `docx/content-control-rows.docx` | poi | `test-data/document/tika-3816.docx` | Microsoft Office Word 16.0000 | 22374 | `ab5b32d15d2fd14c633452cc5a8b1cd27cd65038cd208a11ede29d6f8fe24259` |
 | `docx/delins.docx` | poi | `test-data/document/delins.docx` | Microsoft Office Word 12.0000 | 17720 | `7ecad102602586be7f1371f117fc567ea47f3ed0ca703b353e003002f1ff8d3f` |
@@ -59,7 +80,7 @@ please see bug #57699", a limit of poi's, not a fault of the file's.
 | `xlsx/with-drawing.xlsx` | poi | `test-data/spreadsheet/WithDrawing.xlsx` | Microsoft Excel 12.0000 | 101696 | `97b1ab359d6aecbe37864f30c85106e386f0a19bea8f290103927362a2701066` |
 | `xlsx/with-two-charts.xlsx` | poi | `test-data/spreadsheet/WithTwoCharts.xlsx` | Microsoft Excel 12.0000 | 12810 | `7d29c92e9f7968a5bc9ec076458785295c24d13916b02b8a467c0a8fd013cddd` |
 | `pptx/chart-2d.pptx` | Open-XML-SDK | `test/DocumentFormat.OpenXml.Tests.Assets/assets/TestDataStorage/v2FxTestFiles/presentation/Chart_2D.pptx` | Microsoft Office PowerPoint 12.0000 | 62118 | `dad57bde3989dbc48e5c52988773ccf74d1cf56af875e5366e4c92992ce258f3` |
-| `pptx/chartex-slide.pptx` | Open-XML-SDK | `test/DocumentFormat.OpenXml.Tests.Assets/assets/TestFiles/Of16-02.pptx` | Microsoft Office PowerPoint 16.0000, its chartEx part a tool's (above) | 51740 | `70d0ac69333b86bb6a3c6e489664c9e4298b9cb62440d287d54c5fc7cd79197e` |
+| `pptx/chartex-slide.pptx` | Open-XML-SDK | `test/DocumentFormat.OpenXml.Tests.Assets/assets/TestFiles/Of16-02.pptx` | Microsoft Office PowerPoint 16.0000 | 51740 | `70d0ac69333b86bb6a3c6e489664c9e4298b9cb62440d287d54c5fc7cd79197e` |
 | `pptx/layouts.pptx` | poi | `test-data/slideshow/layouts.pptx` | Microsoft Office PowerPoint 14.0000 | 62901 | `9c3d53afa3115de2ba72ec77637a616aeed505a6ff3b30a46db871c4edd32be5` |
 | `pptx/linked-pictures.pptx` | poi | `test-data/slideshow/56812.pptx` | Microsoft Macintosh PowerPoint 14.0000 | 58308 | `36545b1502bc7149de9ec537ae2a7e83e6c8baf24c7f72e9944d863c41072b65` |
 | `pptx/powerpoint-sample.pptx` | docling | `tests/data/pptx/sources/powerpoint_sample.pptx` | Microsoft Macintosh PowerPoint 16.0000 | 45849 | `24191d47fda511e11984e875f8676506da5ae1fbcaefcc63d81be377d3a3950c` |
@@ -76,7 +97,8 @@ format, and the truths of `docx/form-footnotes.docx`, `docx/word-tables.docx`, a
 WordprocessingML as the specification describes it, then checked by hand against the XML (all of
 the second and third; the first at its smart tags, form fields, picture cell, footnote, and
 headings). The charts' truths were read from the chart parts by a throwaway script too, a
-Strict chart's namespaces read as Transitional. When the truth format came to score a table
+Strict chart's namespaces read as Transitional. The two rsWordParser files' truths, a chart and two paragraphs each, were written by hand
+from their `word/document.xml` and `word/charts/chartEx1.xml`. When the truth format came to score a table
 cell's every element, not only its paragraphs' text, each truth's cells were re-derived from the
 document's XML, every cell's paragraphs surveyed for numbering, heading styles and outline
 levels, line breaks, and nested tables: only `docx/form-footnotes.docx` has any (headings, list
@@ -88,6 +110,8 @@ the tests compare all of the model, not a subset.
 | --- | --- | --- |
 | `docx/chart-column.docx` | Word's own chart: a 3-D clustered column chart (`bar3DChart`), titled, three series of cached data over three categories, beside its embedded workbook; a paragraph's text split across runs | all: the paragraph and the chart |
 | `docx/chartex.docx` | Word 16's file of six charts: a clustered column chart in the third of three empty bullet items (the chart in a list item), a line chart, a radar chart and a stock chart over date serials, and two chartEx charts in `mc:AlternateContent` with fallback pictures, a box and whisker chart of three series over 22 points and a sunburst of a three-level hierarchy whose branches end at different depths (the regression file for chartEx charts, which were left out; their parts are a tool's, above) | all: the three list items, the paragraph, and the six charts, the chartEx ones as their cached data (`boxWhisker`, `sunburst`, a sunburst point labeled with its innermost level that names it); neither fallback picture, which the cached data replaces |
+| `docx/chartex-funnel-word.docx` | Word's own chartEx chart: a funnel of one series over three categories, titled, in `mc:AlternateContent` under `Requires="cx2"` with a fallback picture, between two paragraphs of English and Chinese text | all: the two paragraphs and the chart as its cached data (`funnel`, 10, 20, 30); not the fallback picture, which the cached data replaces (the regression file for a chartEx choice that requires `cx2`, which must be read as `cx1`'s is, by its graphic's uri) |
+| `docx/chartex-waterfall-word.docx` | Word's own chartEx chart: a waterfall of one series over three categories, titled, in `mc:AlternateContent` under `Requires="cx1"` with a fallback picture, between two paragraphs of English and Chinese text | all: the two paragraphs and the chart as its cached data (`waterfall`, 10, 20, 30); not the fallback picture |
 | `docx/complex-numbered-lists.docx` | numbered lists on three abstract definitions, one with a nested lower-letter level; a definition whose level starts at 10, its list interrupted by a plain paragraph and resumed, counting on at 12 (the regression file for list starts and continuation) | all: 17 elements, the starts as `startAt` 10 and 12 |
 | `docx/content-control-rows.docx` | a table row inside three nested content controls (`w:sdt` children of `w:tbl`), its first cell inside a drop-down content control showing its placeholder, "Choose an item."; a glossary part (the regression file for rows and cells in content controls, which were skipped with their text) | all: the paragraph and the table of five rows; the placeholder text in `absent` |
 | `docx/delins.docx` | Word's real tracked changes: insertions in runs and of whole paragraphs, two list items deleted with their paragraph marks running on into an inserted paragraph, deleted fields, an inserted empty list item; hyperlink fields; bullet lists of three numbering instances on three abstract definitions | all: 22 elements; the deleted text and field instructions in `absent` |
@@ -109,7 +133,7 @@ the tests compare all of the model, not a subset.
 | `xlsx/with-drawing.xlsx` | five pictures on one sheet, a JPEG, a PNG, two EMFs, and a WMF, each with its alternative text, and a text box among them; two empty sheets | all: three sheets, the five pictures. The text box's text, which office doesn't read in a sheet's drawing, is left out |
 | `xlsx/with-two-charts.xlsx` | shared formulas with cached values, one cell inside a shared range holding its own formula; a line chart and an area chart on otherwise empty sheets | all: three sheets, 24 cells, two charts |
 | `pptx/chart-2d.pptx` | PowerPoint's chart in a graphic frame, cached values as PowerPoint rounds them (`2.3999999999999995`), with notes | all: the slide, its chart, and its notes |
-| `pptx/chartex-slide.pptx` | a slide whose only shape is a chartEx box and whisker chart in `mc:AlternateContent`, untitled, its fallback a picture (the regression file for a slide's chartEx chart, which was left out; its part is a tool's, above) | all: the slide and its chart, as its cached data, not the fallback picture |
+| `pptx/chartex-slide.pptx` | a slide whose only shape is a chartEx box and whisker chart in `mc:AlternateContent`, untitled, its fallback a picture (the regression file for a slide's chartEx chart, which was left out; its part is PowerPoint's own, above) | all: the slide and its chart, as its cached data, not the fallback picture |
 | `pptx/layouts.pptx` | bullets inherited from a real master's body style through every built-in layout, nested nine levels; a title placeholder whose index its layout lacks; text boxes with their own bullets; a picture placeholder; date, footer, and slide-number placeholders with their text; an empty notes page | all: ten slides |
 | `pptx/linked-pictures.pptx` | Mac PowerPoint's pictures: one embedded, one both embedded and linked to a file (`r:embed` and `r:link`), one linked only; text boxes | all: the slide's three pictures (the second as its embedded copy, the third as its link's target) and three paragraphs |
 | `pptx/powerpoint-sample.pptx` | a table merged across columns (`gridSpan`, `hMerge`) and rows (`rowSpan`, `vMerge`) with empty cells; a paragraph whose own `buNone` overrides the master's bullets; text boxes of auto-numbered and character bullets; notes of one and two paragraphs | all: three slides and their notes |
