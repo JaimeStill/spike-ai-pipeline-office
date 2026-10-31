@@ -1,6 +1,8 @@
 # CI runs the check a developer runs, `mise run check`, on every pull request into main and every
 # push to main, natively on x64 and arm64, so each runner publishes and tests its own NativeAOT
-# binary. A newer run on the same ref cancels the one it supersedes.
+# binary, whose size and runtime identifier each runner then reports to its job summary: the
+# linux-arm64 size can only be measured on the arm64 runner. A newer run on the same ref cancels
+# the one it supersedes.
 name: CI
 
 on:
@@ -40,3 +42,17 @@ jobs:
 
       - name: mise run check
         run: mise run check
+
+      # The check published the binary to .state/aot for this runner's runtime identifier; its size
+      # is the binary's alone, not a release archive's.
+      - name: Report the published binary's size
+        run: |
+          case "$(uname -m)" in
+            x86_64) rid=linux-x64 ;;
+            aarch64) rid=linux-arm64 ;;
+            *) echo "ci: no runtime identifier for $(uname -m)"; exit 1 ;;
+          esac
+          bytes=$(stat -c %s .state/aot/spike-ai-pipeline-office)
+          line="spike-ai-pipeline-office, $rid, NativeAOT, as published: $bytes bytes"
+          echo "$line"
+          echo "$line" >>"$GITHUB_STEP_SUMMARY"

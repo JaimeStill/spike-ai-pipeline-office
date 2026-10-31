@@ -21,7 +21,10 @@ version included, is office's output contract: a change to it is a change here.
   `--version` prints the version.
 - The initial output contract, schema `"1"`: one tree for all three formats, a document's
   `schema`, `format`, and `blocks`, each block a `heading`, `paragraph`, `list`, `table`,
-  `chart`, `media`, `sheet`, or `slide`. A docx document also holds its `sections`, each with the
+  `chart`, `media`, `sheet`, or `slide`. An optional property with no value is left out, never
+  written as `null`, so an absent property means null or none: a formula cell with no cached
+  value has no `value` and no `valueType`. Only an array keeps a `null` in place, a chart point
+  the cache lacks. A docx document also holds its `sections`, each with the
   headers and footers its pages show (`default`, `first`, `even`), its `footnotes` and
   `endnotes`, and its `comments`, each with its author, anchor text, resolved state, and replies,
   referred to from the text by `footnote`, `endnote`, and `comment` inlines. Its tracked changes
@@ -50,6 +53,21 @@ version included, is office's output contract: a change to it is a change here.
   xlsx, or pptx package, a malformed package, and tables nested more than eight deep.
 - Releases: `spike-ai-pipeline-office-vX.Y.Z-linux-x64.tar.gz` and `-linux-arm64.tar.gz`, each a
   NativeAOT binary and LICENSE, and `SHA256SUMS`.
+
+### Known limits
+
+- No formula is evaluated: a formula's value is the one the file caches, or none.
+- No number format is applied but the dates': a number is written as stored.
+- Tracked changes are read accepted only, never as stored.
+- No page images are rendered.
+- Legacy doc, xls, and ppt files are refused, never read, as are tables nested more than eight
+  deep.
+- Not extracted: equations; a docx's or an xlsx's text boxes and WordArt; SmartArt; embedded OLE
+  objects, of which only the picture a docx shows in their place comes out, as media; a pptx's
+  comments; an xlsx's cell notes and comments; and a docx comment range that starts or ends
+  between a table's rows or cells.
+- Media are written as stored, never converted: an EMF, WMF, or TIFF stays one.
+- office runs no inference: it calls no model.
 
 [Unreleased]: https://github.com/JaimeStill/spike-ai-pipeline-office/compare/v0.1.0...HEAD
 [v0.1.0]: https://github.com/JaimeStill/spike-ai-pipeline-office/releases/tag/v0.1.0

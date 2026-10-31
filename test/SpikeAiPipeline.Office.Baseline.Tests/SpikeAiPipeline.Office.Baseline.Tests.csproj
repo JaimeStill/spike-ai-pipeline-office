@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The baseline scorer's own tests: hand-written texts, truths, and Markdown against the
+       scoring rules, so the check runs them although the baseline tier itself never runs in CI. -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" Version="4.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\bench\SpikeAiPipeline.Office.Baseline\SpikeAiPipeline.Office.Baseline.csproj" />
+  </ItemGroup>
+
+</Project>

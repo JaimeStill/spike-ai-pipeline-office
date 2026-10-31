@@ -14,4 +14,9 @@
     <PackageReference Include="Markdig" Version="1.5.1" />
   </ItemGroup>
 
+  <!-- The scorer is internal; its tests, which the check runs, reach it from their project. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="SpikeAiPipeline.Office.Baseline.Tests" />
+  </ItemGroup>
+
 </Project>

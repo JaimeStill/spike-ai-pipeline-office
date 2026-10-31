@@ -1,9 +1,10 @@
 # Release runs on a pushed version tag, vX.Y.Z, which the release procedure pushes only once main's
 # CI has passed; nothing here tags. Each runner builds the NativeAOT binary natively, linux-x64 and
 # linux-arm64, and refuses to pack it unless its --version is the tag's version, so the tag must
-# match the version the csproj records. The last job creates the GitHub release from the tag's
-# CHANGELOG.md section and attaches both archives and their SHA256SUMS, so a release appears only
-# whole. Runs for one tag are serialized and never cancelled.
+# match the version the csproj records. The last job creates the GitHub release as a draft from
+# the tag's CHANGELOG.md section, attaches both archives and their SHA256SUMS, and only then
+# publishes it, so a release appears only whole: a failed upload leaves a draft, never a published
+# release without its assets. Runs for one tag are serialized and never cancelled.
 name: Release
 
 on:
@@ -92,6 +93,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           changelog: CHANGELOG.md
+          draft: true
 
       - name: Attach the archives and SHA256SUMS
         run: gh release upload "$TAG" dist/*.tar.gz dist/SHA256SUMS
+
+      - name: Publish the release
+        run: gh release edit "$TAG" --draft=false

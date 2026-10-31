@@ -38,7 +38,11 @@ The JSON model is office's output contract, one tree for all three formats: a do
 document order, each a `heading`, `paragraph`, `list`, `table`, `chart`, `media`, `sheet`, or
 `slide` by its `type`. The schema is versioned with office's tags: a change to the model's shape
 changes the `schema` version and is recorded in [`CHANGELOG.md`](CHANGELOG.md), and the model
-grows by adding kinds and optional properties, never by reshaping these.
+grows by adding kinds and optional properties, never by reshaping these. An optional property
+with no value is left out, never written as `null`: an absent property means null or none, so a
+formula cell with no cached value has no `value` and no `valueType`, and a chart with no title has
+no `title`. Only an array keeps a `null` in place, as a chart series does for a point it caches no
+category or value for, so its positions still line up.
 
 A macro-enabled document, a template, or a slide show (docm, dotx, dotm, xlsm, xltx, xltm, pptm,
 potx, potm, ppsx) is read as its base format, by its main part's content type whatever the file is
@@ -147,7 +151,8 @@ binary and LICENSE, and `SHA256SUMS` covering both.
 The baseline tier, `mise run baseline`, runs on a laptop and never in CI: office's NativeAOT
 binary, markitdown, and xberg over the committed pool, each one's Markdown scored element by
 element against the ground truth (`bench/SpikeAiPipeline.Office.Baseline`, with Markdig, never in
-office's binary), each run measured for time and peak memory. Its findings are
+office's binary), each run measured for time and peak memory. Its scoring rules have tests of
+their own, `test/SpikeAiPipeline.Office.Baseline.Tests`, which the check runs. Its findings are
 [`docs/findings/office-cli.md`](docs/findings/office-cli.md), each run's results in
 `docs/findings/office-cli/runs/`; that page is the evidence the root's evidence 12 asks of the
 Open XML CLI.

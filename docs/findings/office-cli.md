@@ -285,6 +285,7 @@ took 1.5 times (office), 1.4 times (markitdown), and 1.4 times (xberg) its media
 | Tool | What | Bytes | MiB |
 |---|---|---|---|
 | office | `spike-ai-pipeline-office`, linux-x64, NativeAOT, as published | 30,197,712 | 28.80 |
+| office | `spike-ai-pipeline-office`, linux-arm64, NativeAOT, as published | (from the pull request's CI run, recorded before merge) | |
 | office | its debug symbols, `spike-ai-pipeline-office.dbg`, published beside it, not in the release archive | 84,137,176 | 80.24 |
 | markitdown | its virtual environment, every package its install put there | 262,258,350 | 250.11 |
 | markitdown | the interpreter it links to, `/usr/bin/python3.14` and libpython | 6,358,880 | 6.06 |
@@ -292,10 +293,11 @@ took 1.5 times (office), 1.4 times (markitdown), and 1.4 times (xberg) its media
 | xberg | `xberg`, the binary | 135,432,936 | 129.16 |
 | xberg | its install directory: the binary, the shared libraries beside it (libx265, libaom, libheif, libde265, libnuma), and its license files | 159,701,853 | 152.30 |
 
-office's linux-arm64 binary wasn't measured: a NativeAOT publish for linux-arm64 on this x64
-laptop fails at the link (the system linker has no aarch64 target), so its size is the
-`spike-ai-pipeline-office-vX.Y.Z-linux-arm64.tar.gz` release asset's, which the CI release
-workflow builds natively, and this page records it once the release exists.
+office's linux-arm64 binary can't be measured on this laptop: a NativeAOT publish for
+linux-arm64 on x64 fails at the link (the system linker has no aarch64 target). Its figure is the
+binary's own size, not a release archive's, as CI's check job publishes it natively on
+`ubuntu-24.04-arm` and reports it to the job summary ("Report the published binary's size"),
+recorded from the pull request's CI run. Every other row is the laptop's, from this run.
 
 ## Licenses
 
