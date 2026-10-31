@@ -52,20 +52,38 @@ public static class OfficeReader
             if (format == SourceFormat.Xlsx)
             {
                 using var workbook = SpreadsheetDocument.Open(path, false);
-                return XlsxReader.Read(workbook);
+                return XlsxReader.Read(Loaded(workbook));
             }
             if (format == SourceFormat.Pptx)
             {
                 using var presentation = PresentationDocument.Open(path, false);
-                return PptxReader.Read(presentation);
+                return PptxReader.Read(Loaded(presentation));
             }
             using var package = WordprocessingDocument.Open(path, false);
-            return DocxReader.Read(package);
+            return DocxReader.Read(Loaded(package));
         }
         catch (Exception e) when (IsMalformed(e))
         {
             throw Malformed(path, e);
         }
+    }
+
+    // The SDK loads a package's parts the first time any is asked for, and throws an
+    // InvalidOperationException then for a relationship to a part the package lacks. They are
+    // asked for here, once, so that failure is the package's and nothing else's.
+    private static T Loaded<T>(T package)
+        where T : OpenXmlPackage
+    {
+        try
+        {
+            _ = package.GetAllParts().Count();
+        }
+        catch (InvalidOperationException e)
+        {
+            // Its message goes on to repeat itself on further lines.
+            throw new InvalidDataException(e.Message.Trim().Split('\n')[0].Trim(), e);
+        }
+        return package;
     }
 
     // The format, from the content: an OOXML package is a ZIP whose officeDocument relationship
@@ -149,8 +167,10 @@ public static class OfficeReader
         return XDocument.Load(stream);
     }
 
+    // A FormatException is the SDK's for an attribute that isn't one of its type's values, such
+    // as a header reference of type "odd".
     private static bool IsMalformed(Exception e) =>
-        e is InvalidDataException or XmlException or OpenXmlPackageException or FileFormatException;
+        e is InvalidDataException or XmlException or OpenXmlPackageException or FileFormatException or FormatException;
 
     private static RefusalException Malformed(string path, Exception e) =>
         new($"{path}: a malformed package: {e.Message}");

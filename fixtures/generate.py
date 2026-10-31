@@ -1391,6 +1391,30 @@ def sheets() -> Workbook:
     return f
 
 
+def merges() -> Workbook:
+    """Merged ranges that end while others go on: two ranges starting on row 1, one ending
+    there and one a row later, then one starting on row 4, each with cells under or beside it
+    once it ends, so a range kept past its last row would claim a cell that isn't its own."""
+    f = Workbook("merges")
+    s = f.sheet("Merges")
+    s.merge("A1:B1", "Left pair", "text")
+    s.merge("D1:E2", "Right block", "text")
+    s.value("C1", "between", "text")
+    s.value("A2", "under the pair", "text")
+    s.value("B2", 2, "number")
+    s.value("C2", "beside the block", "text")
+    for column, value in zip("ABCDE", [31, 32, 33, 34, 35]):
+        s.value(f"{column}3", value, "number")
+    s.value("A4", "before the later range", "text")
+    s.merge("B4:C5", "Later", "text")
+    s.value("D4", "after it", "text")
+    s.value("A5", 5, "number")
+    s.value("D5", "still after it", "text")
+    for column, value in zip("ABCD", [61, 62, 63, 64]):
+        s.value(f"{column}6", value, "number")
+    return f
+
+
 def drawings() -> Workbook:
     """A sheet's chart and pictures: a bar chart over the sheet's cells, the same picture twice
     (two parts in openpyxl's file, one file either way), and another sheet's picture."""
@@ -1422,7 +1446,7 @@ def dates_1904() -> Workbook:
     return f
 
 
-XLSX_FIXTURES = [cells, formulas, sheets, drawings, dates_1904]
+XLSX_FIXTURES = [cells, formulas, sheets, merges, drawings, dates_1904]
 
 
 # pptx: presentations written by python-pptx and re-saved by LibreOffice.

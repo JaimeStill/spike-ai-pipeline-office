@@ -14,7 +14,7 @@ internal static class Fixtures
     ];
 
     /// <summary>The generated xlsx fixtures, by name; no name is a docx fixture's too.</summary>
-    public static readonly string[] Xlsx = ["cells", "formulas", "sheets", "drawings", "dates-1904"];
+    public static readonly string[] Xlsx = ["cells", "formulas", "sheets", "merges", "drawings", "dates-1904"];
 
     /// <summary>The generated pptx fixtures, by name; no name is a docx or xlsx fixture's too.</summary>
     public static readonly string[] Pptx = ["slides", "bullets", "groups", "slide-objects"];
@@ -27,6 +27,19 @@ internal static class Fixtures
 
     /// <summary>The writers of each generated pptx fixture: python-pptx, and LibreOffice's re-save.</summary>
     public static readonly string[] PptxWriters = ["python-pptx", "libreoffice"];
+
+    /// <summary>The variant name of the real-world files, which have one each, as their
+    /// application wrote it (<c>fixtures/realworld/</c>).</summary>
+    public const string RealWorld = "realworld";
+
+    /// <summary>The real-world docx files, by name; no name is a generated fixture's too.</summary>
+    public static readonly string[] RealWorldDocx = ["chart-column", "delins", "footnote", "test-comment", "unit-test-formatting"];
+
+    /// <summary>The real-world xlsx files, by name.</summary>
+    public static readonly string[] RealWorldXlsx = ["chart-sheet", "date-format-tests", "excel-online-index-space", "simple-monthly-budget", "with-two-charts"];
+
+    /// <summary>The real-world pptx files, by name.</summary>
+    public static readonly string[] RealWorldPptx = ["chart-2d", "layouts", "powerpoint-sample", "shapes"];
 
     /// <summary>Every generated fixture, docx, xlsx, then pptx, in each of its variants.</summary>
     public static TheoryData<string, string> Variants
@@ -48,17 +61,56 @@ internal static class Fixtures
         }
     }
 
-    /// <summary>A generated fixture's format, its file extension.</summary>
-    public static string Format(string name) => Xlsx.Contains(name) ? "xlsx" : Pptx.Contains(name) ? "pptx" : "docx";
+    /// <summary>Every real-world file, docx, xlsx, then pptx, as a fixture of the real-world
+    /// variant.</summary>
+    public static TheoryData<string, string> RealWorldFiles
+    {
+        get
+        {
+            var data = new TheoryData<string, string>();
+            foreach (var name in RealWorldDocx.Concat(RealWorldXlsx).Concat(RealWorldPptx))
+            {
+                data.Add(name, RealWorld);
+            }
+            return data;
+        }
+    }
 
-    /// <summary>A generated fixture variant's file.</summary>
+    /// <summary>The generated fixtures' variants, then the real-world files.</summary>
+    public static TheoryData<string, string> All
+    {
+        get
+        {
+            var data = Variants;
+            foreach (var name in RealWorldDocx.Concat(RealWorldXlsx).Concat(RealWorldPptx))
+            {
+                data.Add(name, RealWorld);
+            }
+            return data;
+        }
+    }
+
+    /// <summary>A fixture's format, its file extension.</summary>
+    public static string Format(string name) =>
+        Xlsx.Contains(name) || RealWorldXlsx.Contains(name) ? "xlsx"
+        : Pptx.Contains(name) || RealWorldPptx.Contains(name) ? "pptx"
+        : "docx";
+
+    /// <summary>A fixture variant's file: a generated fixture's, or a real-world file.</summary>
     public static string DocumentPath(string name, string variant) =>
-        Path.Combine(Root, "fixtures", "generated", Format(name), $"{name}.{variant}.{Format(name)}");
+        variant == RealWorld
+            ? Path.Combine(Root, "fixtures", "realworld", Format(name), $"{name}.{Format(name)}")
+            : Path.Combine(Root, "fixtures", "generated", Format(name), $"{name}.{variant}.{Format(name)}");
 
     /// <summary>A fixture variant's ground truth: the variant's own where the generator wrote one,
-    /// because LibreOffice's re-save changed what the document holds, or else the fixture's.</summary>
+    /// because LibreOffice's re-save changed what the document holds, or else the fixture's; a
+    /// real-world file's is its own, written by hand from its XML.</summary>
     public static string TruthPath(string name, string variant)
     {
+        if (variant == RealWorld)
+        {
+            return Path.Combine(Root, "fixtures", "realworld", Format(name), $"{name}.truth.json");
+        }
         var directory = Path.Combine(Root, "fixtures", "generated", Format(name));
         var own = Path.Combine(directory, $"{name}.{variant}.truth.json");
         return File.Exists(own) ? own : Path.Combine(directory, $"{name}.truth.json");

@@ -2,6 +2,9 @@ using System.Diagnostics;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
+using SpikeAiPipeline.Office.Model;
+using SpikeAiPipeline.Office.Reading;
+using SpikeAiPipeline.Office.Rendering;
 
 namespace SpikeAiPipeline.Office.Tests;
 
@@ -178,6 +181,27 @@ public sealed class CliTests : IDisposable
         }
     }
 
+    public static TheoryData<string, string> RealWorldFiles => Fixtures.RealWorldFiles;
+
+    // Each real-world file, written by Word, Excel, or PowerPoint, converts on the published binary
+    // to what the converter's seam gives, whose model the file's ground truth checks.
+    [Theory]
+    [MemberData(nameof(RealWorldFiles))]
+    public void ARealWorldFileConvertsToStdoutAlone(string name, string variant)
+    {
+        var path = Fixtures.DocumentPath(name, variant);
+        var document = OfficeReader.Read(path);
+
+        foreach (var (format, expected) in new[] { ("json", DocumentJson.Serialize(document)), ("markdown", MarkdownRenderer.Render(document)) })
+        {
+            var result = Run(path, "--format", format);
+
+            Assert.Equal(Cli.Converted, result.ExitCode);
+            Assert.Equal(expected, result.Stdout);
+            Assert.Empty(result.Stderr);
+        }
+    }
+
     [Fact]
     public void NothingIsWrittenWithoutTheMediaOption()
     {
@@ -311,6 +335,42 @@ public sealed class CliTests : IDisposable
         AssertRefused(
             Package("broken.pptx", "ppt/presentation.xml", "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml", "<p:presentation"),
             "a malformed package");
+
+    // An attribute outside its type's values, as poi's test file for its bug 60293 has: a header
+    // reference of type "odd", which no header kind is.
+    [Fact]
+    public void AnAttributeOutsideItsValuesIsRefusedAsMalformed() =>
+        AssertRefused(
+            Package(
+                "odd.docx",
+                "word/document.xml",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
+                "<w:document xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" " +
+                "xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><w:body><w:p/>" +
+                "<w:sectPr><w:headerReference w:type=\"odd\" r:id=\"rId9\"/></w:sectPr></w:body></w:document>"),
+            "a malformed package");
+
+    // A relationship to a part the package lacks, as poi's picture.xlsx has (its connections
+    // part), fails the SDK when it first loads the package's parts.
+    [Fact]
+    public void ARelationshipToAMissingPartIsRefusedAsMalformed() =>
+        AssertRefused(
+            Zip(
+                "missing.xlsx",
+                ("[Content_Types].xml",
+                    "<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">" +
+                    "<Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/>" +
+                    "<Override PartName=\"/xl/workbook.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml\"/></Types>"),
+                ("_rels/.rels",
+                    "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
+                    "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"xl/workbook.xml\"/>" +
+                    "</Relationships>"),
+                ("xl/workbook.xml", "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheets/></workbook>"),
+                ("xl/_rels/workbook.xml.rels",
+                    "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" +
+                    "<Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/connections\" Target=\"connections.xml\"/>" +
+                    "</Relationships>")),
+            "doesn't exist in the package");
 
     private void AssertRefused(string path, string reason)
     {

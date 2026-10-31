@@ -7,11 +7,16 @@ using SpikeAiPipeline.Office.Rendering;
 namespace SpikeAiPipeline.Office.Tests;
 
 // The converter's seam, a document in and the model out, and the Markdown renderer over the
-// model, against the generated fixtures: the model element by element against the generator's
-// ground truth, then the JSON and the Markdown exactly.
+// model, against the generated fixtures and the real-world files: the model element by element
+// against the ground truth (the generator's, or a real-world file's, written by hand), then, for
+// the generated fixtures, the JSON and the Markdown exactly.
 public sealed class ConverterTests
 {
-    public static TheoryData<string, string> Cases => Fixtures.Variants;
+    // Every fixture with its ground truth: the generated variants and the real-world files.
+    public static TheoryData<string, string> Cases => Fixtures.All;
+
+    // The generated variants, whose exact output the Expected files hold.
+    public static TheoryData<string, string> Generated => Fixtures.Variants;
 
     [Theory]
     [MemberData(nameof(Cases))]
@@ -122,12 +127,12 @@ public sealed class ConverterTests
     }
 
     [Theory]
-    [MemberData(nameof(Cases))]
+    [MemberData(nameof(Generated))]
     public void JsonIsExact(string name, string variant) =>
         Assert.Equal(Fixtures.Expected(name, variant, "json"), DocumentJson.Serialize(OfficeReader.Read(Fixtures.DocumentPath(name, variant))));
 
     [Theory]
-    [MemberData(nameof(Cases))]
+    [MemberData(nameof(Generated))]
     public void MarkdownIsExact(string name, string variant) =>
         Assert.Equal(Fixtures.Expected(name, variant, "md"), MarkdownRenderer.Render(OfficeReader.Read(Fixtures.DocumentPath(name, variant))));
 }

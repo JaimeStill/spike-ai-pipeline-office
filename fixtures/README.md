@@ -1,6 +1,27 @@
 # Fixtures
 
-The documents office's tests read, committed and never generated in the check.
+The documents office's tests read, committed and never generated in the check. The pool is two
+sets, and nothing else: the generated set in `generated/` and the real-world set in
+`realworld/`. The hermetic check, `mise run check`, runs both, wherever it runs, locally or in
+CI; no test reads a document from anywhere else, and none is fetched.
+
+## Real-world set
+
+`realworld/` holds documents Word, Excel, and PowerPoint wrote themselves, which the generated
+set can't have: Word's own chart and tracked changes, Excel's cached formula results, shared
+formulas, and 1904 dates, PowerPoint's bullets inherited from a real master. They are copied
+byte for byte from the test data of three permissively licensed repositories, each pinned to a
+commit: dotnet/Open-XML-SDK (MIT), apache/poi (Apache-2.0), and docling-project/docling (MIT).
+`realworld/SOURCES.md` lists each file's repository, commit, path, license, writer, size, and
+SHA-256, what it covers, and what its truth covers; the repositories' licenses and notices are
+in `realworld/licenses/`.
+
+Each file is `realworld/<format>/<name>.<format>`, with its ground truth beside it in the
+generated set's format, `<name>.truth.json`, written by hand from the file's XML rather than
+from office's output. Every truth is whole. The tests compare the model against it as they do a
+generated fixture's, and run each file through the published binary; they keep no exact JSON or
+Markdown of these files, whose truth is the check. Nothing regenerates the set: a file is added
+by hand, with its row in `SOURCES.md` and its truth.
 
 ## Generated set
 
@@ -79,6 +100,7 @@ The pptx fixtures are in `generated/pptx/`:
 | `cells` (xlsx) | text, rich text, numbers, booleans, errors; dates, datetimes, and times in default, built-in (14, 22, 20), and custom formats, among them quoted text and AM/PM; numbers in formats that aren't dates (`0.00%`, `#,##0`, and letters quoted, bracketed, and escaped); dates either side of the 1900 system's 29 February; a cell stored as an ISO date; a styled cell with no value; a sparse far corner |
 | `formulas` (xlsx) | formulas whose results are a number, text, an error, a boolean, and a date by its format; a shared formula over three cells; an array formula over three |
 | `sheets` (xlsx) | five sheets in an order that isn't their names': a hidden, an empty, and a very hidden one; merged cells across columns, rows, and both |
+| `merges` (xlsx) | two merged ranges starting on row 1, one ending there and one on row 2, then one starting on row 4, with cells under and beside each once it has ended, so a range kept past its last row would claim a cell not its own |
 | `drawings` (xlsx) | a bar chart over the sheet's cells; the same picture twice on one sheet; a second sheet's picture |
 | `dates-1904` (xlsx) | dates and a datetime on the 1904 date system's first day (serial 0.5), and a plain number |
 | `slides` (pptx) | five slides presented in an order that isn't their parts' (welcome, hidden, agenda, closing, questions), a hidden slide, notes of one and two paragraphs on three slides, a title slide's subtitle whose layout turns the master's bullets off, a text box, and a content placeholder left empty |
@@ -208,6 +230,9 @@ LibreOffice: `LibreOffice 26.8.1.1 680(Build:1)`
 | `generated/xlsx/sheets.openpyxl.xlsx` | `4f9ff886b58cb379dce3ae2543ca0ea22db3138a02ba40a4c53ccc8570c02844` |
 | `generated/xlsx/sheets.libreoffice.xlsx` | `76aaac745885c3f8273d7b7a42667095138bb0177539473938cd098f42f49338` |
 | `generated/xlsx/sheets.truth.json` | `8d16ccc52fcfb17001ce016205d76358f9fe6d28e17dadbc7382d35599b1d7c3` |
+| `generated/xlsx/merges.openpyxl.xlsx` | `0c4c11659aadc740b1367bb0932d489e894ee7630995b662ef90a98ae45cf3cc` |
+| `generated/xlsx/merges.libreoffice.xlsx` | `b5ba5ca9175ab45537835858f737198560888ca45ddc11df2a6022db013288e1` |
+| `generated/xlsx/merges.truth.json` | `6459cacfc0f5e541c4b973dbb0934efb6cf5cb7f9e8dde67be389350062326ad` |
 | `generated/xlsx/drawings.openpyxl.xlsx` | `cc1d815da48fe887b677eceba421c63b31d6911b9b50f87e526e3f4ef7045100` |
 | `generated/xlsx/drawings.libreoffice.xlsx` | `9c48b55053519fecff0d4fe116a0c5da62f92fb5760bf5b0ac642229a4d4e923` |
 | `generated/xlsx/drawings.truth.json` | `15d4349cd6df7254bb6fcc8c393661f510ff0dccd337ea70870b809b10ede855` |

@@ -1,0 +1,280 @@
+{
+  "fixture": "shapes",
+  "format": "pptx",
+  "elements": [
+    {
+      "kind": "slide",
+      "number": 1,
+      "hidden": false,
+      "elements": [
+        {
+          "kind": "paragraph",
+          "text": "Learning PPTX"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Cloud"
+        },
+        {
+          "kind": "media",
+          "name": "8345fcf9642a79651ea36935f736e753e355a4df2d85eaaa1589837143b8f2f0.jpg",
+          "contentType": "image/jpeg",
+          "slide": 0
+        },
+        {
+          "kind": "table",
+          "rows": [
+            [
+              {
+                "text": "Column1",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "Column2",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "Column3",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "data1",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "data2",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "data3",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "slide",
+      "number": 2,
+      "hidden": false,
+      "elements": [
+        {
+          "kind": "heading",
+          "level": 1,
+          "text": "PPTX Title"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Subtitle"
+        },
+        {
+          "kind": "paragraph",
+          "text": "And second line"
+        }
+      ]
+    },
+    {
+      "kind": "slide",
+      "number": 3,
+      "hidden": false,
+      "elements": []
+    },
+    {
+      "kind": "slide",
+      "number": 4,
+      "hidden": false,
+      "elements": [
+        {
+          "kind": "table",
+          "rows": [
+            [
+              {
+                "text": "header1",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "header2",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "header3",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "A1",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "B1",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "C1",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "A2",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "A3",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "B3 and C3 are merged",
+                "colSpan": 2,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "A4",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "",
+                "colSpan": 2,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "A5",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "",
+                "colSpan": 2,
+                "rowSpan": 1
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "slide",
+      "number": 5,
+      "hidden": false,
+      "elements": [
+        {
+          "kind": "table",
+          "rows": [
+            [
+              {
+                "text": "Link Type",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "Target URI",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "Web Page",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "http://poi.apache.org/",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "Place in this document",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "/ppt/slides/slide2.xml",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "Email",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "mailto:dev@poi.apache.org?subject=Hi%20There",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ],
+            [
+              {
+                "text": "",
+                "colSpan": 1,
+                "rowSpan": 1
+              },
+              {
+                "text": "",
+                "colSpan": 1,
+                "rowSpan": 1
+              }
+            ]
+          ]
+        },
+        {
+          "kind": "heading",
+          "level": 1,
+          "text": "Hyperlinks"
+        }
+      ]
+    },
+    {
+      "kind": "slide",
+      "number": 6,
+      "hidden": false,
+      "elements": []
+    }
+  ],
+  "absent": [
+    "Click to edit Master title style",
+    "Click to edit Master text styles",
+    "Click to edit Master subtitle style"
+  ],
+  "once": []
+}

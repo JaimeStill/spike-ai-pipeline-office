@@ -186,7 +186,8 @@ internal static class XlsxReader
         }
         if (type == S.CellValues.SharedString)
         {
-            return int.TryParse(raw, NumberStyles.None, CultureInfo.InvariantCulture, out var index) && index < context.Strings.Count
+            // Excel Online writes an index with a trailing space (<v>2 </v>), which Excel reads.
+            return int.TryParse(raw, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture, out var index) && index < context.Strings.Count
                 ? CellValue.OfText(context.Strings[index])
                 : throw new InvalidDataException($"cell {cell.CellReference}'s shared string {raw} is not in the shared strings");
         }
