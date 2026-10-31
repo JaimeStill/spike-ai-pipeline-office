@@ -65,14 +65,16 @@ been run minutes before, so its files were very likely in memory. Only the first
 | What | Bytes | MiB |
 |---|---|---|
 | `spike-ai-pipeline-office`, linux-x64, NativeAOT, as published | 30,197,712 | 28.80 |
-| `spike-ai-pipeline-office`, linux-arm64, NativeAOT, as published | (from the pull request's CI run, recorded before merge) | |
+| `spike-ai-pipeline-office`, linux-arm64, NativeAOT, as published (CI) | 30,402,544 | 28.99 |
 | its debug symbols, `spike-ai-pipeline-office.dbg`, published beside it, not in the release archive | 84,137,280 | 80.24 |
 
 office's linux-arm64 binary can't be measured on this laptop: a NativeAOT publish for
 linux-arm64 on x64 fails at the link (the system linker has no aarch64 target). Its figure is the
 binary's own size, not a release archive's, as CI's check job publishes it natively on
 `ubuntu-24.04-arm` and reports it to the job summary ("Report the published binary's size"),
-recorded from the pull request's CI run. Every other row is the laptop's, from run `office`.
+recorded from the pull request's CI run (pull request 1, run 41253596007, at 0.1.0+aca7978).
+The same run's linux-x64 publish on `ubuntu-24.04` was 30,193,568 bytes, 4,144 bytes under the
+laptop's. Every other row is the laptop's, from run `office`.
 
 ## How the fidelity is scored
 
