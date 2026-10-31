@@ -17,11 +17,22 @@ using SpikeAiPipeline.Office.Baseline;
 //   --xberg <exe> --rusage <wrapper> --out <runs-dir> [--runs 5] [--timeout 60]
 // or, to see the texts the scoring reads in one Markdown file: SpikeAiPipeline.Office.Baseline
 //   --dump <file.md>
+// or, to score one Markdown file against a truth: SpikeAiPipeline.Office.Baseline --score
+//   <truth.json> <docx|xlsx|pptx> <file.md>
 
 if (args is ["--dump", var dumpPath])
 {
     var dumped = Rendered.Of(File.ReadAllText(dumpPath));
     Console.WriteLine(string.Join("\n", dumped.Leaves.Select(l => "leaf: " + l)));
+    return;
+}
+if (args is ["--score", var truthPath, var format, var markdownPath])
+{
+    var scored = Fidelity.Score(Expected.Of(JsonNode.Parse(File.ReadAllText(truthPath))!), Rendered.Of(File.ReadAllText(markdownPath)), format);
+    foreach (var (kind, score) in scored.Where(s => s.Value.Expected > 0))
+    {
+        Console.WriteLine($"{kind}: {score.Found} / {score.Expected}{(score.Missed.Count > 0 ? "; missed " + string.Join("; ", score.Missed) : "")}");
+    }
     return;
 }
 var options = new Dictionary<string, string>();
@@ -60,7 +71,11 @@ Console.Error.WriteLine($"baseline: {pool.Count} pool files, {tools.Length} tool
 var floor = Enumerable.Range(0, runs).Select(_ => runner.Once("/bin/true", []).Run).ToList();
 
 var fileResults = new JsonArray();
-var totals = tools.ToDictionary(t => t.Name, _ => Fidelity.Kinds.ToDictionary(k => k, _ => (Files: 0, Expected: 0, Found: 0)));
+// The fidelity is summed three ways: over the whole pool, over the generated set, and over the
+// real-world set, the files Word, Excel, and PowerPoint wrote, which office's Markdown wasn't
+// built around as it was around the generated set's features.
+string[] subsets = ["pooled", "generated", "realworld"];
+var totals = subsets.ToDictionary(s => s, _ => tools.ToDictionary(t => t.Name, _ => Fidelity.Kinds.ToDictionary(k => k, _ => (Files: 0, Expected: 0, Found: 0))));
 var perTool = tools.ToDictionary(t => t.Name, _ => new List<(PoolFile File, List<Run> Runs, string Status)>());
 foreach (var file in pool)
 {
@@ -103,8 +118,11 @@ foreach (var file in pool)
             {
                 continue;
             }
-            var total = totals[tool.Name][kind];
-            totals[tool.Name][kind] = (total.Files + 1, total.Expected + score.Expected, total.Found + score.Found);
+            foreach (var subset in new[] { "pooled", file.Set })
+            {
+                var total = totals[subset][tool.Name][kind];
+                totals[subset][tool.Name][kind] = (total.Files + 1, total.Expected + score.Expected, total.Found + score.Found);
+            }
             kinds[kind] = new JsonObject
             {
                 ["expected"] = score.Expected,
@@ -151,22 +169,27 @@ foreach (var file in pool)
 var leftBehind = work.EnumerateFileSystemInfos().Select(f => f.Name).Where(n => n is not "stdout" and not "stderr").Order(StringComparer.Ordinal).ToList();
 work.Delete(recursive: true);
 
-var fidelity = new JsonArray();
-foreach (var kind in Fidelity.Kinds)
+var fidelity = new JsonObject();
+foreach (var subset in subsets)
 {
-    foreach (var tool in tools)
+    var rows = new JsonArray();
+    foreach (var kind in Fidelity.Kinds)
     {
-        var (files, expectedCount, found) = totals[tool.Name][kind];
-        fidelity.Add(new JsonObject
+        foreach (var tool in tools)
         {
-            ["kind"] = kind,
-            ["tool"] = tool.Name,
-            ["files"] = files,
-            ["expected"] = expectedCount,
-            ["found"] = found,
-            ["score"] = expectedCount == 0 ? null : Stats.Round((double)found / expectedCount, 3),
-        });
+            var (files, expectedCount, found) = totals[subset][tool.Name][kind];
+            rows.Add(new JsonObject
+            {
+                ["kind"] = kind,
+                ["tool"] = tool.Name,
+                ["files"] = files,
+                ["expected"] = expectedCount,
+                ["found"] = found,
+                ["score"] = expectedCount == 0 ? null : Stats.Round((double)found / expectedCount, 3),
+            });
+        }
     }
+    fidelity[subset] = rows;
 }
 
 var performance = new JsonArray();
@@ -217,7 +240,9 @@ foreach (var footprint in new[] { markitdownFootprint, xbergFootprint })
 var finished = DateTimeOffset.Now;
 var results = new JsonObject
 {
-    ["schema"] = 1,
+    // Schema 2: fidelity is by subset (pooled, generated, realworld), and chartValue is the
+    // region rule, the first run's table rule now chartValueTable.
+    ["schema"] = 2,
     ["started"] = started.ToString("o", CultureInfo.InvariantCulture),
     ["finished"] = finished.ToString("o", CultureInfo.InvariantCulture),
     ["host"] = Footprint.Host(),
@@ -261,9 +286,13 @@ var dir = Directory.CreateDirectory(Path.Combine(outRoot, $"{day}-{n}"));
 var output = Path.Combine(dir.FullName, "results.json");
 File.WriteAllText(output, results.ToJsonString(new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }) + "\n");
 Console.Error.WriteLine($"baseline: wrote {Path.GetRelativePath(root, output)}");
-foreach (var row in fidelity)
+foreach (var subset in new[] { "pooled", "realworld" })
 {
-    Console.Error.WriteLine($"  {row!["kind"],-12} {row["tool"],-10} {row["found"],6} / {row["expected"],-6} {row["score"]}");
+    Console.Error.WriteLine($"baseline: {subset}");
+    foreach (var row in fidelity[subset]!.AsArray())
+    {
+        Console.Error.WriteLine($"  {row!["kind"],-15} {row["tool"],-10} {row["found"],6} / {row["expected"],-6} {row["score"]}");
+    }
 }
 
 // The end of a long text, where a traceback's exception is.

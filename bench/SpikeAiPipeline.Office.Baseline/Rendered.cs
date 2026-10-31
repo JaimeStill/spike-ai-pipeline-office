@@ -44,6 +44,10 @@ internal sealed class Rendered
     /// and code blocks.</summary>
     public List<string> Leaves { get; } = [];
 
+    /// <summary>For each text of <see cref="Leaves"/>, the indexes of its block's first and last
+    /// texts: a table cell's are its table's, any other text's its own.</summary>
+    public List<(int First, int Last)> LeafBlocks { get; } = [];
+
     public static Rendered Of(string markdown)
     {
         var rendered = new Rendered();
@@ -68,12 +72,12 @@ internal sealed class Rendered
             case HeadingBlock heading:
                 var headingText = Inlines(heading.Inline);
                 Headings.Add((heading.Level, headingText));
-                Leaves.Add(headingText);
+                Leaf(headingText);
                 break;
             case ParagraphBlock paragraph:
                 var text = Inlines(paragraph.Inline);
                 Paragraphs.Add(text);
-                Leaves.Add(text);
+                Leaf(text);
                 break;
             case ListBlock list:
                 var first = true;
@@ -85,7 +89,7 @@ internal sealed class Rendered
                         var itemText = Inlines(itemParagraph.Inline);
                         int? start = list.IsOrdered && int.TryParse(list.OrderedStart, out var n) ? n : list.IsOrdered ? 1 : null;
                         ListItems.Add(new RenderedListItem(itemText, listDepth, list.IsOrdered, first, start));
-                        Leaves.Add(itemText);
+                        Leaf(itemText);
                         rest = item.Skip(1);
                     }
                     first = false;
@@ -96,6 +100,7 @@ internal sealed class Rendered
                 }
                 break;
             case Table table:
+                var firstLeaf = Leaves.Count;
                 var rows = new List<List<string>>();
                 foreach (var row in table.OfType<TableRow>())
                 {
@@ -109,9 +114,13 @@ internal sealed class Rendered
                     rows.Add(cells);
                 }
                 Tables.Add(rows);
+                for (var i = firstLeaf; i < Leaves.Count; i++)
+                {
+                    LeafBlocks.Add((firstLeaf, Leaves.Count - 1));
+                }
                 break;
             case CodeBlock code:
-                Leaves.Add(Text.Norm(code.Lines.ToString()));
+                Leaf(Text.Norm(code.Lines.ToString()));
                 break;
             case HtmlBlock html:
                 Images += Count(html.Lines.ToString(), "<img");
@@ -123,6 +132,12 @@ internal sealed class Rendered
             default:
                 break;
         }
+    }
+
+    private void Leaf(string text)
+    {
+        LeafBlocks.Add((Leaves.Count, Leaves.Count));
+        Leaves.Add(text);
     }
 
     private string Inlines(ContainerInline? inlines)

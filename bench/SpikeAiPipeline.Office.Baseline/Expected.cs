@@ -11,6 +11,15 @@ internal sealed record ExpectedListItem(string Text, int Level, bool Ordered, bo
 /// its comparison key (<see cref="Text.Key"/>) and its text for the per-file detail.</summary>
 internal sealed record ExpectedTable(Dictionary<(int Row, int Column), (string Key, string Text)> Cells);
 
+/// <summary>A chart of the truth: the points its series have, in series order; its title, empty
+/// when it has none; and its labels, its series' names and categories, which are not values.</summary>
+internal sealed record ExpectedChart(List<double> Values, string Title, List<string> Labels);
+
+/// <summary>One step of the truth in reading order: a text (a heading's, paragraph's, list item's,
+/// table cell's, or sheet's name), or a chart, by its index in <see cref="Expected.Charts"/>, with
+/// <see cref="Text"/> its title.</summary>
+internal sealed record ExpectedStep(string Text, int Chart);
+
 /// <summary>What a document's ground truth says a rendering of it holds, element kind by element
 /// kind, read from the truth file itself (the truth's shape, <c>fixtures/README.md</c>), never
 /// from office's model.</summary>
@@ -27,8 +36,12 @@ internal sealed class Expected
     public List<string> SlideAnchors { get; } = [];
     public List<string> SlideNotes { get; } = [];
 
-    /// <summary>Each chart's values, the points its series have, in series order.</summary>
-    public List<List<double>> Charts { get; } = [];
+    /// <summary>Each chart, in reading order.</summary>
+    public List<ExpectedChart> Charts { get; } = [];
+
+    /// <summary>The truth in reading order, the body's then the stories', as the chart-value rule
+    /// reads it to place each chart among the texts around it.</summary>
+    public List<ExpectedStep> Sequence { get; } = [];
     public int Media { get; private set; }
 
     /// <summary>The distinct texts of every section's headers and footers.</summary>
@@ -83,11 +96,14 @@ internal sealed class Expected
             {
                 case "heading" when Norm(element) is { Length: > 0 } text:
                     Headings.Add(((int)element["level"]!, text));
+                    Step(text);
                     break;
                 case "paragraph" when Norm(element) is { Length: > 0 } text:
                     Paragraphs.Add(text);
+                    Step(text);
                     break;
                 case "listItem" when Norm(element) is { Length: > 0 } text:
+                    Step(text);
                     ListItems.Add(new ExpectedListItem(text, (int)element["level"]!, (bool)element["ordered"]!, (bool)element["start"]!, (int?)element["startAt"]));
                     break;
                 case "table":
@@ -95,6 +111,7 @@ internal sealed class Expected
                     break;
                 case "sheet":
                     SheetNames.Add(Text.Norm((string?)element["name"]));
+                    Step(SheetNames[^1]);
                     Body(Items(element["elements"]));
                     break;
                 case "slide":
@@ -143,6 +160,7 @@ internal sealed class Expected
             {
                 case "heading" or "paragraph" or "listItem" when Norm(element) is { Length: > 0 } text:
                     texts.Add(text);
+                    Step(text);
                     break;
                 case "table":
                     foreach (var row in Items(element["rows"]))
@@ -226,15 +244,23 @@ internal sealed class Expected
     }
 
     // A document cell's text is its elements' texts joined by spaces, its pictures and charts
-    // counted among the document's. A sheet cell's is its value: a number in its shortest form,
-    // a boolean as TRUE or FALSE, the rest as their text; with no value, its formula after =, as
-    // no tool evaluates formulas; with neither, none.
+    // counted among the document's, and its elements' texts its steps. A sheet cell's is its
+    // value, and its step: a number in its shortest form, a boolean as TRUE or FALSE, the rest as
+    // their text; with no value, its formula after =, as no tool evaluates formulas; with
+    // neither, none.
     private string CellText(JsonNode cell)
     {
         if (cell["elements"] is JsonArray elements)
         {
             return Text.Norm(string.Join(" ", Flatten(elements.OfType<JsonNode>())));
         }
+        var text = SheetCellText(cell);
+        Step(text);
+        return text;
+    }
+
+    private static string SheetCellText(JsonNode cell)
+    {
         return cell["value"] switch
         {
             JsonValue value when value.TryGetValue<double>(out var number) => number.ToString("R", CultureInfo.InvariantCulture),
@@ -247,8 +273,11 @@ internal sealed class Expected
     private void Chart(JsonNode chart)
     {
         var values = new List<double>();
+        var labels = new List<string>();
         foreach (var series in Items(chart["series"]))
         {
+            labels.Add(Text.Norm((string?)series["name"]));
+            labels.AddRange(Items(series["categories"]).Select(c => Text.Norm(c.ToString())));
             foreach (var value in Items(series["values"]))
             {
                 if (value is JsonValue v && v.TryGetValue<double>(out var number))
@@ -257,7 +286,17 @@ internal sealed class Expected
                 }
             }
         }
-        Charts.Add(values);
+        var title = Text.Norm((string?)chart["title"]);
+        Sequence.Add(new ExpectedStep(title, Charts.Count));
+        Charts.Add(new ExpectedChart(values, title, [.. labels.Where(l => l.Length > 0).Distinct()]));
+    }
+
+    private void Step(string text)
+    {
+        if (text.Length > 0)
+        {
+            Sequence.Add(new ExpectedStep(text, -1));
+        }
     }
 
     // A cell reference's column, from 0: A is 0, Z 25, AA 26.

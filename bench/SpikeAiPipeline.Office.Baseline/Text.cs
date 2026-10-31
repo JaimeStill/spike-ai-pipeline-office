@@ -70,6 +70,43 @@ internal static partial class Text
     /// <summary>A number's key, as <see cref="Key"/> gives it for the number's text.</summary>
     public static string NumberKey(double number) => "#" + number.ToString("R", CultureInfo.InvariantCulture);
 
+    /// <summary>The numbers written in a text, each as its key (<see cref="NumberKey"/>) and its
+    /// offset: a token is a whole number as written, never a part of a word or of another number.
+    /// It is an optional sign, digits (grouped in threes by commas, or not), an optional fraction,
+    /// and an optional exponent; it is not preceded by a letter, digit, underscore, or point, nor
+    /// by a digit and a comma, hyphen, slash, or colon, and not followed by a letter, digit, or
+    /// underscore, nor by a point, comma, hyphen, slash, or colon and a digit. So "Q1", "x2",
+    /// "1.2.3", "2021-10-31", "10/31", "16:51", and "1-5" give no token at all; 1,234.50 and
+    /// 1234.5 are one value, as are 2.0 and 2, every tool's text read the same way. A sign is the
+    /// token's when no letter, digit, point, or other sign is before it.</summary>
+    public static IEnumerable<(string Key, int Offset)> NumberTokens(string text)
+    {
+        foreach (Match match in NumberTokenPattern().Matches(text))
+        {
+            var digits = match.Value.Replace(",", "", StringComparison.Ordinal);
+            if (double.TryParse(digits, NumberStyles.Float, CultureInfo.InvariantCulture, out var number) && double.IsFinite(number))
+            {
+                yield return (NumberKey(number), match.Index);
+            }
+        }
+    }
+
+    /// <summary>A text with each whole occurrence of the given labels, one not inside a longer word
+    /// or number, replaced by spaces of its length, so the offsets of what is left stay the
+    /// same.</summary>
+    public static string Blank(string text, IEnumerable<string> labels)
+    {
+        var result = text;
+        foreach (var label in labels)
+        {
+            result = Regex.Replace(result, @"(?<![\p{L}\p{N}_])" + Regex.Escape(label) + @"(?![\p{L}\p{N}_])", m => new string(' ', m.Length));
+        }
+        return result;
+    }
+
+    [GeneratedRegex(@"(?<![\p{L}\p{N}_.]|\d[,\-/:])(?:(?<![\p{L}\p{N}_.+\-])[+-])?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:[eE][+-]?\d+)?(?![\p{L}\p{N}_]|[.,\-/:]\d)")]
+    private static partial Regex NumberTokenPattern();
+
     [GeneratedRegex(@"^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$")]
     private static partial Regex NumberPattern();
 

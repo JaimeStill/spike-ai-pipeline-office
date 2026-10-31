@@ -14,7 +14,7 @@ internal static class Fidelity
     public static readonly string[] Kinds =
     [
         "heading", "paragraph", "listItem", "tableCell", "sheetName", "slideOrder", "slideNotes",
-        "chartValue", "media", "headerFooter", "note", "comment",
+        "chartValue", "chartValueTable", "media", "headerFooter", "note", "comment",
     ];
 
     private const int MissedShown = 10;
@@ -39,7 +39,10 @@ internal static class Fidelity
             ["sheetName"] = Consume(expected.SheetNames, rendered.Headings, (e, r) => r.Text == e || r.Text.StartsWith(e + " (", StringComparison.Ordinal), e => e),
             ["slideOrder"] = SlideOrder(expected.SlideAnchors, rendered.Leaves),
             ["slideNotes"] = Contained(expected.SlideNotes, rendered.Leaves),
-            ["chartValue"] = ChartValues(expected.Charts, rendered.Tables),
+            ["chartValue"] = ChartValues(expected, rendered),
+            // The first run's rule, kept beside it so the change shows: a chart's values in the
+            // one rendered table that holds the most of them, wherever that table is.
+            ["chartValueTable"] = ChartValuesInTables([.. expected.Charts.Select(c => c.Values)], rendered.Tables),
             // A picture counts when the rendering has an image, one for each: an image link or an
             // HTML img tag. Its target isn't compared, as each tool names a picture its own way.
             ["media"] = new KindScore(expected.Media, Math.Min(expected.Media, rendered.Images), []),
@@ -262,7 +265,7 @@ internal static class Fidelity
     // Each chart, in order, takes the rendered table no earlier chart took that holds the most of
     // its values, compared as numbers; a value counts when that table has it, each table cell
     // standing for one value at most.
-    private static KindScore ChartValues(List<List<double>> charts, List<List<List<string>>> rendered)
+    private static KindScore ChartValuesInTables(List<List<double>> charts, List<List<List<string>>> rendered)
     {
         var taken = new bool[rendered.Count];
         var total = 0;
@@ -295,4 +298,104 @@ internal static class Fidelity
         }
         return new KindScore(total, found, missed);
     }
+
+    // The chart-value rule. A chart's region of the rendering is the texts (Rendered.Leaves, in
+    // reading order) strictly after its start and strictly before its end:
+    // - its start is the first text, from the last placed chart's start on, that holds the
+    //   chart's title; an untitled chart's, or one whose title the rendering doesn't have, is the
+    //   first text from there equal to the nearest anchor before the chart in the truth, and, with
+    //   no anchor before it in the truth, the rendering's beginning; an anchor in a rendered
+    //   table starts the region after the table's last cell, as the chart follows the table. When
+    //   the rendering has
+    //   neither its title nor that anchor, the chart is unplaced and none of its values count:
+    //   a farther anchor would make the region take in whatever the tool wrote before it;
+    // - its end is the first text after its start equal to the first anchor after the chart, in
+    //   the truth's order, that the rendering has there (a later chart's title, one holding it),
+    //   or the first cell of the rendered table it is in, though never before the start's next
+    //   text; with none, the rendering's end.
+    // An anchor is a text of the truth (Expected.Sequence) that isn't a number, so a sheet cell's
+    // 1 is never one. In the region, the chart's labels (its series' names and categories that
+    // aren't numbers) are blanked out, and each number token left (Text.NumberTokens) is one
+    // occurrence; each of the chart's values takes the first untaken occurrence of its value, and
+    // an occurrence one chart took no other can.
+    private static KindScore ChartValues(Expected expected, Rendered rendered)
+    {
+        var leaves = rendered.Leaves;
+        var taken = new HashSet<(int Leaf, int Offset)>();
+        var total = 0;
+        var found = 0;
+        var missed = new List<string>();
+        var lastStart = -1;
+        var sequence = expected.Sequence;
+        for (var s = 0; s < sequence.Count; s++)
+        {
+            if (sequence[s].Chart < 0)
+            {
+                continue;
+            }
+            var chart = expected.Charts[sequence[s].Chart];
+            var from = Math.Max(lastStart, 0);
+            var start = chart.Title.Length > 0 ? leaves.FindIndex(from, l => l.Contains(chart.Title, StringComparison.Ordinal)) : -1;
+            if (start < 0)
+            {
+                var before = sequence.Take(s).Select(Anchor).LastOrDefault(a => a is not null);
+                start = before is null ? -1 : leaves.FindIndex(from, l => AnchorMatches(before, l));
+                start = start < 0 ? start : rendered.LeafBlocks[start].Last;
+                if (before is not null && start < 0)
+                {
+                    // Unplaced: the rendering has neither the chart's title nor the text before it.
+                    total += chart.Values.Count;
+                    if (missed.Count < MissedShown)
+                    {
+                        missed.Add($"chart {sequence[s].Chart + 1}: unplaced, {chart.Values.Count} values");
+                    }
+                    continue;
+                }
+            }
+            var end = leaves.Count;
+            for (var p = s + 1; p < sequence.Count; p++)
+            {
+                if (Anchor(sequence[p]) is { } after && leaves.FindIndex(start + 1, l => AnchorMatches(after, l)) is >= 0 and var at)
+                {
+                    end = Math.Max(rendered.LeafBlocks[at].First, start + 1);
+                    break;
+                }
+            }
+            lastStart = start;
+
+            var occurrences = new List<(string Key, int Leaf, int Offset)>();
+            var labels = chart.Labels.Where(l => !Text.Key(l).StartsWith('#')).OrderByDescending(l => l.Length).ToList();
+            for (var l = start + 1; l < end; l++)
+            {
+                occurrences.AddRange(Text.NumberTokens(Text.Blank(leaves[l], labels)).Select(t => (t.Key, l, t.Offset)));
+            }
+            var chartFound = 0;
+            foreach (var key in chart.Values.Select(Text.NumberKey))
+            {
+                var occurrence = occurrences.FindIndex(o => o.Key == key && !taken.Contains((o.Leaf, o.Offset)));
+                if (occurrence >= 0)
+                {
+                    taken.Add((occurrences[occurrence].Leaf, occurrences[occurrence].Offset));
+                    chartFound++;
+                }
+            }
+            total += chart.Values.Count;
+            found += chartFound;
+            if (chartFound < chart.Values.Count && missed.Count < MissedShown)
+            {
+                missed.Add($"chart {sequence[s].Chart + 1}: {chart.Values.Count - chartFound} of {chart.Values.Count} values");
+            }
+        }
+        return new KindScore(total, found, missed);
+    }
+
+    // A step's text as an anchor: a text that isn't a number, or a chart's title; a chart with
+    // none, or a number, is no anchor.
+    private static ExpectedStep? Anchor(ExpectedStep step) =>
+        step.Text.Length > 0 && !Text.Key(step.Text).StartsWith('#') ? step : null;
+
+    // A text anchor matches a rendered text equal to it; a chart's title, one that holds it, as a
+    // tool may write "Chart: " before it.
+    private static bool AnchorMatches(ExpectedStep anchor, string leaf) =>
+        anchor.Chart >= 0 ? leaf.Contains(anchor.Text, StringComparison.Ordinal) : leaf == anchor.Text;
 }
