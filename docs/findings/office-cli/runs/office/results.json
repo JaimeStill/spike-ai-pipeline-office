@@ -1,0 +1,5904 @@
+{
+  "schema": 3,
+  "started": "2026-10-31T19:27:57.8348592-04:00",
+  "finished": "2026-10-31T19:28:05.0270356-04:00",
+  "host": {
+    "cpu": "Intel(R) Core(TM) Ultra 9 185H",
+    "logicalCpus": 22,
+    "memTotal": "32290188 kB",
+    "kernel": "7.2.11-arch1-1",
+    "os": "Omarchy",
+    "architecture": "x64",
+    "dotnet": "10.0.13"
+  },
+  "tool": {
+    "name": "office",
+    "version": "0.1.0+6ed0d0e403517fda965950e0d26e48728e15f6cb",
+    "command": "~/experiments/spike-ai-pipeline-office/.state/baseline/office/spike-ai-pipeline-office <file> --format markdown"
+  },
+  "markdig": "1.5.1+bbf197eaf3c96b9a6ada6532ec970b59751ca9c6",
+  "settings": {
+    "runs": 5,
+    "timeoutSeconds": 60
+  },
+  "pool": {
+    "files": 72,
+    "generated": 42,
+    "realworld": 30,
+    "docx": 38,
+    "xlsx": 20,
+    "pptx": 14
+  },
+  "wrapperFloor": {
+    "program": "/bin/true",
+    "medianMs": 0.789,
+    "maxRssKiB": 1528
+  },
+  "workDirectoryLeftBehind": [],
+  "fidelity": {
+    "pooled": [
+      {
+        "kind": "heading",
+        "files": 28,
+        "expected": 62,
+        "found": 62,
+        "score": 1
+      },
+      {
+        "kind": "paragraph",
+        "files": 47,
+        "expected": 179,
+        "found": 179,
+        "score": 1
+      },
+      {
+        "kind": "listItem",
+        "files": 15,
+        "expected": 167,
+        "found": 167,
+        "score": 1
+      },
+      {
+        "kind": "tableCell",
+        "files": 33,
+        "expected": 825,
+        "found": 825,
+        "score": 1
+      },
+      {
+        "kind": "sheetName",
+        "files": 20,
+        "expected": 39,
+        "found": 39,
+        "score": 1
+      },
+      {
+        "kind": "slideOrder",
+        "files": 13,
+        "expected": 38,
+        "found": 38,
+        "score": 1
+      },
+      {
+        "kind": "slideNotes",
+        "files": 6,
+        "expected": 14,
+        "found": 14,
+        "score": 1
+      },
+      {
+        "kind": "chartValue",
+        "files": 15,
+        "expected": 331,
+        "found": 331,
+        "score": 1
+      },
+      {
+        "kind": "chartValueTable",
+        "files": 15,
+        "expected": 331,
+        "found": 331,
+        "score": 1
+      },
+      {
+        "kind": "media",
+        "files": 18,
+        "expected": 50,
+        "found": 50,
+        "score": 1
+      },
+      {
+        "kind": "headerFooter",
+        "files": 6,
+        "expected": 32,
+        "found": 32,
+        "score": 1
+      },
+      {
+        "kind": "note",
+        "files": 5,
+        "expected": 13,
+        "found": 13,
+        "score": 1
+      },
+      {
+        "kind": "comment",
+        "files": 6,
+        "expected": 18,
+        "found": 18,
+        "score": 1
+      }
+    ],
+    "generated": [
+      {
+        "kind": "heading",
+        "files": 22,
+        "expected": 44,
+        "found": 44,
+        "score": 1
+      },
+      {
+        "kind": "paragraph",
+        "files": 28,
+        "expected": 90,
+        "found": 90,
+        "score": 1
+      },
+      {
+        "kind": "listItem",
+        "files": 10,
+        "expected": 76,
+        "found": 76,
+        "score": 1
+      },
+      {
+        "kind": "tableCell",
+        "files": 20,
+        "expected": 248,
+        "found": 248,
+        "score": 1
+      },
+      {
+        "kind": "sheetName",
+        "files": 12,
+        "expected": 22,
+        "found": 22,
+        "score": 1
+      },
+      {
+        "kind": "slideOrder",
+        "files": 8,
+        "expected": 20,
+        "found": 20,
+        "score": 1
+      },
+      {
+        "kind": "slideNotes",
+        "files": 4,
+        "expected": 10,
+        "found": 10,
+        "score": 1
+      },
+      {
+        "kind": "chartValue",
+        "files": 5,
+        "expected": 37,
+        "found": 37,
+        "score": 1
+      },
+      {
+        "kind": "chartValueTable",
+        "files": 5,
+        "expected": 37,
+        "found": 37,
+        "score": 1
+      },
+      {
+        "kind": "media",
+        "files": 10,
+        "expected": 32,
+        "found": 32,
+        "score": 1
+      },
+      {
+        "kind": "headerFooter",
+        "files": 4,
+        "expected": 21,
+        "found": 21,
+        "score": 1
+      },
+      {
+        "kind": "note",
+        "files": 2,
+        "expected": 10,
+        "found": 10,
+        "score": 1
+      },
+      {
+        "kind": "comment",
+        "files": 4,
+        "expected": 14,
+        "found": 14,
+        "score": 1
+      }
+    ],
+    "realworld": [
+      {
+        "kind": "heading",
+        "files": 6,
+        "expected": 18,
+        "found": 18,
+        "score": 1
+      },
+      {
+        "kind": "paragraph",
+        "files": 19,
+        "expected": 89,
+        "found": 89,
+        "score": 1
+      },
+      {
+        "kind": "listItem",
+        "files": 5,
+        "expected": 91,
+        "found": 91,
+        "score": 1
+      },
+      {
+        "kind": "tableCell",
+        "files": 13,
+        "expected": 577,
+        "found": 577,
+        "score": 1
+      },
+      {
+        "kind": "sheetName",
+        "files": 8,
+        "expected": 17,
+        "found": 17,
+        "score": 1
+      },
+      {
+        "kind": "slideOrder",
+        "files": 5,
+        "expected": 18,
+        "found": 18,
+        "score": 1
+      },
+      {
+        "kind": "slideNotes",
+        "files": 2,
+        "expected": 4,
+        "found": 4,
+        "score": 1
+      },
+      {
+        "kind": "chartValue",
+        "files": 10,
+        "expected": 294,
+        "found": 294,
+        "score": 1
+      },
+      {
+        "kind": "chartValueTable",
+        "files": 10,
+        "expected": 294,
+        "found": 294,
+        "score": 1
+      },
+      {
+        "kind": "media",
+        "files": 8,
+        "expected": 18,
+        "found": 18,
+        "score": 1
+      },
+      {
+        "kind": "headerFooter",
+        "files": 2,
+        "expected": 11,
+        "found": 11,
+        "score": 1
+      },
+      {
+        "kind": "note",
+        "files": 3,
+        "expected": 3,
+        "found": 3,
+        "score": 1
+      },
+      {
+        "kind": "comment",
+        "files": 2,
+        "expected": 4,
+        "found": 4,
+        "score": 1
+      }
+    ]
+  },
+  "performance": {
+    "files": 72,
+    "ok": 72,
+    "failed": 0,
+    "timedOut": 0,
+    "signaled": 0,
+    "firstInvocationMs": 24.76,
+    "medianOfMediansMs": 16.37,
+    "minMedianMs": 12.08,
+    "maxMedianMs": 29.98,
+    "sumOfMediansMs": 1306.1,
+    "medianFirstRunMs": 17.16,
+    "medianFirstRunOverRestMs": 0.08,
+    "medianSpreadMs": 3.18,
+    "medianPeakRssMiB": 35.29,
+    "minPeakRssMiB": 30.47,
+    "maxPeakRssMiB": 44.25,
+    "maxPeakRssFile": "fixtures/generated/docx/sections.libreoffice.docx"
+  },
+  "footprint": {
+    "binary": ".state/baseline/office/spike-ai-pipeline-office",
+    "runtimeIdentifier": "linux-x64",
+    "bytes": 30197712,
+    "debugSymbolsBytes": 84137280,
+    "license": "Apache License",
+    "packages": [
+      {
+        "package": "DocumentFormat.OpenXml/3.5.1",
+        "license": "MIT"
+      },
+      {
+        "package": "DocumentFormat.OpenXml.Framework/3.5.1",
+        "license": "MIT"
+      },
+      {
+        "package": "Microsoft.DotNet.ILCompiler/10.0.13",
+        "license": "MIT"
+      },
+      {
+        "package": "Microsoft.NET.ILLink.Tasks/10.0.13",
+        "license": "MIT"
+      },
+      {
+        "package": "runtime.linux-x64.Microsoft.DotNet.ILCompiler/10.0.13",
+        "license": "MIT"
+      },
+      {
+        "package": "System.CommandLine/2.0.14",
+        "license": "MIT"
+      },
+      {
+        "package": "System.IO.Packaging/10.0.2",
+        "license": "MIT"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "fixtures/generated/docx/charts.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/charts.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 323,
+      "sameOutputEveryRun": true,
+      "firstMs": 24.76,
+      "medianMs": 25.37,
+      "minMs": 21.8,
+      "maxMs": 27.23,
+      "peakRssKiB": 38768,
+      "medianRssKiB": 38552,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.756,
+          "userMs": 13.563,
+          "sysMs": 9.987,
+          "maxRssKiB": 38408
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.37,
+          "userMs": 11.559,
+          "sysMs": 13.632,
+          "maxRssKiB": 38768
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.798,
+          "userMs": 13.82,
+          "sysMs": 7.887,
+          "maxRssKiB": 38604
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.634,
+          "userMs": 22.535,
+          "sysMs": 2.95,
+          "maxRssKiB": 38552
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.228,
+          "userMs": 16.034,
+          "sysMs": 11.02,
+          "maxRssKiB": 38408
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 12,
+          "found": 12,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 12,
+          "found": 12,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/charts.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/charts.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 323,
+      "sameOutputEveryRun": true,
+      "firstMs": 27.63,
+      "medianMs": 25.32,
+      "minMs": 24.48,
+      "maxMs": 27.63,
+      "peakRssKiB": 39320,
+      "medianRssKiB": 39160,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.631,
+          "userMs": 14.29,
+          "sysMs": 13.28,
+          "maxRssKiB": 39320
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.813,
+          "userMs": 17.789,
+          "sysMs": 6.924,
+          "maxRssKiB": 39204
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.319,
+          "userMs": 18.118,
+          "sysMs": 7.027,
+          "maxRssKiB": 38872
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 26.079,
+          "userMs": 14.946,
+          "sysMs": 10.939,
+          "maxRssKiB": 39160
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.476,
+          "userMs": 15.172,
+          "sysMs": 9.083,
+          "maxRssKiB": 38876
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 12,
+          "found": 12,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 12,
+          "found": 12,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/comments-plain.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/comments-plain.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 124,
+      "sameOutputEveryRun": true,
+      "firstMs": 22.43,
+      "medianMs": 24.51,
+      "minMs": 21.46,
+      "maxMs": 25.01,
+      "peakRssKiB": 36008,
+      "medianRssKiB": 35532,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.426,
+          "userMs": 14.474,
+          "sysMs": 7.73,
+          "maxRssKiB": 36008
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.51,
+          "userMs": 16.55,
+          "sysMs": 7.788,
+          "maxRssKiB": 35356
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.881,
+          "userMs": 9.9,
+          "sysMs": 14.853,
+          "maxRssKiB": 35512
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.46,
+          "userMs": 14.527,
+          "sysMs": 6.767,
+          "maxRssKiB": 35948
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.015,
+          "userMs": 14.918,
+          "sysMs": 9.963,
+          "maxRssKiB": 35532
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "comment": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/comments-plain.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/comments-plain.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 124,
+      "sameOutputEveryRun": true,
+      "firstMs": 23.35,
+      "medianMs": 22.79,
+      "minMs": 21.49,
+      "maxMs": 27.23,
+      "peakRssKiB": 36608,
+      "medianRssKiB": 36428,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.353,
+          "userMs": 14.159,
+          "sysMs": 9.083,
+          "maxRssKiB": 36416
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.792,
+          "userMs": 14.823,
+          "sysMs": 7.903,
+          "maxRssKiB": 36052
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.096,
+          "userMs": 17.901,
+          "sysMs": 3.982,
+          "maxRssKiB": 36608
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.494,
+          "userMs": 15.606,
+          "sysMs": 5.844,
+          "maxRssKiB": 36428
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.227,
+          "userMs": 17.015,
+          "sysMs": 10.019,
+          "maxRssKiB": 36460
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "comment": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/comments.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/comments.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 539,
+      "sameOutputEveryRun": true,
+      "firstMs": 24.05,
+      "medianMs": 24.88,
+      "minMs": 23.63,
+      "maxMs": 29,
+      "peakRssKiB": 36292,
+      "medianRssKiB": 36132,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.053,
+          "userMs": 14.966,
+          "sysMs": 8.909,
+          "maxRssKiB": 35972
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 29.005,
+          "userMs": 18.883,
+          "sysMs": 9.938,
+          "maxRssKiB": 36132
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.88,
+          "userMs": 17.734,
+          "sysMs": 6.926,
+          "maxRssKiB": 36292
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.582,
+          "userMs": 20.255,
+          "sysMs": 5.065,
+          "maxRssKiB": 36152
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.628,
+          "userMs": 15.665,
+          "sysMs": 7.834,
+          "maxRssKiB": 35688
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "comment": {
+          "expected": 6,
+          "found": 6,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/comments.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/comments.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 539,
+      "sameOutputEveryRun": true,
+      "firstMs": 22.21,
+      "medianMs": 23.54,
+      "minMs": 22.21,
+      "maxMs": 28.64,
+      "peakRssKiB": 36776,
+      "medianRssKiB": 36640,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.211,
+          "userMs": 15.123,
+          "sysMs": 7.061,
+          "maxRssKiB": 36776
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.395,
+          "userMs": 18.502,
+          "sysMs": 8.785,
+          "maxRssKiB": 36640
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.386,
+          "userMs": 14.52,
+          "sysMs": 8.713,
+          "maxRssKiB": 36556
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.543,
+          "userMs": 19.326,
+          "sysMs": 4.067,
+          "maxRssKiB": 36612
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.641,
+          "userMs": 24.492,
+          "sysMs": 4.062,
+          "maxRssKiB": 36756
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "comment": {
+          "expected": 6,
+          "found": 6,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/headers-even-off.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/headers-even-off.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 80,
+      "sameOutputEveryRun": true,
+      "firstMs": 23.76,
+      "medianMs": 23.24,
+      "minMs": 22.09,
+      "maxMs": 27.85,
+      "peakRssKiB": 35908,
+      "medianRssKiB": 35628,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.76,
+          "userMs": 13.785,
+          "sysMs": 9.851,
+          "maxRssKiB": 35440
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.086,
+          "userMs": 13.932,
+          "sysMs": 7.924,
+          "maxRssKiB": 35908
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.846,
+          "userMs": 16.781,
+          "sysMs": 10.835,
+          "maxRssKiB": 35628
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.937,
+          "userMs": 16.752,
+          "sysMs": 5.913,
+          "maxRssKiB": 35596
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.241,
+          "userMs": 14.98,
+          "sysMs": 8.002,
+          "maxRssKiB": 35748
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "headerFooter": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/headers-even-off.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/headers-even-off.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 80,
+      "sameOutputEveryRun": true,
+      "firstMs": 21.76,
+      "medianMs": 22.56,
+      "minMs": 21.66,
+      "maxMs": 28.53,
+      "peakRssKiB": 36676,
+      "medianRssKiB": 36416,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.755,
+          "userMs": 16.746,
+          "sysMs": 4.911,
+          "maxRssKiB": 36416
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.534,
+          "userMs": 19.584,
+          "sysMs": 8.802,
+          "maxRssKiB": 36336
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.663,
+          "userMs": 17.747,
+          "sysMs": 3.942,
+          "maxRssKiB": 36676
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.984,
+          "userMs": 13.895,
+          "sysMs": 9.88,
+          "maxRssKiB": 36436
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.565,
+          "userMs": 15.364,
+          "sysMs": 7.135,
+          "maxRssKiB": 36248
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "headerFooter": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/headings.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/headings.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 441,
+      "sameOutputEveryRun": true,
+      "firstMs": 26.64,
+      "medianMs": 23.98,
+      "minMs": 22.27,
+      "maxMs": 26.64,
+      "peakRssKiB": 35760,
+      "medianRssKiB": 35560,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 26.639,
+          "userMs": 20.375,
+          "sysMs": 6.122,
+          "maxRssKiB": 35188
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.27,
+          "userMs": 16.125,
+          "sysMs": 6.052,
+          "maxRssKiB": 35348
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.979,
+          "userMs": 15.558,
+          "sysMs": 8.292,
+          "maxRssKiB": 35760
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 26.451,
+          "userMs": 20.301,
+          "sysMs": 6.084,
+          "maxRssKiB": 35664
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.533,
+          "userMs": 14.163,
+          "sysMs": 9.101,
+          "maxRssKiB": 35560
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 6,
+          "found": 6,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/headings.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/headings.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 441,
+      "sameOutputEveryRun": true,
+      "firstMs": 23.2,
+      "medianMs": 22.58,
+      "minMs": 21.01,
+      "maxMs": 24.53,
+      "peakRssKiB": 36812,
+      "medianRssKiB": 36388,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.201,
+          "userMs": 17.102,
+          "sysMs": 6.062,
+          "maxRssKiB": 36308
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.013,
+          "userMs": 15.953,
+          "sysMs": 4.984,
+          "maxRssKiB": 36628
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.579,
+          "userMs": 16.612,
+          "sysMs": 5.86,
+          "maxRssKiB": 36812
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.532,
+          "userMs": 22.397,
+          "sysMs": 2.038,
+          "maxRssKiB": 36112
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.049,
+          "userMs": 11.951,
+          "sysMs": 8.966,
+          "maxRssKiB": 36388
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 6,
+          "found": 6,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/lists.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/lists.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 527,
+      "sameOutputEveryRun": true,
+      "firstMs": 23.5,
+      "medianMs": 23.5,
+      "minMs": 20.96,
+      "maxMs": 27.6,
+      "peakRssKiB": 35820,
+      "medianRssKiB": 35768,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.505,
+          "userMs": 16.598,
+          "sysMs": 6.829,
+          "maxRssKiB": 35732
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 20.962,
+          "userMs": 14.917,
+          "sysMs": 5.97,
+          "maxRssKiB": 35820
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.604,
+          "userMs": 20.261,
+          "sysMs": 7.076,
+          "maxRssKiB": 35768
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.825,
+          "userMs": 15.829,
+          "sysMs": 5.94,
+          "maxRssKiB": 35792
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.871,
+          "userMs": 18.733,
+          "sysMs": 4.952,
+          "maxRssKiB": 35656
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 19,
+          "found": 19,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/lists.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/lists.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 527,
+      "sameOutputEveryRun": true,
+      "firstMs": 25.5,
+      "medianMs": 23.64,
+      "minMs": 22.55,
+      "maxMs": 25.5,
+      "peakRssKiB": 36836,
+      "medianRssKiB": 36324,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.505,
+          "userMs": 14.644,
+          "sysMs": 10.722,
+          "maxRssKiB": 36836
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.775,
+          "userMs": 14.472,
+          "sysMs": 9.286,
+          "maxRssKiB": 35920
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.55,
+          "userMs": 14.361,
+          "sysMs": 8.182,
+          "maxRssKiB": 36000
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.64,
+          "userMs": 16.308,
+          "sysMs": 7.127,
+          "maxRssKiB": 36324
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.611,
+          "userMs": 15.676,
+          "sysMs": 6.858,
+          "maxRssKiB": 36484
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 19,
+          "found": 19,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/media.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/media.libreoffice.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 866,
+      "sameOutputEveryRun": true,
+      "firstMs": 27.17,
+      "medianMs": 27.25,
+      "minMs": 27.17,
+      "maxMs": 32.08,
+      "peakRssKiB": 43732,
+      "medianRssKiB": 43496,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.168,
+          "userMs": 19.026,
+          "sysMs": 8,
+          "maxRssKiB": 43496
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.247,
+          "userMs": 18.016,
+          "sysMs": 9.003,
+          "maxRssKiB": 43688
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.203,
+          "userMs": 22.033,
+          "sysMs": 5.006,
+          "maxRssKiB": 43732
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.726,
+          "userMs": 17.769,
+          "sysMs": 9.853,
+          "maxRssKiB": 43468
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 32.084,
+          "userMs": 18.904,
+          "sysMs": 12.921,
+          "maxRssKiB": 43496
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "media": {
+          "expected": 8,
+          "found": 8,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/media.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/media.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 855,
+      "sameOutputEveryRun": true,
+      "firstMs": 25.89,
+      "medianMs": 26.21,
+      "minMs": 25.89,
+      "maxMs": 29.13,
+      "peakRssKiB": 44352,
+      "medianRssKiB": 44156,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.888,
+          "userMs": 14.86,
+          "sysMs": 10.831,
+          "maxRssKiB": 44352
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.921,
+          "userMs": 23.803,
+          "sysMs": 3.975,
+          "maxRssKiB": 44220
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 29.127,
+          "userMs": 16.786,
+          "sysMs": 11.883,
+          "maxRssKiB": 44108
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 26.203,
+          "userMs": 18.33,
+          "sysMs": 7.701,
+          "maxRssKiB": 44156
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 26.211,
+          "userMs": 18.391,
+          "sysMs": 7.74,
+          "maxRssKiB": 44080
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "media": {
+          "expected": 8,
+          "found": 8,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/notes.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/notes.libreoffice.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 295,
+      "sameOutputEveryRun": true,
+      "firstMs": 23.17,
+      "medianMs": 25.13,
+      "minMs": 23.17,
+      "maxMs": 27.11,
+      "peakRssKiB": 36640,
+      "medianRssKiB": 36308,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.169,
+          "userMs": 16.981,
+          "sysMs": 5.997,
+          "maxRssKiB": 36308
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.109,
+          "userMs": 12.185,
+          "sysMs": 14.178,
+          "maxRssKiB": 35788
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.134,
+          "userMs": 16.984,
+          "sysMs": 7.992,
+          "maxRssKiB": 36316
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.536,
+          "userMs": 17.587,
+          "sysMs": 7.818,
+          "maxRssKiB": 35992
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.721,
+          "userMs": 20.51,
+          "sysMs": 3.074,
+          "maxRssKiB": 36640
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "note": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/notes.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/notes.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 295,
+      "sameOutputEveryRun": true,
+      "firstMs": 23.72,
+      "medianMs": 23.72,
+      "minMs": 22.21,
+      "maxMs": 25.11,
+      "peakRssKiB": 37020,
+      "medianRssKiB": 36800,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.723,
+          "userMs": 17.09,
+          "sysMs": 6.041,
+          "maxRssKiB": 36800
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.108,
+          "userMs": 16.898,
+          "sysMs": 7.966,
+          "maxRssKiB": 36652
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.302,
+          "userMs": 17.158,
+          "sysMs": 5.018,
+          "maxRssKiB": 37020
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.905,
+          "userMs": 17.872,
+          "sysMs": 6.961,
+          "maxRssKiB": 37008
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.211,
+          "userMs": 15.09,
+          "sysMs": 7.051,
+          "maxRssKiB": 36568
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "note": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/sections.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/sections.libreoffice.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 367,
+      "sameOutputEveryRun": true,
+      "firstMs": 30.23,
+      "medianMs": 29.98,
+      "minMs": 28.51,
+      "maxMs": 30.78,
+      "peakRssKiB": 45308,
+      "medianRssKiB": 45076,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 30.228,
+          "userMs": 21.319,
+          "sysMs": 8.744,
+          "maxRssKiB": 44628
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.513,
+          "userMs": 17.254,
+          "sysMs": 11.164,
+          "maxRssKiB": 45076
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 29.983,
+          "userMs": 15.353,
+          "sysMs": 14.378,
+          "maxRssKiB": 45308
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 30.776,
+          "userMs": 20.738,
+          "sysMs": 9.885,
+          "maxRssKiB": 44740
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.796,
+          "userMs": 19.47,
+          "sysMs": 9.21,
+          "maxRssKiB": 45188
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "headerFooter": {
+          "expected": 8,
+          "found": 8,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/sections.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/sections.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 380,
+      "sameOutputEveryRun": true,
+      "firstMs": 27.21,
+      "medianMs": 28.41,
+      "minMs": 27.21,
+      "maxMs": 29.81,
+      "peakRssKiB": 44720,
+      "medianRssKiB": 44564,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.214,
+          "userMs": 16.037,
+          "sysMs": 11.049,
+          "maxRssKiB": 44632
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.561,
+          "userMs": 20.251,
+          "sysMs": 8.108,
+          "maxRssKiB": 44564
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.413,
+          "userMs": 16.107,
+          "sysMs": 12.127,
+          "maxRssKiB": 44720
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 29.813,
+          "userMs": 20.791,
+          "sysMs": 8.879,
+          "maxRssKiB": 44428
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.934,
+          "userMs": 17.864,
+          "sysMs": 9.914,
+          "maxRssKiB": 44332
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "headerFooter": {
+          "expected": 9,
+          "found": 9,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/tables.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/tables.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 164,
+      "sameOutputEveryRun": true,
+      "firstMs": 25.3,
+      "medianMs": 24.35,
+      "minMs": 22.04,
+      "maxMs": 28.32,
+      "peakRssKiB": 36212,
+      "medianRssKiB": 36052,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.296,
+          "userMs": 21.143,
+          "sysMs": 4.03,
+          "maxRssKiB": 36052
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.885,
+          "userMs": 21.78,
+          "sysMs": 1.038,
+          "maxRssKiB": 36184
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.041,
+          "userMs": 15.019,
+          "sysMs": 6.996,
+          "maxRssKiB": 36212
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.323,
+          "userMs": 17.006,
+          "sysMs": 10.997,
+          "maxRssKiB": 35900
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.352,
+          "userMs": 19.208,
+          "sysMs": 5.054,
+          "maxRssKiB": 36036
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 10,
+          "found": 10,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/tables.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/tables.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 164,
+      "sameOutputEveryRun": true,
+      "firstMs": 23.32,
+      "medianMs": 23.32,
+      "minMs": 22.33,
+      "maxMs": 28.02,
+      "peakRssKiB": 36820,
+      "medianRssKiB": 36700,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.324,
+          "userMs": 16.167,
+          "sysMs": 7.069,
+          "maxRssKiB": 36720
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.727,
+          "userMs": 17.401,
+          "sysMs": 6.137,
+          "maxRssKiB": 36820
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 28.017,
+          "userMs": 21.925,
+          "sysMs": 5.978,
+          "maxRssKiB": 36264
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.793,
+          "userMs": 17.456,
+          "sysMs": 5.133,
+          "maxRssKiB": 36700
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.331,
+          "userMs": 15.141,
+          "sysMs": 7.06,
+          "maxRssKiB": 36492
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 10,
+          "found": 10,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/tracked-changes.libreoffice.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/tracked-changes.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 409,
+      "sameOutputEveryRun": true,
+      "firstMs": 25.2,
+      "medianMs": 25.2,
+      "minMs": 23.53,
+      "maxMs": 25.69,
+      "peakRssKiB": 36560,
+      "medianRssKiB": 36440,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.197,
+          "userMs": 15.067,
+          "sysMs": 10.014,
+          "maxRssKiB": 36560
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.196,
+          "userMs": 16.975,
+          "sysMs": 7.941,
+          "maxRssKiB": 36440
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.692,
+          "userMs": 18.334,
+          "sysMs": 7.122,
+          "maxRssKiB": 36384
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.531,
+          "userMs": 16.262,
+          "sysMs": 7.117,
+          "maxRssKiB": 36520
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.597,
+          "userMs": 20.358,
+          "sysMs": 5.036,
+          "maxRssKiB": 36032
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 7,
+          "found": 7,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/docx/tracked-changes.python-docx.docx",
+      "set": "generated",
+      "format": "docx",
+      "truth": "fixtures/generated/docx/tracked-changes.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 409,
+      "sameOutputEveryRun": true,
+      "firstMs": 23.46,
+      "medianMs": 24.87,
+      "minMs": 22.45,
+      "maxMs": 25.49,
+      "peakRssKiB": 37060,
+      "medianRssKiB": 37012,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.459,
+          "userMs": 16.531,
+          "sysMs": 6.811,
+          "maxRssKiB": 37060
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 25.486,
+          "userMs": 12.659,
+          "sysMs": 12.663,
+          "maxRssKiB": 37056
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.447,
+          "userMs": 14.437,
+          "sysMs": 7.771,
+          "maxRssKiB": 36564
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.978,
+          "userMs": 16.949,
+          "sysMs": 7.894,
+          "maxRssKiB": 36864
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.867,
+          "userMs": 15.905,
+          "sysMs": 8.886,
+          "maxRssKiB": 37012
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 7,
+          "found": 7,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/cells.libreoffice.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/cells.libreoffice.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 926,
+      "sameOutputEveryRun": true,
+      "firstMs": 17.18,
+      "medianMs": 14.37,
+      "minMs": 12.05,
+      "maxMs": 17.18,
+      "peakRssKiB": 32200,
+      "medianRssKiB": 32136,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.179,
+          "userMs": 9.971,
+          "sysMs": 7.003,
+          "maxRssKiB": 32160
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.242,
+          "userMs": 12.09,
+          "sysMs": 3.014,
+          "maxRssKiB": 32136
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.049,
+          "userMs": 5.995,
+          "sysMs": 6.006,
+          "maxRssKiB": 32200
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.368,
+          "userMs": 9.235,
+          "sysMs": 5.137,
+          "maxRssKiB": 31956
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.219,
+          "userMs": 7.483,
+          "sysMs": 4.691,
+          "maxRssKiB": 32112
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 46,
+          "found": 46,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/cells.openpyxl.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/cells.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 935,
+      "sameOutputEveryRun": true,
+      "firstMs": 12.99,
+      "medianMs": 12.29,
+      "minMs": 10.37,
+      "maxMs": 12.99,
+      "peakRssKiB": 31640,
+      "medianRssKiB": 31256,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.989,
+          "userMs": 8.982,
+          "sysMs": 3.987,
+          "maxRssKiB": 31640
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.287,
+          "userMs": 9.161,
+          "sysMs": 3.046,
+          "maxRssKiB": 31212
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.528,
+          "userMs": 6.285,
+          "sysMs": 5.237,
+          "maxRssKiB": 30960
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 10.368,
+          "userMs": 7.211,
+          "sysMs": 3.082,
+          "maxRssKiB": 31636
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.664,
+          "userMs": 7.336,
+          "sysMs": 5.182,
+          "maxRssKiB": 31256
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 46,
+          "found": 46,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/dates-1904.libreoffice.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/dates-1904.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 110,
+      "sameOutputEveryRun": true,
+      "firstMs": 12.19,
+      "medianMs": 12.19,
+      "minMs": 11.6,
+      "maxMs": 14.76,
+      "peakRssKiB": 31868,
+      "medianRssKiB": 31692,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.186,
+          "userMs": 7.042,
+          "sysMs": 5.031,
+          "maxRssKiB": 31636
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.946,
+          "userMs": 5.879,
+          "sysMs": 5.905,
+          "maxRssKiB": 31660
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.762,
+          "userMs": 9.816,
+          "sysMs": 4.912,
+          "maxRssKiB": 31868
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.206,
+          "userMs": 8.086,
+          "sysMs": 5.05,
+          "maxRssKiB": 31740
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.597,
+          "userMs": 8.574,
+          "sysMs": 2.861,
+          "maxRssKiB": 31692
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/dates-1904.openpyxl.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/dates-1904.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 110,
+      "sameOutputEveryRun": true,
+      "firstMs": 11.33,
+      "medianMs": 12.08,
+      "minMs": 11.07,
+      "maxMs": 12.82,
+      "peakRssKiB": 31332,
+      "medianRssKiB": 31148,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.331,
+          "userMs": 8.156,
+          "sysMs": 3.065,
+          "maxRssKiB": 31148
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.08,
+          "userMs": 7.654,
+          "sysMs": 4.374,
+          "maxRssKiB": 31332
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.345,
+          "userMs": 8.174,
+          "sysMs": 4.089,
+          "maxRssKiB": 31160
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.073,
+          "userMs": 5.99,
+          "sysMs": 5.02,
+          "maxRssKiB": 31148
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.824,
+          "userMs": 5.911,
+          "sysMs": 6.893,
+          "maxRssKiB": 30884
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/drawings.libreoffice.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/drawings.libreoffice.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 542,
+      "sameOutputEveryRun": true,
+      "firstMs": 16.99,
+      "medianMs": 16.06,
+      "minMs": 14.76,
+      "maxMs": 16.99,
+      "peakRssKiB": 40700,
+      "medianRssKiB": 40516,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.993,
+          "userMs": 10.946,
+          "sysMs": 5.975,
+          "maxRssKiB": 40636
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.758,
+          "userMs": 10.74,
+          "sysMs": 3.91,
+          "maxRssKiB": 40516
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.526,
+          "userMs": 6.751,
+          "sysMs": 8.682,
+          "maxRssKiB": 40008
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.6,
+          "userMs": 11.349,
+          "sysMs": 5.138,
+          "maxRssKiB": 40700
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.056,
+          "userMs": 5.641,
+          "sysMs": 10.345,
+          "maxRssKiB": 40432
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 9,
+          "found": 9,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "media": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/drawings.openpyxl.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/drawings.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 471,
+      "sameOutputEveryRun": true,
+      "firstMs": 18.36,
+      "medianMs": 15.77,
+      "minMs": 14.76,
+      "maxMs": 18.36,
+      "peakRssKiB": 39836,
+      "medianRssKiB": 39420,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.361,
+          "userMs": 10.598,
+          "sysMs": 7.688,
+          "maxRssKiB": 39420
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.995,
+          "userMs": 11.891,
+          "sysMs": 4.971,
+          "maxRssKiB": 39340
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.764,
+          "userMs": 10.49,
+          "sysMs": 4.184,
+          "maxRssKiB": 39836
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.592,
+          "userMs": 9.727,
+          "sysMs": 5.837,
+          "maxRssKiB": 39364
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.767,
+          "userMs": 7.873,
+          "sysMs": 7.885,
+          "maxRssKiB": 39476
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 9,
+          "found": 9,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "media": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/formulas.libreoffice.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/formulas.libreoffice.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 257,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.02,
+      "medianMs": 12.97,
+      "minMs": 12.06,
+      "maxMs": 14.91,
+      "peakRssKiB": 32124,
+      "medianRssKiB": 31656,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.022,
+          "userMs": 7.937,
+          "sysMs": 4.946,
+          "maxRssKiB": 32124
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.063,
+          "userMs": 8.002,
+          "sysMs": 4.003,
+          "maxRssKiB": 31904
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.888,
+          "userMs": 11.726,
+          "sysMs": 1.069,
+          "maxRssKiB": 31572
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.974,
+          "userMs": 9.634,
+          "sysMs": 3.21,
+          "maxRssKiB": 31560
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.905,
+          "userMs": 6.347,
+          "sysMs": 8.47,
+          "maxRssKiB": 31656
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 17,
+          "found": 17,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/formulas.openpyxl.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/formulas.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 343,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.45,
+      "medianMs": 13.25,
+      "minMs": 10.82,
+      "maxMs": 13.77,
+      "peakRssKiB": 31200,
+      "medianRssKiB": 31080,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.454,
+          "userMs": 11.279,
+          "sysMs": 2.061,
+          "maxRssKiB": 30580
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.254,
+          "userMs": 4.073,
+          "sysMs": 9.14,
+          "maxRssKiB": 31120
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.445,
+          "userMs": 8.54,
+          "sysMs": 2.851,
+          "maxRssKiB": 31080
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 10.815,
+          "userMs": 4.279,
+          "sysMs": 6.435,
+          "maxRssKiB": 30900
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.767,
+          "userMs": 8.806,
+          "sysMs": 4.895,
+          "maxRssKiB": 31200
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 13,
+          "found": 13,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/merges.libreoffice.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/merges.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 325,
+      "sameOutputEveryRun": true,
+      "firstMs": 11.35,
+      "medianMs": 13.35,
+      "minMs": 11.35,
+      "maxMs": 14.55,
+      "peakRssKiB": 32052,
+      "medianRssKiB": 31844,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.346,
+          "userMs": 7.19,
+          "sysMs": 4.094,
+          "maxRssKiB": 31916
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.602,
+          "userMs": 3.878,
+          "sysMs": 7.736,
+          "maxRssKiB": 31768
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.349,
+          "userMs": 7.142,
+          "sysMs": 6.128,
+          "maxRssKiB": 32052
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.353,
+          "userMs": 10.19,
+          "sysMs": 4.085,
+          "maxRssKiB": 31844
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.548,
+          "userMs": 8.158,
+          "sysMs": 6.352,
+          "maxRssKiB": 31808
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 20,
+          "found": 20,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/merges.openpyxl.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/merges.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 325,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.41,
+      "medianMs": 12.87,
+      "minMs": 10.93,
+      "maxMs": 13.67,
+      "peakRssKiB": 31344,
+      "medianRssKiB": 31128,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.407,
+          "userMs": 12.27,
+          "sysMs": 0.945,
+          "maxRssKiB": 31248
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.136,
+          "userMs": 8.062,
+          "sysMs": 3.016,
+          "maxRssKiB": 30844
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.665,
+          "userMs": 8.377,
+          "sysMs": 5.237,
+          "maxRssKiB": 31024
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.866,
+          "userMs": 8.267,
+          "sysMs": 4.575,
+          "maxRssKiB": 31128
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 10.934,
+          "userMs": 3.949,
+          "sysMs": 6.901,
+          "maxRssKiB": 31344
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 20,
+          "found": 20,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/sheets.libreoffice.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/sheets.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 341,
+      "sameOutputEveryRun": true,
+      "firstMs": 15.44,
+      "medianMs": 14.43,
+      "minMs": 11.67,
+      "maxMs": 15.49,
+      "peakRssKiB": 32364,
+      "medianRssKiB": 31940,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.444,
+          "userMs": 9.218,
+          "sysMs": 6.139,
+          "maxRssKiB": 31624
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.492,
+          "userMs": 8.251,
+          "sysMs": 7.207,
+          "maxRssKiB": 31940
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.675,
+          "userMs": 6.785,
+          "sysMs": 4.85,
+          "maxRssKiB": 32364
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.426,
+          "userMs": 9.252,
+          "sysMs": 5.151,
+          "maxRssKiB": 32100
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.987,
+          "userMs": 6.944,
+          "sysMs": 4.962,
+          "maxRssKiB": 31916
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 9,
+          "found": 9,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/xlsx/sheets.openpyxl.xlsx",
+      "set": "generated",
+      "format": "xlsx",
+      "truth": "fixtures/generated/xlsx/sheets.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 341,
+      "sameOutputEveryRun": true,
+      "firstMs": 12.64,
+      "medianMs": 12.73,
+      "minMs": 9.91,
+      "maxMs": 13.38,
+      "peakRssKiB": 31316,
+      "medianRssKiB": 31168,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.643,
+          "userMs": 6.313,
+          "sysMs": 6.286,
+          "maxRssKiB": 31060
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.376,
+          "userMs": 6.645,
+          "sysMs": 6.649,
+          "maxRssKiB": 31208
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.114,
+          "userMs": 7.02,
+          "sysMs": 6.008,
+          "maxRssKiB": 31316
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 9.914,
+          "userMs": 5.929,
+          "sysMs": 3.945,
+          "maxRssKiB": 31040
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.734,
+          "userMs": 9.749,
+          "sysMs": 2.922,
+          "maxRssKiB": 31168
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 9,
+          "found": 9,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/pptx/bullets.libreoffice.pptx",
+      "set": "generated",
+      "format": "pptx",
+      "truth": "fixtures/generated/pptx/bullets.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 349,
+      "sameOutputEveryRun": true,
+      "firstMs": 15.15,
+      "medianMs": 15.15,
+      "minMs": 12.51,
+      "maxMs": 16.63,
+      "peakRssKiB": 33036,
+      "medianRssKiB": 32788,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.149,
+          "userMs": 12.246,
+          "sysMs": 2.83,
+          "maxRssKiB": 32788
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.629,
+          "userMs": 10.71,
+          "sysMs": 5.85,
+          "maxRssKiB": 32928
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.509,
+          "userMs": 9.372,
+          "sysMs": 3.121,
+          "maxRssKiB": 32696
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.368,
+          "userMs": 8.023,
+          "sysMs": 6.211,
+          "maxRssKiB": 33036
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.184,
+          "userMs": 12.12,
+          "sysMs": 4.004,
+          "maxRssKiB": 32340
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 13,
+          "found": 13,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/pptx/bullets.python-pptx.pptx",
+      "set": "generated",
+      "format": "pptx",
+      "truth": "fixtures/generated/pptx/bullets.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 349,
+      "sameOutputEveryRun": true,
+      "firstMs": 14.63,
+      "medianMs": 14.71,
+      "minMs": 12.24,
+      "maxMs": 16.89,
+      "peakRssKiB": 33100,
+      "medianRssKiB": 32676,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.63,
+          "userMs": 8.713,
+          "sysMs": 5.798,
+          "maxRssKiB": 32652
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.421,
+          "userMs": 9.599,
+          "sysMs": 6.712,
+          "maxRssKiB": 32676
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.241,
+          "userMs": 10.132,
+          "sysMs": 2.025,
+          "maxRssKiB": 32584
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.712,
+          "userMs": 8.232,
+          "sysMs": 6.406,
+          "maxRssKiB": 33100
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.885,
+          "userMs": 10.826,
+          "sysMs": 5.902,
+          "maxRssKiB": 32936
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 13,
+          "found": 13,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/pptx/groups.libreoffice.pptx",
+      "set": "generated",
+      "format": "pptx",
+      "truth": "fixtures/generated/pptx/groups.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 212,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.23,
+      "medianMs": 14.97,
+      "minMs": 13.23,
+      "maxMs": 15.86,
+      "peakRssKiB": 36436,
+      "medianRssKiB": 36156,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.229,
+          "userMs": 5.627,
+          "sysMs": 7.461,
+          "maxRssKiB": 36436
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.76,
+          "userMs": 9.424,
+          "sysMs": 5.236,
+          "maxRssKiB": 36372
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.693,
+          "userMs": 9.756,
+          "sysMs": 5.862,
+          "maxRssKiB": 36156
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.973,
+          "userMs": 11.979,
+          "sysMs": 2.957,
+          "maxRssKiB": 36048
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.861,
+          "userMs": 4.892,
+          "sysMs": 10.777,
+          "maxRssKiB": 35852
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/pptx/groups.python-pptx.pptx",
+      "set": "generated",
+      "format": "pptx",
+      "truth": "fixtures/generated/pptx/groups.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 212,
+      "sameOutputEveryRun": true,
+      "firstMs": 17.32,
+      "medianMs": 15.41,
+      "minMs": 14.26,
+      "maxMs": 17.32,
+      "peakRssKiB": 36732,
+      "medianRssKiB": 36648,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.32,
+          "userMs": 11.173,
+          "sysMs": 6.076,
+          "maxRssKiB": 36456
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.261,
+          "userMs": 8.094,
+          "sysMs": 6.078,
+          "maxRssKiB": 36664
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.643,
+          "userMs": 4.838,
+          "sysMs": 9.642,
+          "maxRssKiB": 36580
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.406,
+          "userMs": 8.152,
+          "sysMs": 7.124,
+          "maxRssKiB": 36732
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.704,
+          "userMs": 7.303,
+          "sysMs": 8.332,
+          "maxRssKiB": 36648
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/pptx/slide-objects.libreoffice.pptx",
+      "set": "generated",
+      "format": "pptx",
+      "truth": "fixtures/generated/pptx/slide-objects.libreoffice.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 599,
+      "sameOutputEveryRun": true,
+      "firstMs": 18.65,
+      "medianMs": 18.55,
+      "minMs": 18,
+      "maxMs": 19.39,
+      "peakRssKiB": 40928,
+      "medianRssKiB": 40300,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.648,
+          "userMs": 10.307,
+          "sysMs": 8.225,
+          "maxRssKiB": 40300
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.047,
+          "userMs": 7.982,
+          "sysMs": 10.007,
+          "maxRssKiB": 40144
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.997,
+          "userMs": 12.92,
+          "sysMs": 4.961,
+          "maxRssKiB": 39920
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.549,
+          "userMs": 10.227,
+          "sysMs": 8.189,
+          "maxRssKiB": 40928
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 19.394,
+          "userMs": 9.616,
+          "sysMs": 9.64,
+          "maxRssKiB": 40400
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 7,
+          "found": 7,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "slideNotes": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "media": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/pptx/slide-objects.python-pptx.pptx",
+      "set": "generated",
+      "format": "pptx",
+      "truth": "fixtures/generated/pptx/slide-objects.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 599,
+      "sameOutputEveryRun": true,
+      "firstMs": 18.83,
+      "medianMs": 18.01,
+      "minMs": 16.89,
+      "maxMs": 20.87,
+      "peakRssKiB": 41124,
+      "medianRssKiB": 40844,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.826,
+          "userMs": 10.724,
+          "sysMs": 7.887,
+          "maxRssKiB": 40424
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.442,
+          "userMs": 13.137,
+          "sysMs": 4.058,
+          "maxRssKiB": 40896
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.008,
+          "userMs": 10.924,
+          "sysMs": 6.964,
+          "maxRssKiB": 40492
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.887,
+          "userMs": 7.917,
+          "sysMs": 8.92,
+          "maxRssKiB": 40844
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 20.866,
+          "userMs": 15.559,
+          "sysMs": 5.194,
+          "maxRssKiB": 41124
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 7,
+          "found": 7,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "slideNotes": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "media": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/pptx/slides.libreoffice.pptx",
+      "set": "generated",
+      "format": "pptx",
+      "truth": "fixtures/generated/pptx/slides.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 392,
+      "sameOutputEveryRun": true,
+      "firstMs": 15.92,
+      "medianMs": 16.53,
+      "minMs": 15.92,
+      "maxMs": 19.86,
+      "peakRssKiB": 33912,
+      "medianRssKiB": 33800,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.918,
+          "userMs": 10.894,
+          "sysMs": 4.96,
+          "maxRssKiB": 33860
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.443,
+          "userMs": 8.183,
+          "sysMs": 8.172,
+          "maxRssKiB": 33772
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.526,
+          "userMs": 9.244,
+          "sysMs": 7.168,
+          "maxRssKiB": 33912
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.587,
+          "userMs": 9.274,
+          "sysMs": 7.213,
+          "maxRssKiB": 33800
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 19.855,
+          "userMs": 10.899,
+          "sysMs": 8.121,
+          "maxRssKiB": 33740
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "slideNotes": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/generated/pptx/slides.python-pptx.pptx",
+      "set": "generated",
+      "format": "pptx",
+      "truth": "fixtures/generated/pptx/slides.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 392,
+      "sameOutputEveryRun": true,
+      "firstMs": 16.24,
+      "medianMs": 16.24,
+      "minMs": 14.68,
+      "maxMs": 17.46,
+      "peakRssKiB": 33948,
+      "medianRssKiB": 33632,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.244,
+          "userMs": 8.061,
+          "sysMs": 8.049,
+          "maxRssKiB": 33592
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.682,
+          "userMs": 12.458,
+          "sysMs": 2.07,
+          "maxRssKiB": 33632
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.46,
+          "userMs": 8.672,
+          "sysMs": 8.672,
+          "maxRssKiB": 33320
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.635,
+          "userMs": 6.827,
+          "sysMs": 9.738,
+          "maxRssKiB": 33948
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.601,
+          "userMs": 10.318,
+          "sysMs": 5.16,
+          "maxRssKiB": 33808
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "slideNotes": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/chart-column.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/chart-column.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 155,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.64,
+      "medianMs": 13.64,
+      "minMs": 11.7,
+      "maxMs": 16.1,
+      "peakRssKiB": 35428,
+      "medianRssKiB": 35072,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.636,
+          "userMs": 11.44,
+          "sysMs": 2.087,
+          "maxRssKiB": 35160
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.102,
+          "userMs": 8.015,
+          "sysMs": 8.03,
+          "maxRssKiB": 35072
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.838,
+          "userMs": 8.849,
+          "sysMs": 3.917,
+          "maxRssKiB": 34944
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.7,
+          "userMs": 5.282,
+          "sysMs": 6.347,
+          "maxRssKiB": 35428
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.161,
+          "userMs": 9.67,
+          "sysMs": 4.397,
+          "maxRssKiB": 34784
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 9,
+          "found": 9,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 9,
+          "found": 9,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/chartex-funnel-word.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/chartex-funnel-word.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 133,
+      "sameOutputEveryRun": true,
+      "firstMs": 14.82,
+      "medianMs": 14.4,
+      "minMs": 13.94,
+      "maxMs": 16.02,
+      "peakRssKiB": 36432,
+      "medianRssKiB": 36108,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.818,
+          "userMs": 7.844,
+          "sysMs": 6.851,
+          "maxRssKiB": 36108
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.402,
+          "userMs": 7.2,
+          "sysMs": 7.139,
+          "maxRssKiB": 35872
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.938,
+          "userMs": 7.937,
+          "sysMs": 5.952,
+          "maxRssKiB": 36244
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.017,
+          "userMs": 9.966,
+          "sysMs": 5.974,
+          "maxRssKiB": 35820
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.304,
+          "userMs": 10.184,
+          "sysMs": 4.07,
+          "maxRssKiB": 36432
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/chartex-waterfall-word.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/chartex-waterfall-word.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 133,
+      "sameOutputEveryRun": true,
+      "firstMs": 15.02,
+      "medianMs": 14.89,
+      "minMs": 12.17,
+      "maxMs": 16.31,
+      "peakRssKiB": 36052,
+      "medianRssKiB": 35860,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.016,
+          "userMs": 9.943,
+          "sysMs": 4.97,
+          "maxRssKiB": 35792
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.895,
+          "userMs": 7.872,
+          "sysMs": 6.912,
+          "maxRssKiB": 36052
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.168,
+          "userMs": 9.044,
+          "sysMs": 3.007,
+          "maxRssKiB": 36044
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.31,
+          "userMs": 12.194,
+          "sysMs": 4.072,
+          "maxRssKiB": 35860
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.661,
+          "userMs": 9.441,
+          "sysMs": 5.205,
+          "maxRssKiB": 35748
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/chartex.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/chartex.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 1931,
+      "sameOutputEveryRun": true,
+      "firstMs": 17.56,
+      "medianMs": 17.56,
+      "minMs": 15.85,
+      "maxMs": 18.64,
+      "peakRssKiB": 38244,
+      "medianRssKiB": 38032,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.564,
+          "userMs": 9.174,
+          "sysMs": 8.172,
+          "maxRssKiB": 38032
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.644,
+          "userMs": 14.548,
+          "sysMs": 3.873,
+          "maxRssKiB": 37924
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.413,
+          "userMs": 14.287,
+          "sysMs": 3.072,
+          "maxRssKiB": 38092
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.119,
+          "userMs": 11.042,
+          "sysMs": 7.032,
+          "maxRssKiB": 37884
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.848,
+          "userMs": 9.671,
+          "sysMs": 6.141,
+          "maxRssKiB": 38244
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 131,
+          "found": 131,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 131,
+          "found": 131,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/complex-numbered-lists.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/complex-numbered-lists.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 304,
+      "sameOutputEveryRun": true,
+      "firstMs": 15.74,
+      "medianMs": 14.68,
+      "minMs": 13.45,
+      "maxMs": 15.74,
+      "peakRssKiB": 33112,
+      "medianRssKiB": 32936,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.74,
+          "userMs": 9.805,
+          "sysMs": 5.883,
+          "maxRssKiB": 32936
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.682,
+          "userMs": 10.451,
+          "sysMs": 4.188,
+          "maxRssKiB": 32904
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.454,
+          "userMs": 7.64,
+          "sysMs": 5.738,
+          "maxRssKiB": 33112
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.587,
+          "userMs": 10.321,
+          "sysMs": 4.134,
+          "maxRssKiB": 32740
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.217,
+          "userMs": 12.133,
+          "sysMs": 3.003,
+          "maxRssKiB": 32956
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 14,
+          "found": 14,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/content-control-rows.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/content-control-rows.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 97,
+      "sameOutputEveryRun": true,
+      "firstMs": 20.3,
+      "medianMs": 15.21,
+      "minMs": 13.28,
+      "maxMs": 20.3,
+      "peakRssKiB": 34368,
+      "medianRssKiB": 33936,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 20.304,
+          "userMs": 11,
+          "sysMs": 9.006,
+          "maxRssKiB": 34228
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 19.459,
+          "userMs": 11.591,
+          "sysMs": 7.717,
+          "maxRssKiB": 33844
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.21,
+          "userMs": 8.592,
+          "sysMs": 6.431,
+          "maxRssKiB": 33936
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.055,
+          "userMs": 11.995,
+          "sysMs": 2.994,
+          "maxRssKiB": 34368
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.277,
+          "userMs": 11.175,
+          "sysMs": 2.035,
+          "maxRssKiB": 33528
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/delins.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/delins.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 1363,
+      "sameOutputEveryRun": true,
+      "firstMs": 16.06,
+      "medianMs": 17.02,
+      "minMs": 15.11,
+      "maxMs": 17.61,
+      "peakRssKiB": 34192,
+      "medianRssKiB": 34028,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.062,
+          "userMs": 9.876,
+          "sysMs": 5.952,
+          "maxRssKiB": 34028
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.107,
+          "userMs": 11.986,
+          "sysMs": 2.948,
+          "maxRssKiB": 33896
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.086,
+          "userMs": 9.996,
+          "sysMs": 6.982,
+          "maxRssKiB": 34084
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.614,
+          "userMs": 11.289,
+          "sysMs": 6.144,
+          "maxRssKiB": 34192
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.019,
+          "userMs": 9.907,
+          "sysMs": 6.945,
+          "maxRssKiB": 33916
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 16,
+          "found": 16,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/endnotes.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/endnotes.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 962,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.97,
+      "medianMs": 13.97,
+      "minMs": 12.03,
+      "maxMs": 15.24,
+      "peakRssKiB": 33004,
+      "medianRssKiB": 32812,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.966,
+          "userMs": 6.858,
+          "sysMs": 6.86,
+          "maxRssKiB": 33004
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.366,
+          "userMs": 10.393,
+          "sysMs": 2.846,
+          "maxRssKiB": 32876
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.032,
+          "userMs": 2.996,
+          "sysMs": 8.988,
+          "maxRssKiB": 32812
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.244,
+          "userMs": 11.032,
+          "sysMs": 4.013,
+          "maxRssKiB": 32652
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.292,
+          "userMs": 7.584,
+          "sysMs": 6.634,
+          "maxRssKiB": 32656
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 10,
+          "found": 10,
+          "missed": []
+        },
+        "note": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/footnote.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/footnote.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 580,
+      "sameOutputEveryRun": true,
+      "firstMs": 12.82,
+      "medianMs": 13.56,
+      "minMs": 12.21,
+      "maxMs": 14.98,
+      "peakRssKiB": 32880,
+      "medianRssKiB": 32780,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.82,
+          "userMs": 8.827,
+          "sysMs": 3.919,
+          "maxRssKiB": 32840
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.205,
+          "userMs": 9.094,
+          "sysMs": 3.022,
+          "maxRssKiB": 32780
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.558,
+          "userMs": 9.618,
+          "sysMs": 3.856,
+          "maxRssKiB": 32724
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.984,
+          "userMs": 11.895,
+          "sysMs": 2.995,
+          "maxRssKiB": 32880
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.871,
+          "userMs": 7.904,
+          "sysMs": 5.929,
+          "maxRssKiB": 32740
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "note": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/form-footnotes.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/form-footnotes.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 6729,
+      "sameOutputEveryRun": true,
+      "firstMs": 22.27,
+      "medianMs": 22.6,
+      "minMs": 22.08,
+      "maxMs": 26.8,
+      "peakRssKiB": 44888,
+      "medianRssKiB": 44816,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.272,
+          "userMs": 14.113,
+          "sysMs": 8.069,
+          "maxRssKiB": 44816
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 26.801,
+          "userMs": 18.74,
+          "sysMs": 7.86,
+          "maxRssKiB": 44424
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.075,
+          "userMs": 12.995,
+          "sysMs": 8.958,
+          "maxRssKiB": 44888
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 22.599,
+          "userMs": 16.871,
+          "sysMs": 5.627,
+          "maxRssKiB": 44876
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.351,
+          "userMs": 18.209,
+          "sysMs": 6.07,
+          "maxRssKiB": 44808
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 50,
+          "found": 50,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "note": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/ruby.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/ruby.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 7,
+      "sameOutputEveryRun": true,
+      "firstMs": 12.73,
+      "medianMs": 12.73,
+      "minMs": 11.79,
+      "maxMs": 13.93,
+      "peakRssKiB": 33068,
+      "medianRssKiB": 32996,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.727,
+          "userMs": 5.792,
+          "sysMs": 6.723,
+          "maxRssKiB": 32564
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.794,
+          "userMs": 6.842,
+          "sysMs": 4.866,
+          "maxRssKiB": 32996
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.926,
+          "userMs": 6.92,
+          "sysMs": 6.902,
+          "maxRssKiB": 33068
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.069,
+          "userMs": 6.956,
+          "sysMs": 5.98,
+          "maxRssKiB": 32924
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.682,
+          "userMs": 7.768,
+          "sysMs": 4.858,
+          "maxRssKiB": 33012
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/strict-column-charts.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/strict-column-charts.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 566,
+      "sameOutputEveryRun": true,
+      "firstMs": 12.52,
+      "medianMs": 13.35,
+      "minMs": 12.4,
+      "maxMs": 15.36,
+      "peakRssKiB": 35900,
+      "medianRssKiB": 35460,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.521,
+          "userMs": 7.276,
+          "sysMs": 5.197,
+          "maxRssKiB": 35460
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.348,
+          "userMs": 9.176,
+          "sysMs": 4.085,
+          "maxRssKiB": 35384
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.358,
+          "userMs": 12.158,
+          "sysMs": 3.037,
+          "maxRssKiB": 35900
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.399,
+          "userMs": 7.204,
+          "sysMs": 5.153,
+          "maxRssKiB": 35536
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.981,
+          "userMs": 9.92,
+          "sysMs": 4.957,
+          "maxRssKiB": 35228
+        }
+      ],
+      "fidelity": {
+        "chartValue": {
+          "expected": 36,
+          "found": 36,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 36,
+          "found": 36,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/test-comment.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/test-comment.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 173,
+      "sameOutputEveryRun": true,
+      "firstMs": 18.6,
+      "medianMs": 16.49,
+      "minMs": 15.63,
+      "maxMs": 18.6,
+      "peakRssKiB": 40756,
+      "medianRssKiB": 40440,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.603,
+          "userMs": 11.13,
+          "sysMs": 7.423,
+          "maxRssKiB": 40440
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.493,
+          "userMs": 12.36,
+          "sysMs": 4.123,
+          "maxRssKiB": 40604
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.633,
+          "userMs": 7.769,
+          "sysMs": 7.773,
+          "maxRssKiB": 40372
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.44,
+          "userMs": 11.236,
+          "sysMs": 6.118,
+          "maxRssKiB": 40756
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.378,
+          "userMs": 10.12,
+          "sysMs": 6.075,
+          "maxRssKiB": 40404
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "comment": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/unit-test-formatting.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/unit-test-formatting.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 671,
+      "sameOutputEveryRun": true,
+      "firstMs": 21.07,
+      "medianMs": 19.55,
+      "minMs": 17.66,
+      "maxMs": 24.31,
+      "peakRssKiB": 41952,
+      "medianRssKiB": 41916,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.068,
+          "userMs": 10.971,
+          "sysMs": 10.036,
+          "maxRssKiB": 41916
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 24.308,
+          "userMs": 14.522,
+          "sysMs": 9.687,
+          "maxRssKiB": 41648
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 19.551,
+          "userMs": 12.253,
+          "sysMs": 7.19,
+          "maxRssKiB": 41952
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.656,
+          "userMs": 7.227,
+          "sysMs": 10.338,
+          "maxRssKiB": 41720
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.598,
+          "userMs": 15.37,
+          "sysMs": 3.08,
+          "maxRssKiB": 41940
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 10,
+          "found": 10,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "headerFooter": {
+          "expected": 7,
+          "found": 7,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/word-tables.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/word-tables.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 1497,
+      "sameOutputEveryRun": true,
+      "firstMs": 14.78,
+      "medianMs": 16.82,
+      "minMs": 14.78,
+      "maxMs": 19.55,
+      "peakRssKiB": 34172,
+      "medianRssKiB": 33960,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.779,
+          "userMs": 8.743,
+          "sysMs": 5.828,
+          "maxRssKiB": 34144
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.818,
+          "userMs": 4.624,
+          "sysMs": 12.09,
+          "maxRssKiB": 33696
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.918,
+          "userMs": 10.857,
+          "sysMs": 3.946,
+          "maxRssKiB": 33828
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.062,
+          "userMs": 10.956,
+          "sysMs": 5.961,
+          "maxRssKiB": 34172
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 19.548,
+          "userMs": 11.607,
+          "sysMs": 7.739,
+          "maxRssKiB": 33960
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 7,
+          "found": 7,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 60,
+          "found": 60,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/docx/word-with-attachments.docx",
+      "set": "realworld",
+      "format": "docx",
+      "truth": "fixtures/realworld/docx/word-with-attachments.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 2423,
+      "sameOutputEveryRun": true,
+      "firstMs": 18.22,
+      "medianMs": 18.71,
+      "minMs": 18.22,
+      "maxMs": 21.38,
+      "peakRssKiB": 41028,
+      "medianRssKiB": 40984,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.221,
+          "userMs": 9.063,
+          "sysMs": 9.063,
+          "maxRssKiB": 40984
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.867,
+          "userMs": 13.118,
+          "sysMs": 5.619,
+          "maxRssKiB": 41000
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.713,
+          "userMs": 7.976,
+          "sysMs": 10.643,
+          "maxRssKiB": 40948
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.505,
+          "userMs": 13.318,
+          "sysMs": 5.115,
+          "maxRssKiB": 40884
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 21.378,
+          "userMs": 14.777,
+          "sysMs": 6.481,
+          "maxRssKiB": 41028
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 16,
+          "found": 16,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 15,
+          "found": 15,
+          "missed": []
+        },
+        "media": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "headerFooter": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "comment": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/xlsx/chart-sheet.xlsx",
+      "set": "realworld",
+      "format": "xlsx",
+      "truth": "fixtures/realworld/xlsx/chart-sheet.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 259,
+      "sameOutputEveryRun": true,
+      "firstMs": 12.89,
+      "medianMs": 12.89,
+      "minMs": 12.21,
+      "maxMs": 13.71,
+      "peakRssKiB": 34920,
+      "medianRssKiB": 34772,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.893,
+          "userMs": 6.923,
+          "sysMs": 5.914,
+          "maxRssKiB": 34568
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.646,
+          "userMs": 4.825,
+          "sysMs": 7.729,
+          "maxRssKiB": 34800
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.714,
+          "userMs": 7.281,
+          "sysMs": 6.354,
+          "maxRssKiB": 34772
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.207,
+          "userMs": 9.1,
+          "sysMs": 3.04,
+          "maxRssKiB": 34920
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.011,
+          "userMs": 6.982,
+          "sysMs": 5.992,
+          "maxRssKiB": 34652
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 10,
+          "found": 10,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 8,
+          "found": 8,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 8,
+          "found": 8,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/xlsx/copy-rows.xlsx",
+      "set": "realworld",
+      "format": "xlsx",
+      "truth": "fixtures/realworld/xlsx/copy-rows.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 1923,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.72,
+      "medianMs": 13.23,
+      "minMs": 12.43,
+      "maxMs": 14.5,
+      "peakRssKiB": 32624,
+      "medianRssKiB": 32376,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.725,
+          "userMs": 6.818,
+          "sysMs": 6.815,
+          "maxRssKiB": 32376
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.233,
+          "userMs": 10.14,
+          "sysMs": 3.049,
+          "maxRssKiB": 32332
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.499,
+          "userMs": 9.269,
+          "sysMs": 5.17,
+          "maxRssKiB": 32588
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.426,
+          "userMs": 9.489,
+          "sysMs": 2.85,
+          "maxRssKiB": 32624
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.645,
+          "userMs": 5.815,
+          "sysMs": 6.771,
+          "maxRssKiB": 32308
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 90,
+          "found": 90,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/xlsx/date-format-tests.xlsx",
+      "set": "realworld",
+      "format": "xlsx",
+      "truth": "fixtures/realworld/xlsx/date-format-tests.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 3447,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.61,
+      "medianMs": 14.03,
+      "minMs": 11.74,
+      "maxMs": 16.07,
+      "peakRssKiB": 32980,
+      "medianRssKiB": 32868,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.613,
+          "userMs": 8.346,
+          "sysMs": 5.217,
+          "maxRssKiB": 32980
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.743,
+          "userMs": 5.817,
+          "sysMs": 5.818,
+          "maxRssKiB": 32932
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.027,
+          "userMs": 9.317,
+          "sysMs": 4.657,
+          "maxRssKiB": 32604
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.068,
+          "userMs": 10.954,
+          "sysMs": 4.974,
+          "maxRssKiB": 32868
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.677,
+          "userMs": 9.743,
+          "sysMs": 4.877,
+          "maxRssKiB": 32660
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 194,
+          "found": 194,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/xlsx/excel-online-index-space.xlsx",
+      "set": "realworld",
+      "format": "xlsx",
+      "truth": "fixtures/realworld/xlsx/excel-online-index-space.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 91,
+      "sameOutputEveryRun": true,
+      "firstMs": 11.52,
+      "medianMs": 12.84,
+      "minMs": 11.52,
+      "maxMs": 14,
+      "peakRssKiB": 32192,
+      "medianRssKiB": 31896,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.521,
+          "userMs": 4.176,
+          "sysMs": 7.27,
+          "maxRssKiB": 31624
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.549,
+          "userMs": 7.65,
+          "sysMs": 4.788,
+          "maxRssKiB": 31896
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.838,
+          "userMs": 7.456,
+          "sysMs": 5.316,
+          "maxRssKiB": 31784
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.293,
+          "userMs": 6.078,
+          "sysMs": 7.085,
+          "maxRssKiB": 32192
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.003,
+          "userMs": 9.938,
+          "sysMs": 3.989,
+          "maxRssKiB": 32064
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/xlsx/simple-monthly-budget.xlsx",
+      "set": "realworld",
+      "format": "xlsx",
+      "truth": "fixtures/realworld/xlsx/simple-monthly-budget.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 1183,
+      "sameOutputEveryRun": true,
+      "firstMs": 16.01,
+      "medianMs": 16.8,
+      "minMs": 14.28,
+      "maxMs": 17.97,
+      "peakRssKiB": 38344,
+      "medianRssKiB": 37840,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.014,
+          "userMs": 12.196,
+          "sysMs": 3.74,
+          "maxRssKiB": 37888
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.972,
+          "userMs": 10.858,
+          "sysMs": 6.977,
+          "maxRssKiB": 37840
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.28,
+          "userMs": 9.127,
+          "sysMs": 5.065,
+          "maxRssKiB": 38344
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.426,
+          "userMs": 9.162,
+          "sysMs": 8.114,
+          "maxRssKiB": 37428
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.805,
+          "userMs": 9.409,
+          "sysMs": 7.295,
+          "maxRssKiB": 37536
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 49,
+          "found": 49,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/xlsx/simple-strict.xlsx",
+      "set": "realworld",
+      "format": "xlsx",
+      "truth": "fixtures/realworld/xlsx/simple-strict.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 382,
+      "sameOutputEveryRun": true,
+      "firstMs": 13.46,
+      "medianMs": 12.77,
+      "minMs": 11.53,
+      "maxMs": 14.21,
+      "peakRssKiB": 32276,
+      "medianRssKiB": 31884,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.46,
+          "userMs": 11.161,
+          "sysMs": 2.238,
+          "maxRssKiB": 31624
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 11.533,
+          "userMs": 6.16,
+          "sysMs": 5.288,
+          "maxRssKiB": 31884
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.418,
+          "userMs": 8.237,
+          "sysMs": 4.125,
+          "maxRssKiB": 32276
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.771,
+          "userMs": 5.857,
+          "sysMs": 6.841,
+          "maxRssKiB": 31752
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.207,
+          "userMs": 8.138,
+          "sysMs": 6.075,
+          "maxRssKiB": 32112
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 19,
+          "found": 19,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/xlsx/with-drawing.xlsx",
+      "set": "realworld",
+      "format": "xlsx",
+      "truth": "fixtures/realworld/xlsx/with-drawing.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 451,
+      "sameOutputEveryRun": true,
+      "firstMs": 17.63,
+      "medianMs": 16.11,
+      "minMs": 15.39,
+      "maxMs": 17.63,
+      "peakRssKiB": 37392,
+      "medianRssKiB": 37276,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.635,
+          "userMs": 9.697,
+          "sysMs": 7.75,
+          "maxRssKiB": 37040
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.386,
+          "userMs": 9.193,
+          "sysMs": 6.096,
+          "maxRssKiB": 37336
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.242,
+          "userMs": 8.533,
+          "sysMs": 7.472,
+          "maxRssKiB": 37152
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.108,
+          "userMs": 11.916,
+          "sysMs": 4.009,
+          "maxRssKiB": 37392
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.399,
+          "userMs": 9.191,
+          "sysMs": 6.128,
+          "maxRssKiB": 37276
+        }
+      ],
+      "fidelity": {
+        "sheetName": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "media": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/xlsx/with-two-charts.xlsx",
+      "set": "realworld",
+      "format": "xlsx",
+      "truth": "fixtures/realworld/xlsx/with-two-charts.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 500,
+      "sameOutputEveryRun": true,
+      "firstMs": 12.73,
+      "medianMs": 12.97,
+      "minMs": 12.73,
+      "maxMs": 14.24,
+      "peakRssKiB": 34908,
+      "medianRssKiB": 34840,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.732,
+          "userMs": 7.778,
+          "sysMs": 4.86,
+          "maxRssKiB": 34748
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.97,
+          "userMs": 3.953,
+          "sysMs": 8.909,
+          "maxRssKiB": 34908
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.241,
+          "userMs": 12.111,
+          "sysMs": 2.032,
+          "maxRssKiB": 34392
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 12.784,
+          "userMs": 7.841,
+          "sysMs": 4.892,
+          "maxRssKiB": 34840
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.519,
+          "userMs": 9.345,
+          "sysMs": 4.171,
+          "maxRssKiB": 34856
+        }
+      ],
+      "fidelity": {
+        "tableCell": {
+          "expected": 24,
+          "found": 24,
+          "missed": []
+        },
+        "sheetName": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 24,
+          "found": 24,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 24,
+          "found": 24,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/pptx/chart-2d.pptx",
+      "set": "realworld",
+      "format": "pptx",
+      "truth": "fixtures/realworld/pptx/chart-2d.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 263,
+      "sameOutputEveryRun": true,
+      "firstMs": 15.4,
+      "medianMs": 15.4,
+      "minMs": 14.96,
+      "maxMs": 16.71,
+      "peakRssKiB": 35892,
+      "medianRssKiB": 35596,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.402,
+          "userMs": 8.595,
+          "sysMs": 6.688,
+          "maxRssKiB": 35596
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.709,
+          "userMs": 11.454,
+          "sysMs": 5.168,
+          "maxRssKiB": 35892
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.7,
+          "userMs": 12.71,
+          "sysMs": 2.932,
+          "maxRssKiB": 35832
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.373,
+          "userMs": 12.205,
+          "sysMs": 3.046,
+          "maxRssKiB": 35584
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.964,
+          "userMs": 8.745,
+          "sysMs": 5.814,
+          "maxRssKiB": 35380
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "slideNotes": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "chartValue": {
+          "expected": 12,
+          "found": 12,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 12,
+          "found": 12,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/pptx/chartex-slide.pptx",
+      "set": "realworld",
+      "format": "pptx",
+      "truth": "fixtures/realworld/pptx/chartex-slide.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 747,
+      "sameOutputEveryRun": true,
+      "firstMs": 15.94,
+      "medianMs": 15.93,
+      "minMs": 13.79,
+      "maxMs": 20.05,
+      "peakRssKiB": 35500,
+      "medianRssKiB": 35148,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.939,
+          "userMs": 7.892,
+          "sysMs": 7.933,
+          "maxRssKiB": 35224
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.929,
+          "userMs": 11.861,
+          "sysMs": 3.939,
+          "maxRssKiB": 35500
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.022,
+          "userMs": 7.887,
+          "sysMs": 6.958,
+          "maxRssKiB": 35148
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 20.05,
+          "userMs": 9.45,
+          "sysMs": 10.393,
+          "maxRssKiB": 35128
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 13.79,
+          "userMs": 10.733,
+          "sysMs": 2.935,
+          "maxRssKiB": 35092
+        }
+      ],
+      "fidelity": {
+        "chartValue": {
+          "expected": 66,
+          "found": 66,
+          "missed": []
+        },
+        "chartValueTable": {
+          "expected": 66,
+          "found": 66,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/pptx/layouts.pptx",
+      "set": "realworld",
+      "format": "pptx",
+      "truth": "fixtures/realworld/pptx/layouts.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 1131,
+      "sameOutputEveryRun": true,
+      "firstMs": 20.29,
+      "medianMs": 20.29,
+      "minMs": 18.36,
+      "maxMs": 27.99,
+      "peakRssKiB": 40164,
+      "medianRssKiB": 39920,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 20.289,
+          "userMs": 12.115,
+          "sysMs": 8.076,
+          "maxRssKiB": 39548
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 27.99,
+          "userMs": 18.867,
+          "sysMs": 8.937,
+          "maxRssKiB": 39920
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 19.51,
+          "userMs": 12.236,
+          "sysMs": 7.138,
+          "maxRssKiB": 40164
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 23.207,
+          "userMs": 15.06,
+          "sysMs": 8.039,
+          "maxRssKiB": 39304
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.356,
+          "userMs": 12.166,
+          "sysMs": 6.064,
+          "maxRssKiB": 39984
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 10,
+          "found": 10,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 12,
+          "found": 12,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 38,
+          "found": 38,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 10,
+          "found": 10,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/pptx/linked-pictures.pptx",
+      "set": "realworld",
+      "format": "pptx",
+      "truth": "fixtures/realworld/pptx/linked-pictures.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 424,
+      "sameOutputEveryRun": true,
+      "firstMs": 15.83,
+      "medianMs": 15.55,
+      "minMs": 14.53,
+      "maxMs": 17.99,
+      "peakRssKiB": 37204,
+      "medianRssKiB": 37076,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.83,
+          "userMs": 9.38,
+          "sysMs": 6.21,
+          "maxRssKiB": 36852
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.55,
+          "userMs": 7.714,
+          "sysMs": 7.745,
+          "maxRssKiB": 37076
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.988,
+          "userMs": 10.901,
+          "sysMs": 6.916,
+          "maxRssKiB": 37204
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 15.215,
+          "userMs": 8.489,
+          "sysMs": 6.601,
+          "maxRssKiB": 37056
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 14.526,
+          "userMs": 9.266,
+          "sysMs": 5.121,
+          "maxRssKiB": 37136
+        }
+      ],
+      "fidelity": {
+        "paragraph": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        },
+        "media": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/pptx/powerpoint-sample.pptx",
+      "set": "realworld",
+      "format": "pptx",
+      "truth": "fixtures/realworld/pptx/powerpoint-sample.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 854,
+      "sameOutputEveryRun": true,
+      "firstMs": 17.14,
+      "medianMs": 17.49,
+      "minMs": 16.99,
+      "maxMs": 18.68,
+      "peakRssKiB": 36908,
+      "medianRssKiB": 36548,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.142,
+          "userMs": 11.002,
+          "sysMs": 6.007,
+          "maxRssKiB": 36284
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 16.986,
+          "userMs": 10.895,
+          "sysMs": 5.967,
+          "maxRssKiB": 36724
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.684,
+          "userMs": 14.399,
+          "sysMs": 4.102,
+          "maxRssKiB": 36548
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.924,
+          "userMs": 10.834,
+          "sysMs": 6.92,
+          "maxRssKiB": 36908
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.491,
+          "userMs": 8.177,
+          "sysMs": 9.213,
+          "maxRssKiB": 36148
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 5,
+          "found": 5,
+          "missed": []
+        },
+        "listItem": {
+          "expected": 18,
+          "found": 18,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 34,
+          "found": 34,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "slideNotes": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        }
+      }
+    },
+    {
+      "path": "fixtures/realworld/pptx/shapes.pptx",
+      "set": "realworld",
+      "format": "pptx",
+      "truth": "fixtures/realworld/pptx/shapes.truth.json",
+      "status": "ok",
+      "exitCode": 0,
+      "stderr": null,
+      "markdownBytes": 637,
+      "sameOutputEveryRun": true,
+      "firstMs": 19.73,
+      "medianMs": 18.33,
+      "minMs": 17.5,
+      "maxMs": 19.73,
+      "peakRssKiB": 41500,
+      "medianRssKiB": 41084,
+      "runs": [
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 19.733,
+          "userMs": 13.718,
+          "sysMs": 5.879,
+          "maxRssKiB": 41068
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.327,
+          "userMs": 10.041,
+          "sysMs": 8.013,
+          "maxRssKiB": 41228
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.368,
+          "userMs": 13.21,
+          "sysMs": 5.082,
+          "maxRssKiB": 41068
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 17.497,
+          "userMs": 10.288,
+          "sysMs": 7.136,
+          "maxRssKiB": 41500
+        },
+        {
+          "status": "exited",
+          "code": 0,
+          "wallMs": 18.201,
+          "userMs": 13.946,
+          "sysMs": 4.027,
+          "maxRssKiB": 41084
+        }
+      ],
+      "fidelity": {
+        "heading": {
+          "expected": 2,
+          "found": 2,
+          "missed": []
+        },
+        "paragraph": {
+          "expected": 4,
+          "found": 4,
+          "missed": []
+        },
+        "tableCell": {
+          "expected": 25,
+          "found": 25,
+          "missed": []
+        },
+        "slideOrder": {
+          "expected": 3,
+          "found": 3,
+          "missed": []
+        },
+        "media": {
+          "expected": 1,
+          "found": 1,
+          "missed": []
+        }
+      }
+    }
+  ]
+}

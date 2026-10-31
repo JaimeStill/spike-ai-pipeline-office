@@ -1,0 +1,58 @@
+# CI runs the check a developer runs, `mise run check`, on every pull request into main and every
+# push to main, natively on x64 and arm64, so each runner publishes and tests its own NativeAOT
+# binary, whose size and runtime identifier each runner then reports to its job summary: the
+# linux-arm64 size can only be measured on the arm64 runner. A newer run on the same ref cancels
+# the one it supersedes.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      # NativeAOT links with clang against zlib.
+      - name: Install the NativeAOT prerequisites
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends clang zlib1g-dev
+
+      - uses: jdx/mise-action@v5.2.5
+
+      - uses: actions/cache@v6.1.0
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/*.csproj', 'Directory.Build.props') }}
+          restore-keys: nuget-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: mise run check
+        run: mise run check
+
+      # The check published the binary to .state/aot for this runner's runtime identifier; its size
+      # is the binary's alone, not a release archive's.
+      - name: Report the published binary's size
+        run: |
+          case "$(uname -m)" in
+            x86_64) rid=linux-x64 ;;
+            aarch64) rid=linux-arm64 ;;
+            *) echo "ci: no runtime identifier for $(uname -m)"; exit 1 ;;
+          esac
+          bytes=$(stat -c %s .state/aot/spike-ai-pipeline-office)
+          line="spike-ai-pipeline-office, $rid, NativeAOT, as published: $bytes bytes"
+          echo "$line"
+          echo "$line" >>"$GITHUB_STEP_SUMMARY"
