@@ -89,7 +89,22 @@ it, is read the same way, its type its layout (`boxWhisker`, `sunburst`) and eac
 hierarchy labeled with its innermost level that names it; one that caches no data is that
 picture instead, a media block, and never both.
 
-It is released by tag, `vX.Y.Z`, with a CHANGELOG. The spike's question, evidence, and answer are
-in the root repository's README.
+CI (`.github/workflows/ci.yml`) runs `mise run check`, the check a developer runs, on every pull
+request into main and every push to main, on `ubuntu-24.04` and `ubuntu-24.04-arm`, so each
+publishes and tests its own NativeAOT binary; a newer run on a ref cancels the one it supersedes.
+A pull request merges once both pass. main's ruleset, `.github/rulesets/main.json`, requires a
+pull request and forbids deleting main or force-pushing to it; it is applied once, by hand:
+`gh api repos/JaimeStill/spike-ai-pipeline-office/rulesets --method POST --input
+.github/rulesets/main.json`.
+
+It is released by tag, `vX.Y.Z`, with a CHANGELOG, the tag pushed once main's CI has passed. The
+release workflow (`.github/workflows/release.yml`) builds the binary natively for linux-x64 and
+linux-arm64 and refuses one whose `--version` isn't the tag's version, so the version the csproj
+records must be the tag's (a release binary prints it alone; other builds append `+` and the
+commit). The GitHub release, its notes the tag's CHANGELOG section, carries
+`spike-ai-pipeline-office-vX.Y.Z-linux-x64.tar.gz` and `-linux-arm64.tar.gz`, each holding the
+binary and LICENSE, and `SHA256SUMS` covering both.
+
+The spike's question, evidence, and answer are in the root repository's README.
 
 Apache-2.0.

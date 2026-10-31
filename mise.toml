@@ -29,7 +29,7 @@ dotnet test --no-build
 '''
 
 [tasks.currency]
-description = "Report every NuGet package and mise tool behind its latest; writes nothing"
+description = "Report every NuGet package, mise tool, and GitHub Action pin behind its latest; writes nothing"
 run = "scripts/currency.sh"
 
 [tasks.fixtures]
