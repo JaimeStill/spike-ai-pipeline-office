@@ -7,9 +7,11 @@ and their cells, sheets, slides in order with their notes, chart series, and emb
 written out as files), with Markdown as a second rendering of the same model.
 
 It is published as one NativeAOT binary each for linux-x64 and linux-arm64, with no .NET runtime
-needed on the host, and spike-ai-pipeline-processing runs it like any other system tool. It
-renders no page images: chart data and embedded pictures take their place. Legacy binary formats
-are converted to OOXML before they reach it, by LibreOffice in a container.
+needed on the host, for spike-ai-pipeline-processing to run like any other system tool. It
+renders no page images: chart data and embedded pictures take their place. It refuses the legacy
+binary formats (doc, xls, ppt) and never reads them; converting them to OOXML first, with
+LibreOffice in a container, is the caller's part. It runs no inference: it calls no model, and
+the text it extracts is complete without one.
 
 ```sh
 spike-ai-pipeline-office <input> [--format json|markdown] [--media <dir>]
@@ -29,8 +31,14 @@ refusal happens before any output is written, with its reason on stderr, and med
 only once the whole conversion has succeeded, before stdout. A single invalid reference, such as
 a header reference of a type no header has or a sheet whose relationship names no part, is
 skipped and the rest converts, exit code 0, with one line on stderr for each:
-`spike-ai-pipeline-office: warning: <path>: <what was skipped>`. The JSON carries a `schema`
-version, the output contract's.
+`spike-ai-pipeline-office: warning: <path>: <what was skipped>`.
+
+The JSON model is office's output contract, one tree for all three formats: a document's
+`schema`, `"1"` in this version, its `format` (`docx`, `xlsx`, `pptx`), and its `blocks` in
+document order, each a `heading`, `paragraph`, `list`, `table`, `chart`, `media`, `sheet`, or
+`slide` by its `type`. The schema is versioned with office's tags: a change to the model's shape
+changes the `schema` version and is recorded in [`CHANGELOG.md`](CHANGELOG.md), and the model
+grows by adding kinds and optional properties, never by reshaping these.
 
 A macro-enabled document, a template, or a slide show (docm, dotx, dotm, xlsm, xltx, xltm, pptm,
 potx, potm, ppsx) is read as its base format, by its main part's content type whatever the file is
@@ -45,6 +53,20 @@ are read through wherever they wrap text, around runs, paragraphs, rows, or cell
 tags; a control showing its placeholder ("Choose an item.") holds a prompt, not text, and is left
 out. A ruby's base text is the text, its annotation left out. An embedded OLE object is never
 extracted, but the picture Word shows in its place is a media block.
+
+A docx document's `sections` hold, for each section in body order, the headers and footers its
+pages show (`default`, `first`, `even`): its own, or the previous section's where it has none of a
+kind, a first-page one only with a title page and an even-page one only when the document turns
+even-page headers on. Its `footnotes` and `endnotes` are the notes the text references, in the
+order it first references them, and its `comments` are its comment threads, each with its
+author, its anchor (the text of its range), whether it is resolved, its blocks, and its replies;
+the text refers to them by `footnote`, `endnote`, and `comment` inlines. A media block's `section`
+is the section that shows it. In Markdown a heading is `#` by its level, a list nests and counts
+from its start, a table is a GFM table whose merged cell's text sits in its top-left position,
+the positions it covers left empty, and each distinct header comes before the body and each
+distinct footer after it; the notes then follow as GFM footnotes, footnotes and endnotes counted
+together as `[^1]`, `[^2]`, and the comments after them as `[^c1]`, `[^c2]`, each with its author,
+its state, and the text it is anchored to.
 
 An xlsx document's blocks are its sheets in workbook order, hidden ones included and marked
 `hidden`. A sheet holds a table of the cells that have a value or a formula, each row with its
@@ -87,7 +109,24 @@ chart (waterfall, histogram, pareto, box and whisker, sunburst, treemap, funnel,
 which a file holds in `mc:AlternateContent` beside a picture for applications that can't draw
 it, is read the same way, its type its layout (`boxWhisker`, `sunburst`) and each point of a
 hierarchy labeled with its innermost level that names it; one that caches no data is that
-picture instead, a media block, and never both.
+picture instead, a media block, and never both. In Markdown a chart is its title, then a GFM
+table of its series, a column each, and a row for each category; a picture is an image link to
+its file in the media directory, or to a linked picture's target.
+
+What office does not do:
+
+- It evaluates no formula: a formula's value is the one the file caches, or none.
+- It applies no number format but the dates': a number is written as stored.
+- It reads tracked changes accepted only, never as stored.
+- It renders no page images.
+- It refuses legacy doc, xls, and ppt files, and tables nested more than eight deep; it reads
+  neither.
+- It extracts nothing outside what this page describes: equations, SmartArt, a docx's or an
+  xlsx's text boxes and WordArt, embedded OLE objects (of which only the picture a docx shows in
+  their place comes out, as media), an xlsx's cell notes and comments, a pptx's comments, and a
+  docx comment range that starts or ends between a table's rows or cells.
+- It writes media as stored, never converted: an EMF, WMF, or TIFF stays one.
+- It runs no inference.
 
 CI (`.github/workflows/ci.yml`) runs `mise run check`, the check a developer runs, on every pull
 request into main and every push to main, on `ubuntu-24.04` and `ubuntu-24.04-arm`, so each
@@ -97,7 +136,7 @@ pull request and forbids deleting main or force-pushing to it; it is applied onc
 `gh api repos/JaimeStill/spike-ai-pipeline-office/rulesets --method POST --input
 .github/rulesets/main.json`.
 
-It is released by tag, `vX.Y.Z`, with a CHANGELOG, the tag pushed once main's CI has passed. The
+It is released by tag, `vX.Y.Z`, with a [CHANGELOG](CHANGELOG.md), the tag pushed once main's CI has passed. The
 release workflow (`.github/workflows/release.yml`) builds the binary natively for linux-x64 and
 linux-arm64 and refuses one whose `--version` isn't the tag's version, so the version the csproj
 records must be the tag's (a release binary prints it alone; other builds append `+` and the
@@ -110,7 +149,8 @@ binary, markitdown, and xberg over the committed pool, each one's Markdown score
 element against the ground truth (`bench/SpikeAiPipeline.Office.Baseline`, with Markdig, never in
 office's binary), each run measured for time and peak memory. Its findings are
 [`docs/findings/office-cli.md`](docs/findings/office-cli.md), each run's results in
-`docs/findings/office-cli/runs/`.
+`docs/findings/office-cli/runs/`; that page is the evidence the root's evidence 12 asks of the
+Open XML CLI.
 
 The spike's question, evidence, and answer are in the root repository's README.
 
